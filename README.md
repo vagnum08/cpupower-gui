@@ -9,7 +9,7 @@ This program is designed to allow you to change the frequency limits of your cpu
 To install this program do the following:
 
 - Clone the repository
-- Open a terminal and run `./autgen.sh --prefix=/usr` followed by `make && make install`.
+- Open a terminal and run `./autogen.sh --prefix=/usr` followed by `make && make install`.
 
 # Uninstall
 
