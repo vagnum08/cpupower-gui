@@ -1,0 +1,4 @@
+#!/bin/sh
+c_user=$(whoami)
+pkexec cpupower-gui-pkexec $c_user
+

@@ -1,0 +1,17 @@
+#!/usr/bin/python
+
+import sys
+import locale
+import gettext
+
+localedir = '/usr/share/locale'
+
+locale.bindtextdomain('cpupower-gui', localedir)
+locale.textdomain('cpupower-gui')
+gettext.bindtextdomain('cpupower-gui', localedir)
+gettext.textdomain('cpupower-gui')
+
+if __name__ == "__main__":
+    sys.path.insert(1, '/usr/lib/python3.6/site-packages')
+    from cpupower_gui import __main__
+    __main__.main()

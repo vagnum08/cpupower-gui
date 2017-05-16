@@ -1,0 +1,17 @@
+#!@PYTHON@
+
+import sys
+import locale
+import gettext
+
+localedir = '@localedir@'
+
+locale.bindtextdomain('cpupower-gui', localedir)
+locale.textdomain('cpupower-gui')
+gettext.bindtextdomain('cpupower-gui', localedir)
+gettext.textdomain('cpupower-gui')
+
+if __name__ == "__main__":
+    sys.path.insert(1, '@pythondir@')
+    from cpupower_gui import __main__
+    __main__.main()
