@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
-
 # __main__.py
-#
-# Copyright (C) 2017 vagnum08
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"""
+Copyright (C) 2017 [RnD]²
+
+This file is part of cpupower-gui.
+
+cpupower-gui is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+cpupower-gui is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with cpupower-gui.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: Evangelos Rigas <erigas@rnd2.org>
+"""
 
 import os, sys
 import gi
@@ -72,7 +77,6 @@ class Application(Gtk.Application):
     def do_activate(self):
         self.builder = Gtk.Builder()
         self.builder.add_from_file("/usr/share/cpupower-gui/ui/cpupower.glade")
-#        self.builder.add_from_file("../data/cpupower.glade")
 
         cpu_store = Gtk.ListStore(int, int)
         for i in range(self.cpu_avail):
@@ -88,7 +92,6 @@ class Application(Gtk.Application):
         window = self.builder.get_object("window")
         window.show_all()
         Gtk.main()
-        # window.present()
 
     def upd_sliders(self):
         cpu = self['cpubox'].get_active()
@@ -220,23 +223,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-"""
-Copyright (C) 2017 [RnD]²
 
-This file is part of cpupower-gui.
-
-cpupower-gui is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-cpupower-gui is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with cpupower-gui.  If not, see <http://www.gnu.org/licenses/>.
-
-Author: Evangelos Rigas <erigas@rnd2.org>
-"""

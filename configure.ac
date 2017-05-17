@@ -6,9 +6,9 @@ dnl Define Versioning Information
 dnl ***********************************************************************
 m4_define([major_version],[0])
 m4_define([minor_version],[5])
-m4_define([micro_version],[0])
+m4_define([micro_version],[2])
 m4_define([package_version],[major_version.minor_version.micro_version])
-m4_define([bug_report_url],[https://bugzilla.gnome.org/enter_bug.cgi?product=cpupower-gui])
+m4_define([bug_report_url],[https://gitlab.com/vagnum08/cpupower-gui/issues])
 m4_define([api_version],[major_version])
 
 AX_IS_RELEASE([micro-version])
