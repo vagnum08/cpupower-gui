@@ -3,7 +3,7 @@
     "runtime": "org.gnome.Platform",
     "runtime-version": "3.24",
     "sdk": "org.gnome.Sdk",
-    "command": "cpupower-gui",
+    "command": "cpupower-gui-pkexec",
     "finish-args": [
         "--share=network",
         "--share=ipc",

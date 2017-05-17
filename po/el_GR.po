@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cpupower-gui\n"
 "POT-Creation-Date: 2017-05-17 10:25+0100\n"
-"PO-Revision-Date: 2017-05-17 11:55+0100\n"
+"PO-Revision-Date: 2017-05-17 20:26+0100\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,15 +34,15 @@ msgstr "Ορισμός ορίων συχνότητας επεξεργαστή"
 
 #: data/cpupower.glade:119
 msgid "Governor:"
-msgstr ""
+msgstr "Κυβερνήτης:"
 
 #: data/cpupower.glade:144
 msgid "Max freq. (MHz):"
-msgstr "Μεγ. συχν. (ΜHz):"
+msgstr "Μέγ. συχν. (ΜHz):"
 
 #: data/cpupower.glade:215
 msgid "Min freq. (MHz):"
-msgstr "Ελαχ. συχν. (MHz):"
+msgstr "Ελάχ. συχν. (MHz):"
 
 #: data/cpupower.glade:227
 msgid "CPU:"
@@ -50,4 +50,4 @@ msgstr "Επεξεργαστής:"
 
 #: data/cpupower.glade:251
 msgid "All CPUs:"
-msgstr ""
+msgstr "Όλοι οι επεξεργαστές:"

@@ -29,7 +29,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-SYS_PATH = "/sys/devices/system/cpu/cpu0/cpufreq"
+SYS_PATH = "/sys/devices/system/cpu/cpu{}/cpufreq"
 FREQ_MIN = "scaling_min_freq"
 FREQ_MAX = "scaling_max_freq"
 FREQ_MIN_HW = "cpuinfo_min_freq"
