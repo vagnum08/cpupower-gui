@@ -63,7 +63,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
               </object>
             </child>
             <child>
-              <object class="GtkButton" id="applybtn">
+              <object class="GtkButton" id="apply_btn">
                 <property name="label" translatable="yes">Apply</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
@@ -124,7 +124,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
               </packing>
             </child>
             <child>
-              <object class="GtkComboBoxText" id="govbox">
+              <object class="GtkComboBoxText" id="gov_box">
                 <property name="width_request">0</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -232,7 +232,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
               </packing>
             </child>
             <child>
-              <object class="GtkComboBoxText" id="cpubox">
+              <object class="GtkComboBoxText" id="cpu_box">
                 <property name="width_request">0</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>

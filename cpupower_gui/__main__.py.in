@@ -1,0 +1,248 @@
+#!/usr/bin/env python3
+# __main__.py
+
+"""
+Copyright (C) 2017 [RnD]²
+
+This file is part of cpupower-gui.
+
+cpupower-gui is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+cpupower-gui is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with cpupower-gui.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: Evangelos Rigas <erigas@rnd2.org>
+"""
+
+import os
+import sys
+import gi
+
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+
+SYS_PATH = "/sys/devices/system/cpu/cpu0/cpufreq"
+FREQ_MIN = "scaling_min_freq"
+FREQ_MAX = "scaling_max_freq"
+FREQ_MIN_HW = "cpuinfo_min_freq"
+FREQ_MAX_HW = "cpuinfo_max_freq"
+AVAIL_GOV = "scaling_available_governors"
+GOVERNOR = "scaling_governor"
+
+
+
+def read_settings(cpu):
+    """ Reads files from sysfs """
+    sys_path = SYS_PATH.format(cpu)
+    with open(os.path.join(sys_path, FREQ_MIN), "r") as sys_file:
+        freq_min = int(sys_file.readline())
+
+    with open(os.path.join(sys_path, FREQ_MAX), "r") as sys_file:
+        freq_max = int(sys_file.readline())
+
+    with open(os.path.join(sys_path, FREQ_MIN_HW), "r") as sys_file:
+        freq_minhw = int(sys_file.readline())
+
+    with open(os.path.join(sys_path, FREQ_MAX_HW), "r") as sys_file:
+        freq_maxhw = int(sys_file.readline())
+
+    with open(os.path.join(sys_path, AVAIL_GOV), "r") as sys_file:
+        govs = sys_file.readline().strip().split(" ")
+        governors = {}
+        for num, item in enumerate(govs):
+            governors[num] = item
+
+    with open(os.path.join(sys_path, GOVERNOR), "r") as sys_file:
+        governor = sys_file.readline().strip()
+    return freq_min, freq_minhw, freq_max, freq_maxhw, governors, governor
+
+def dialog_response(widget, response_id):
+    """ Error message dialog """
+    # if the button clicked gives response OK (-5)
+    if response_id == Gtk.ResponseType.OK:
+        print("OK")
+    # if the messagedialog is destroyed (by pressing ESC)
+    elif response_id == Gtk.ResponseType.DELETE_EVENT:
+        print("dialog closed or cancelled")
+    widget.destroy()
+
+
+class Application(Gtk.Application):
+    """ Main Application, inherits from Gtk.Application"""
+    ONLINE = '/sys/devices/system/cpu/online'
+
+    def __init__(self, **kwargs):
+        """ Init Gtk.Application"""
+        super().__init__(application_id='org.gnome.CpupowerGui',
+                         **kwargs)
+
+        with open(self.ONLINE, "r") as sys_file:
+            cpu_count = sys_file.readline().strip().split('-')[-1]
+            self.cpu_avail = int(cpu_count) + 1
+
+        self.widgets = {}
+        self.builder = Gtk.Builder()
+        self.builder.add_from_file("@datadir@/cpupower-gui/ui/cpupower.glade")
+        _, self.freq_min_hw, _, self.freq_max_hw, self.governors, self.governor = read_settings(0)
+        cpu_store = Gtk.ListStore(int, int)
+
+        for i in range(self.cpu_avail):
+            cpu_store.append([i, i])
+
+        self['cpu_box'].set_model(cpu_store)
+        self['cpu_box'].set_active(0)
+        self.upd_sliders()
+
+
+    def do_activate(self):
+        """ Connects signals and start main loop """
+        self.builder.connect_signals(self)
+        self['window'].show_all()
+        Gtk.main()
+
+    def upd_sliders(self):
+        """ Updates the slider widgets by reading the sys files"""
+        cpu = self['cpu_box'].get_active()
+        freq_min, self.freq_min_hw, freq_max, self.freq_max_hw, self.governors, self.governor = read_settings(cpu)
+        gov_store = Gtk.ListStore(str, int)
+        for gov in self.governors.items():
+            if gov[1] == self.governor:
+                gov_id = gov[0]
+            gov_store.append([gov[1].capitalize(), gov[0]])
+
+        self['gov_box'].set_model(gov_store)
+        self['gov_box'].set_active(gov_id)
+
+        self['adj_min'].set_lower(int(self.freq_min_hw / 1000))
+        self['adj_min'].set_upper(int(self.freq_max_hw / 1000))
+        self['adj_max'].set_lower(int(self.freq_min_hw / 1000))
+        self['adj_max'].set_upper(int(self.freq_max_hw / 1000))
+        self['adj_min'].set_value(int(freq_min / 1000))
+        self['adj_max'].set_value(int(freq_max / 1000))
+        self['apply_btn'].set_sensitive(False)
+
+    @staticmethod
+    def on_cancel_clicked(*args):
+        """ Exit application with cancel button """
+        Gtk.main_quit(*args)
+
+    @staticmethod
+    def on_window_destroy(*args):
+        """ Exit application with destroy """
+        Gtk.main_quit(*args)
+
+    def on_cpu_changed(self, *args):
+        """ Callback for cpu box """
+        # pylint: disable=W0612,W0613
+        self.upd_sliders()
+
+    def on_toall_state_set(self, _, val):
+        """ Enable/Disable cpu_box """
+        if val:
+            self['cpu_box'].set_sensitive(False)
+        else:
+            self['cpu_box'].set_sensitive(True)
+
+    def on_adj_min_value_changed(self, *args):
+        """ Callback for adj_min """
+        # pylint: disable=W0612,W0613
+        if self['adj_min'].get_value() > self['adj_max'].get_value():
+            if self['adj_min'].get_value() + 10 > self.freq_max_hw / 1000:
+                self['adj_max'].set_value(self.freq_max_hw / 1000)
+            else:
+                self['adj_max'].set_value(self['adj_min'].get_value() + 10)
+        elif self['adj_max'].get_value() < self['adj_min'].get_value():
+            if self['adj_max'].get_value() - 10 < self.freq_min_hw / 1000:
+                self['adj_min'].set_value(self.freq_min_hw / 1000)
+            else:
+                self['adj_min'].set_value(self['adj_max'].get_value() - 10)
+        self['apply_btn'].set_sensitive(True)
+
+    def on_adj_max_value_changed(self, *args):
+        """ Callback for adj_max """
+        # pylint: disable=W0612,W0613
+        if self['adj_max'].get_value() < self['adj_min'].get_value():
+            self['adj_min'].set_value(self['adj_max'].get_value() - 10)
+        self['apply_btn'].set_sensitive(True)
+
+    def on_governor_changed(self, *args):
+        """ Change governor and enable apply_btn """
+        # pylint: disable=W0612,W0613
+        mod = self['gov_box'].get_model()
+        text, tid = mod[self['gov_box'].get_active_iter()][:2]
+        self.governor = self.governors[tid]
+        self['apply_btn'].set_sensitive(True)
+
+    def on_apply_clicked(self, button):
+        """ Write changes back to sysfs """
+        fmin = int(self['adj_min'].get_value() * 1000)
+        fmax = int(self['adj_max'].get_value() * 1000)
+        try:
+            if self['toall'].get_active():
+                for i in range(self.cpu_avail):
+                    sys_path = SYS_PATH.format(i)
+
+                    with open(os.path.join(sys_path, FREQ_MIN), "w") as sys_file:
+                        sys_file.write(str(fmin))
+                    with open(os.path.join(sys_path, FREQ_MAX), "w") as sys_file:
+                        sys_file.write(str(fmax))
+                    with open(os.path.join(sys_path, GOVERNOR), "w") as sys_file:
+                        sys_file.write(self.governor)
+            else:
+                sys_path = SYS_PATH.format(self['cpu_box'].get_active())
+
+                with open(os.path.join(sys_path, FREQ_MIN), "w") as sys_file:
+                    sys_file.write(str(fmin))
+                with open(os.path.join(sys_path, FREQ_MAX), "w") as sys_file:
+                    sys_file.write(str(fmax))
+                with open(os.path.join(sys_path, GOVERNOR), "w") as sys_file:
+                    sys_file.write(self.governor)
+            button.set_sensitive(False)
+        except PermissionError as perm_error:
+            message = Gtk.MessageDialog(type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK)
+            message.set_markup(str(perm_error))
+            message.show()
+            message.connect("response", dialog_response)
+
+
+
+    def __getitem__(self, name):
+        """ Convince method that allows widgets to be accessed via self["widget"] """
+        if name in self.widgets:
+            return self.widgets[name]
+        return self.builder.get_object(name)
+
+    def __setitem__(self, name, item):
+        """ Convince method that allows widgets to be accessed via self["widget"] """
+        self.widgets[name] = item
+
+    def __contains__(self, name):
+        """ Returns True if there is such widget """
+        if name in self.widgets:
+            return True
+        return self.builder.get_object(name) is not None
+
+
+def main():
+    """ Main runner"""
+    application = Application()
+
+    try:
+        ret = application.run()  # sys.argv)
+    except SystemExit as sys_exit:
+        ret = sys_exit.code
+    sys.exit(ret)
+
+
+if __name__ == '__main__':
+    main()
+
+
