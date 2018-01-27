@@ -90,9 +90,11 @@ AC_CONFIG_FILES([
 	bin/Makefile
 	cpupower_gui/Makefile
 
-
 	data/Makefile
-
+	data/applications/Makefile
+	data/icons/Makefile
+	data/polkit/Makefile
+	data/ui/Makefile
 	po/Makefile.in
 ],[],
 [API_VERSION='$API_VERSION'])

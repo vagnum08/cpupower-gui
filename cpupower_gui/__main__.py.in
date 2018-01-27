@@ -2,7 +2,7 @@
 # __main__.py
 
 """
-Copyright (C) 2017 [RnD]²
+Copyright (C) 2017-2018 [RnD]²
 
 This file is part of cpupower-gui.
 
@@ -36,7 +36,6 @@ FREQ_MIN_HW = "cpuinfo_min_freq"
 FREQ_MAX_HW = "cpuinfo_max_freq"
 AVAIL_GOV = "scaling_available_governors"
 GOVERNOR = "scaling_governor"
-
 
 
 def read_settings(cpu):
@@ -78,6 +77,7 @@ def dialog_response(widget, response_id):
 class Application(Gtk.Application):
     """ Main Application, inherits from Gtk.Application"""
     ONLINE = '/sys/devices/system/cpu/online'
+    ATBOOT = False
 
     def __init__(self, **kwargs):
         """ Init Gtk.Application"""
@@ -100,7 +100,21 @@ class Application(Gtk.Application):
         self['cpu_box'].set_model(cpu_store)
         self['cpu_box'].set_active(0)
         self.upd_sliders()
+        self.status_icon = self['status']
+        self.status_icon.connect("popup-menu", self.right_click_event)
 
+    def right_click_event(self, icon, button, time):
+        self.menu = Gtk.Menu()
+        about = Gtk.MenuItem()
+        about.set_label("About")
+        about.connect("activate", self.on_about_clicked)
+        self.menu.append(about)
+        quit = Gtk.MenuItem()
+        quit.set_label("Quit")
+        quit.connect("activate", Gtk.main_quit)
+        self.menu.append(quit)
+        self.menu.show_all()
+        self.menu.popup(None, None, None, self.status_icon, button, time)
 
     def do_activate(self):
         """ Connects signals and start main loop """
@@ -130,7 +144,7 @@ class Application(Gtk.Application):
         self['apply_btn'].set_sensitive(False)
 
     @staticmethod
-    def on_cancel_clicked(*args):
+    def on_quit_clicked(*args):
         """ Exit application with cancel button """
         Gtk.main_quit(*args)
 
@@ -150,6 +164,12 @@ class Application(Gtk.Application):
             self['cpu_box'].set_sensitive(False)
         else:
             self['cpu_box'].set_sensitive(True)
+
+    def on_atboot_state_set(self, _,val):
+        if val:
+            self.ATBOOT = True
+        else:
+            self.ATBOOT = False
 
     def on_adj_min_value_changed(self, *args):
         """ Callback for adj_min """
@@ -212,7 +232,15 @@ class Application(Gtk.Application):
             message.show()
             message.connect("response", dialog_response)
 
+    def on_about_clicked(self, button):
+        self.show_about_dialog()
 
+    def show_about_dialog(self):
+        self['about_dialog'].run()
+        self['about_dialog'].hide()
+
+    def on_config_box_changed(self, button):
+        self['about_dialog'].hide()
 
     def __getitem__(self, name):
         """ Convince method that allows widgets to be accessed via self["widget"] """
