@@ -6,7 +6,7 @@ dnl Define Versioning Information
 dnl ***********************************************************************
 m4_define([major_version],[0])
 m4_define([minor_version],[5])
-m4_define([micro_version],[2])
+m4_define([micro_version],[6])
 m4_define([package_version],[major_version.minor_version.micro_version])
 m4_define([bug_report_url],[https://gitlab.com/vagnum08/cpupower-gui/issues])
 m4_define([api_version],[major_version])
@@ -92,8 +92,10 @@ AC_CONFIG_FILES([
 
 	data/Makefile
 	data/applications/Makefile
+	data/dbus/Makefile
 	data/icons/Makefile
 	data/polkit/Makefile
+	data/systemd/Makefile
 	data/ui/Makefile
 	po/Makefile.in
 ],[],

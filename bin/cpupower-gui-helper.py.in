@@ -1,0 +1,151 @@
+#!@PYTHON@
+# cpupower-gui-helper.py
+
+"""
+Copyright (C) 2017-2018 [RnD]²
+
+This file is part of cpupower-gui.
+
+cpupower-gui is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+cpupower-gui is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with cpupower-gui.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: Evangelos Rigas <erigas@rnd2.org>
+"""
+
+import os
+import locale
+import gettext
+
+from gi.repository import GLib
+import dbus
+import dbus.service
+from dbus.mainloop.glib import DBusGMainLoop
+
+localedir = '@localedir@'
+
+locale.bindtextdomain('cpupower-gui', localedir)
+locale.textdomain('cpupower-gui')
+gettext.bindtextdomain('cpupower-gui', localedir)
+gettext.textdomain('cpupower-gui')
+
+SYS_PATH = "/sys/devices/system/cpu/cpu{}/cpufreq"
+FREQ_MIN = "scaling_min_freq"
+FREQ_MAX = "scaling_max_freq"
+FREQ_MIN_HW = "cpuinfo_min_freq"
+FREQ_MAX_HW = "cpuinfo_max_freq"
+AVAIL_GOV = "scaling_available_governors"
+GOVERNOR = "scaling_governor"
+
+def read_settings(cpu):
+    """ Reads files from sysfs """
+    sys_path = SYS_PATH.format(cpu)
+    with open(os.path.join(sys_path, FREQ_MIN), "r") as sys_file:
+        freq_min = int(sys_file.readline())
+
+    with open(os.path.join(sys_path, FREQ_MAX), "r") as sys_file:
+        freq_max = int(sys_file.readline())
+
+    with open(os.path.join(sys_path, FREQ_MIN_HW), "r") as sys_file:
+        freq_minhw = int(sys_file.readline())
+
+    with open(os.path.join(sys_path, FREQ_MAX_HW), "r") as sys_file:
+        freq_maxhw = int(sys_file.readline())
+
+    with open(os.path.join(sys_path, AVAIL_GOV), "r") as sys_file:
+        govs = sys_file.readline().strip().split(" ")
+        governors = {}
+        for num, item in enumerate(govs):
+            governors[num] = item
+
+    with open(os.path.join(sys_path, GOVERNOR), "r") as sys_file:
+        governor = sys_file.readline().strip()
+
+    return freq_min, freq_minhw, freq_max, freq_maxhw, governors, governor
+
+class CpupowerGui_DBus(dbus.service.Object):
+
+    def __init__(self, loop):
+        self.loop = loop
+        self.bus = dbus.SystemBus()
+        bus_name = dbus.service.BusName('org.rnd2.cpupower_gui.helper', bus=self.bus)
+        dbus.service.Object.__init__(self, bus_name, '/org/rnd2/cpupower_gui/helper')
+        self.init_polkit()
+        self.authorized = {}
+
+    def init_polkit(self):
+        proxy = self.bus.get_object('org.freedesktop.PolicyKit1', '/org/freedesktop/PolicyKit1/Authority')
+        self.authority = dbus.Interface(proxy, dbus_interface='org.freedesktop.PolicyKit1.Authority')
+        self.name = self.bus.get_unique_name()
+        self.subject = ('system-bus-name', {'name': self.name})
+        self.details = {}
+        # details = {'polkit.message':'This is to authenticate for systemd units'}
+        self.flags = 1  # AllowUserInteraction flag
+        self.cancellation_id = ''  # No cancellation id
+
+    def _is_authorized(self, sender, action_id='org.rnd2.cpupower_gui.apply_runtime'):
+        if sender in self.authorized:
+            if self.authorized[sender]:
+                return 1
+        subject = ('system-bus-name', {'name': sender})
+        result = self.authority.CheckAuthorization(subject, action_id, self.details, self.flags, self.cancellation_id)
+        auth = bool(result[0])
+        self.authorized[sender] = auth
+        return auth
+
+
+    @dbus.service.method('org.rnd2.cpupower_gui.helper', out_signature='as')
+    def settings(self, cpu):
+        print(read_settings(cpu))
+
+    @dbus.service.method('org.rnd2.cpupower_gui.helper', sender_keyword='sender')
+    def update_cpu_settings(self, cpu, freq_min_hw, freq_max_hw, governor, sender=None):
+        if self._is_authorized(sender):
+            ret = self._update_cpu(cpu, freq_min_hw, freq_max_hw, governor)
+            return ret
+        else:
+            return -1
+
+    @dbus.service.method('org.rnd2.cpupower_gui.helper', sender_keyword='sender', out_signature='i')
+    def isauthorized(self, sender=None):
+        if sender:
+            auth = self._is_authorized(sender)
+            return auth
+        else:
+            return -1
+
+    @staticmethod
+    def _update_cpu(cpu, fmin, fmax, governor):
+        sys_path = SYS_PATH.format(cpu)
+        with open(os.path.join(sys_path, FREQ_MIN), "w") as sys_file:
+            sys_file.write(str(fmin))
+        with open(os.path.join(sys_path, FREQ_MAX), "w") as sys_file:
+            sys_file.write(str(fmax))
+        with open(os.path.join(sys_path, GOVERNOR), "w") as sys_file:
+            sys_file.write(governor)
+
+    @dbus.service.method('org.rnd2.cpupower_gui.helper', sender_keyword='sender')
+    def quit(self, sender=None):
+        print("Request to close by {}".format(sender))
+        print("\nThe cpupower_gui_helper will now close...")
+        self.loop.quit()
+
+if __name__ == '__main__':
+    loop = GLib.MainLoop()
+    DBusGMainLoop(set_as_default=True)
+    dbus_service = CpupowerGui_DBus(loop)
+    try:
+        loop.run()
+    except KeyboardInterrupt:
+        print("\nThe cpupower_gui_helper will now close...")
+        loop.quit()
+

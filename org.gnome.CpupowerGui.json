@@ -3,7 +3,7 @@
     "runtime": "org.gnome.Platform",
     "runtime-version": "3.24",
     "sdk": "org.gnome.Sdk",
-    "command": "cpupower-gui-pkexec",
+    "command": "cpupower-gui",
     "finish-args": [
         "--share=network",
         "--share=ipc",
@@ -47,6 +47,21 @@
                         "url": "https://gitlab.com/vagnum08/cpupower-gui"
                     }
             ]
+        },
+        {
+            "name": "dbus-python",
+            "buildsystem": "simple",
+            "ensure-writable": ["easy-install.pth"],
+            "build-commands": ["python3 setup.py install --prefix=/app"],
+            "sources": [
+                    {
+                        "type": "archive",
+                        "url": "https://pypi.python.org/packages/ad/1b/76adc363212c642cabbf9329457a918308c0b9b5d38ce04d541a67255174/dbus-python-1.2.4.tar.gz",
+                        "sha256": "e2f1d6871f74fba23652e51d10873e54f71adab0525833c19bad9e99b1b2f9cc"
+                    }
+            ]
         }
+
     ]
 }
+
