@@ -28,6 +28,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
   <!-- interface-description CPU frequency setter -->
   <!-- interface-copyright 2017 [RnD]\302\262 -->
   <!-- interface-authors Evangelos Rigas <erigas@rnd2.org> -->
+  <object class="GtkAccelGroup" id="accelgroup1"/>
   <object class="GtkAdjustment" id="adj_max">
     <property name="step_increment">1</property>
     <property name="page_increment">-10</property>
@@ -84,6 +85,11 @@ Author: Evangelos Rigas <erigas@rnd2.org>
   </object>
   <object class="GtkWindow" id="window">
     <property name="can_focus">False</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <accel-groups>
+      <group name="accelgroup1"/>
+    </accel-groups>
     <signal name="destroy" handler="on_window_destroy" swapped="no"/>
     <child>
       <object class="GtkBox">
@@ -91,7 +97,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkHeaderBar">
+          <object class="GtkHeaderBar" id="header">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="title">CPU frequency setter</property>
@@ -340,8 +346,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
           </packing>
         </child>
         <child>
-          <object class="GtkGrid">
-            <property name="visible">True</property>
+          <object class="GtkGrid" id="settings">
             <property name="can_focus">False</property>
             <property name="column_homogeneous">True</property>
             <child>

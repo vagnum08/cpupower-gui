@@ -103,11 +103,16 @@ class Application(Gtk.Application):
         for i in range(self.cpu_avail):
             cpu_store.append([i, i])
 
+        self.window = self['window']
+        self.window.set_decorated(False)
+        self.window.set_titlebar(self['header'])
+
         self['cpu_box'].set_model(cpu_store)
         self['cpu_box'].set_active(0)
         self.upd_sliders()
         self.status_icon = self['status']
         self.status_icon.connect("popup-menu", self.right_click_event)
+        self.status_icon.connect("activate", self.status_activate)
 
     def right_click_event(self, icon, button, time):
         self.menu = Gtk.Menu()
@@ -122,10 +127,14 @@ class Application(Gtk.Application):
         self.menu.show_all()
         self.menu.popup(None, None, None, self.status_icon, button, time)
 
+    def status_activate(self, status_icon):
+        self.window.deiconify()
+        self.window.present()
+
     def do_activate(self):
         """ Connects signals and start main loop """
         self.builder.connect_signals(self)
-        self['window'].show_all()
+        self.window.show()
         Gtk.main()
 
     def quit(self, *args):
