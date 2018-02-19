@@ -6,47 +6,86 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui 0.5.0\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=cpupower-gui\n"
-"POT-Creation-Date: 2017-05-17 12:34+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.com/vagnum08/cpupower-gui/issues\n"
+"POT-Creation-Date: 2018-01-27 19:09+0000\n"
 "PO-Revision-Date: 2017-05-17 12:34+0100\n"
+"Last-Translator: Evan Rigas <erigas@rnd2.org>\n"
 "Language-Team: \n"
+"Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.1\n"
-"Last-Translator: Evan Rigas <erigas@rnd2.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: en_GB\n"
 
-#: data/cpupower.glade:67
+#: data/ui/cpupower.glade.in:54
+msgid "About"
+msgstr ""
+
+#: data/ui/cpupower.glade.in:68
+msgid "Quit"
+msgstr ""
+
+#: data/ui/cpupower.glade.in:119
 msgid "Apply"
 msgstr "Apply"
 
-#: data/cpupower.glade:72
+#: data/ui/cpupower.glade.in:124
 msgid "Apply changes"
 msgstr "Apply changes"
 
-#: data/cpupower.glade:102
+#: data/ui/cpupower.glade.in:154
 msgid "Set CPU Frequency limits"
 msgstr "Set CPU Frequency limits"
 
-#: data/cpupower.glade:119
+#: data/ui/cpupower.glade.in:171
 msgid "Governor:"
 msgstr "Governor:"
 
-#: data/cpupower.glade:144
+#: data/ui/cpupower.glade.in:196
 msgid "Max freq. (MHz):"
 msgstr "Max freq. (MHz):"
 
-#: data/cpupower.glade:215
+#: data/ui/cpupower.glade.in:267
 msgid "Min freq. (MHz):"
 msgstr "Min freq. (MHz):"
 
-#: data/cpupower.glade:227
+#: data/ui/cpupower.glade.in:279
 msgid "CPU:"
 msgstr "CPU:"
 
-#: data/cpupower.glade:251
+#: data/ui/cpupower.glade.in:303
 msgid "All CPUs:"
 msgstr "All CPUs:"
+
+#: data/ui/cpupower.glade.in:351
+msgid "Settings"
+msgstr ""
+
+#: data/ui/cpupower.glade.in:367
+msgid "Configuration:"
+msgstr ""
+
+#: data/ui/cpupower.glade.in:380
+msgid "Runtime"
+msgstr ""
+
+#: data/ui/cpupower.glade.in:381
+msgid "Persistent"
+msgstr ""
+
+#: data/ui/cpupower.glade.in:394
+msgid "Apply at boot:"
+msgstr ""
+
+#: data/ui/cpupower.glade.in:433
+msgid "Copyright (C) 2017-2018 [RnD]²"
+msgstr ""
+
+#: data/ui/cpupower.glade.in:466
+msgid "cpupower-gui"
+msgstr ""
+
+#: data/ui/cpupower.glade.in:467
+msgid "Frequency Setter"
+msgstr ""

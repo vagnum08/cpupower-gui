@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 
+<!-- Generated with glade 3.20.2 
 
-Copyright (C) 2017 [RnD]²
+Copyright (C) 2017-2018 [RnD]²
 
 This file is part of cpupower-gui.
 
@@ -28,6 +28,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
   <!-- interface-description CPU frequency setter -->
   <!-- interface-copyright 2017 [RnD]\302\262 -->
   <!-- interface-authors Evangelos Rigas <erigas@rnd2.org> -->
+  <object class="GtkAccelGroup" id="accelgroup1"/>
   <object class="GtkAdjustment" id="adj_max">
     <property name="step_increment">1</property>
     <property name="page_increment">-10</property>
@@ -38,8 +39,57 @@ Author: Evangelos Rigas <erigas@rnd2.org>
     <property name="page_increment">-10</property>
     <signal name="value-changed" handler="on_adj_min_value_changed" swapped="no"/>
   </object>
+  <object class="GtkPopoverMenu" id="popovermenu">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="homogeneous">True</property>
+        <child>
+          <object class="GtkModelButton" id="about">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="text" translatable="yes">About</property>
+            <signal name="clicked" handler="on_about_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkModelButton" id="quit">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="text" translatable="yes">Quit</property>
+            <signal name="clicked" handler="on_quit_clicked" swapped="no"/>
+            <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="submenu">main</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
   <object class="GtkWindow" id="window">
     <property name="can_focus">False</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <accel-groups>
+      <group name="accelgroup1"/>
+    </accel-groups>
     <signal name="destroy" handler="on_window_destroy" swapped="no"/>
     <child>
       <object class="GtkBox">
@@ -47,19 +97,27 @@ Author: Evangelos Rigas <erigas@rnd2.org>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkHeaderBar">
+          <object class="GtkHeaderBar" id="header">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="title">CPU frequency setter</property>
             <property name="has_subtitle">False</property>
+            <property name="show_close_button">True</property>
+            <property name="decoration_layout">menu:minimize,close</property>
             <child>
-              <object class="GtkButton" id="cancel">
-                <property name="label">gtk-close</property>
+              <object class="GtkMenuButton" id="menubutton1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_cancel_clicked" swapped="no"/>
+                <property name="relief">none</property>
+                <property name="popover">popovermenu</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">cpupower-gui</property>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
@@ -287,10 +345,130 @@ Author: Evangelos Rigas <erigas@rnd2.org>
             <property name="position">1</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkGrid" id="settings">
+            <property name="can_focus">False</property>
+            <property name="column_homogeneous">True</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Settings</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                  <attribute name="scale" value="1.1000000000000001"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Configuration:</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="config_box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="active">0</property>
+                <items>
+                  <item id="run" translatable="yes">Runtime</item>
+                  <item id="pers" translatable="yes">Persistent</item>
+                </items>
+                <signal name="changed" handler="on_config_box_changed" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Apply at boot:</property>
+              </object>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="atboot">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <signal name="state-set" handler="on_atboot_state_set" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">4</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
       </object>
     </child>
     <child type="titlebar">
       <placeholder/>
     </child>
+  </object>
+  <object class="GtkAboutDialog" id="about_dialog">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="transient_for">window</property>
+    <property name="version">@MAJOR_VERSION@.@MINOR_VERSION@.@MICRO_VERSION@</property>
+    <property name="copyright" translatable="yes">Copyright (C) 2017-2018 [RnD]²</property>
+    <property name="website">htts://gitlab.com/vagnum08/cpupower-gui</property>
+    <property name="authors">Evangelos Rigas</property>
+    <property name="logo_icon_name">cpupower-gui</property>
+    <property name="license_type">gpl-3-0</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
+  <object class="GtkStatusIcon" id="status">
+    <property name="icon_name">cpupower-gui</property>
+    <property name="has_tooltip">True</property>
+    <property name="tooltip_text" translatable="yes">cpupower-gui</property>
+    <property name="title" translatable="yes">Frequency Setter</property>
   </object>
 </interface>

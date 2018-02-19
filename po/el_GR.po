@@ -7,47 +7,86 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui 0.5.0\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=cpupower-gui\n"
-"POT-Creation-Date: 2017-05-17 10:25+0100\n"
-"PO-Revision-Date: 2017-05-17 20:26+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.com/vagnum08/cpupower-gui/issues\n"
+"POT-Creation-Date: 2018-01-27 19:09+0000\n"
+"PO-Revision-Date: 2018-01-27 19:12+0000\n"
+"Last-Translator: Evan Rigas <erigas@rnd2.org>\n"
 "Language-Team: \n"
+"Language: el_GR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.1\n"
-"Last-Translator: Evan Rigas <erigas@rnd2.org>\n"
+"X-Generator: Poedit 2.0.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: el_GR\n"
 
-#: data/cpupower.glade:67
+#: data/ui/cpupower.glade.in:54
+msgid "About"
+msgstr "Περί"
+
+#: data/ui/cpupower.glade.in:68
+msgid "Quit"
+msgstr "Κλείσιμο"
+
+#: data/ui/cpupower.glade.in:119
 msgid "Apply"
 msgstr "Εκτέλεση"
 
-#: data/cpupower.glade:72
+#: data/ui/cpupower.glade.in:124
 msgid "Apply changes"
 msgstr "Εφαρμογή αλλαγών"
 
-#: data/cpupower.glade:102
+#: data/ui/cpupower.glade.in:154
 msgid "Set CPU Frequency limits"
 msgstr "Ορισμός ορίων συχνότητας επεξεργαστή"
 
-#: data/cpupower.glade:119
+#: data/ui/cpupower.glade.in:171
 msgid "Governor:"
 msgstr "Κυβερνήτης:"
 
-#: data/cpupower.glade:144
+#: data/ui/cpupower.glade.in:196
 msgid "Max freq. (MHz):"
 msgstr "Μέγ. συχν. (ΜHz):"
 
-#: data/cpupower.glade:215
+#: data/ui/cpupower.glade.in:267
 msgid "Min freq. (MHz):"
 msgstr "Ελάχ. συχν. (MHz):"
 
-#: data/cpupower.glade:227
+#: data/ui/cpupower.glade.in:279
 msgid "CPU:"
 msgstr "Επεξεργαστής:"
 
-#: data/cpupower.glade:251
+#: data/ui/cpupower.glade.in:303
 msgid "All CPUs:"
 msgstr "Όλοι οι επεξεργαστές:"
+
+#: data/ui/cpupower.glade.in:351
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: data/ui/cpupower.glade.in:367
+msgid "Configuration:"
+msgstr "Προφίλ:"
+
+#: data/ui/cpupower.glade.in:380
+msgid "Runtime"
+msgstr "Τρέχον"
+
+#: data/ui/cpupower.glade.in:381
+msgid "Persistent"
+msgstr "Μόνιμο"
+
+#: data/ui/cpupower.glade.in:394
+msgid "Apply at boot:"
+msgstr "Εφαρμογή κατά την εκκίνηση:"
+
+#: data/ui/cpupower.glade.in:433
+msgid "Copyright (C) 2017-2018 [RnD]²"
+msgstr "Πνευματικά δικαιώματα (C) 2017-2018 [RnD]²"
+
+#: data/ui/cpupower.glade.in:466
+msgid "cpupower-gui"
+msgstr ""
+
+#: data/ui/cpupower.glade.in:467
+msgid "Frequency Setter"
+msgstr "Ρυθμιστής Συχνότητας CPU"

@@ -1,0 +1,5 @@
+[D-BUS Service]
+Name=org.rnd2.cpupower_gui.helper
+Exec=/usr/bin/cpupower-gui-helper
+User=root
+SystemdService=cpupower-gui-helper.service

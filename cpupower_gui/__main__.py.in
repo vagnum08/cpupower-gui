@@ -2,7 +2,7 @@
 # __main__.py
 
 """
-Copyright (C) 2017 [RnD]²
+Copyright (C) 2017-2018 [RnD]²
 
 This file is part of cpupower-gui.
 
@@ -24,6 +24,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
 
 import os
 import sys
+import dbus
 import gi
 
 gi.require_version('Gtk', '3.0')
@@ -37,7 +38,10 @@ FREQ_MAX_HW = "cpuinfo_max_freq"
 AVAIL_GOV = "scaling_available_governors"
 GOVERNOR = "scaling_governor"
 
+bus = dbus.SystemBus()
+session = bus.get_object("org.rnd2.cpupower_gui.helper", "/org/rnd2/cpupower_gui/helper")
 
+helper = dbus.Interface(session, "org.rnd2.cpupower_gui.helper")
 
 def read_settings(cpu):
     """ Reads files from sysfs """
@@ -62,6 +66,7 @@ def read_settings(cpu):
 
     with open(os.path.join(sys_path, GOVERNOR), "r") as sys_file:
         governor = sys_file.readline().strip()
+
     return freq_min, freq_minhw, freq_max, freq_maxhw, governors, governor
 
 def dialog_response(widget, response_id):
@@ -78,6 +83,7 @@ def dialog_response(widget, response_id):
 class Application(Gtk.Application):
     """ Main Application, inherits from Gtk.Application"""
     ONLINE = '/sys/devices/system/cpu/online'
+    ATBOOT = False
 
     def __init__(self, **kwargs):
         """ Init Gtk.Application"""
@@ -97,16 +103,44 @@ class Application(Gtk.Application):
         for i in range(self.cpu_avail):
             cpu_store.append([i, i])
 
+        self.window = self['window']
+        self.window.set_decorated(False)
+        self.window.set_titlebar(self['header'])
+
         self['cpu_box'].set_model(cpu_store)
         self['cpu_box'].set_active(0)
         self.upd_sliders()
+        self.status_icon = self['status']
+        self.status_icon.connect("popup-menu", self.right_click_event)
+        self.status_icon.connect("activate", self.status_activate)
 
+    def right_click_event(self, icon, button, time):
+        self.menu = Gtk.Menu()
+        about = Gtk.MenuItem()
+        about.set_label("About")
+        about.connect("activate", self.on_about_clicked)
+        self.menu.append(about)
+        quit = Gtk.MenuItem()
+        quit.set_label("Quit")
+        quit.connect("activate", self.quit)
+        self.menu.append(quit)
+        self.menu.show_all()
+        self.menu.popup(None, None, None, self.status_icon, button, time)
+
+    def status_activate(self, status_icon):
+        self.window.deiconify()
+        self.window.present()
 
     def do_activate(self):
         """ Connects signals and start main loop """
         self.builder.connect_signals(self)
-        self['window'].show_all()
+        self.window.show()
         Gtk.main()
+
+    def quit(self, *args):
+        #helper.quit()
+        #self.status_icon.destroy()
+        Gtk.main_quit(*args)
 
     def upd_sliders(self):
         """ Updates the slider widgets by reading the sys files"""
@@ -129,15 +163,13 @@ class Application(Gtk.Application):
         self['adj_max'].set_value(int(freq_max / 1000))
         self['apply_btn'].set_sensitive(False)
 
-    @staticmethod
-    def on_cancel_clicked(*args):
+    def on_quit_clicked(self, *args):
         """ Exit application with cancel button """
-        Gtk.main_quit(*args)
+        self.quit(*args)
 
-    @staticmethod
-    def on_window_destroy(*args):
+    def on_window_destroy(self, *args):
         """ Exit application with destroy """
-        Gtk.main_quit(*args)
+        self.quit(*args)
 
     def on_cpu_changed(self, *args):
         """ Callback for cpu box """
@@ -150,6 +182,13 @@ class Application(Gtk.Application):
             self['cpu_box'].set_sensitive(False)
         else:
             self['cpu_box'].set_sensitive(True)
+
+    def on_atboot_state_set(self, _,val):
+        if val:
+            self.ATBOOT = True
+            print(helper.isauthorized())
+        else:
+            self.ATBOOT = False
 
     def on_adj_min_value_changed(self, *args):
         """ Callback for adj_min """
@@ -185,34 +224,29 @@ class Application(Gtk.Application):
         """ Write changes back to sysfs """
         fmin = int(self['adj_min'].get_value() * 1000)
         fmax = int(self['adj_max'].get_value() * 1000)
-        try:
+        if helper.isauthorized():
             if self['toall'].get_active():
                 for i in range(self.cpu_avail):
-                    sys_path = SYS_PATH.format(i)
-
-                    with open(os.path.join(sys_path, FREQ_MIN), "w") as sys_file:
-                        sys_file.write(str(fmin))
-                    with open(os.path.join(sys_path, FREQ_MAX), "w") as sys_file:
-                        sys_file.write(str(fmax))
-                    with open(os.path.join(sys_path, GOVERNOR), "w") as sys_file:
-                        sys_file.write(self.governor)
+                    helper.update_cpu_settings(i, fmin, fmax, self.governor)
             else:
-                sys_path = SYS_PATH.format(self['cpu_box'].get_active())
-
-                with open(os.path.join(sys_path, FREQ_MIN), "w") as sys_file:
-                    sys_file.write(str(fmin))
-                with open(os.path.join(sys_path, FREQ_MAX), "w") as sys_file:
-                    sys_file.write(str(fmax))
-                with open(os.path.join(sys_path, GOVERNOR), "w") as sys_file:
-                    sys_file.write(self.governor)
+                cpu = self['cpu_box'].get_active()
+                helper.update_cpu_settings(cpu, fmin, fmax, self.governor)
             button.set_sensitive(False)
-        except PermissionError as perm_error:
+        else:
             message = Gtk.MessageDialog(type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK)
-            message.set_markup(str(perm_error))
+            message.set_markup("You don't have permissions to update cpu settings!")
             message.show()
             message.connect("response", dialog_response)
 
+    def on_about_clicked(self, button):
+        self.show_about_dialog()
 
+    def show_about_dialog(self):
+        self['about_dialog'].run()
+        self['about_dialog'].hide()
+
+    def on_config_box_changed(self, button):
+        self['about_dialog'].hide()
 
     def __getitem__(self, name):
         """ Convince method that allows widgets to be accessed via self["widget"] """
