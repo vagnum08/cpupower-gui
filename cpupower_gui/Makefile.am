@@ -1,6 +1,7 @@
 moduledir = $(pythondir)/cpupower_gui
 module_PYTHON = __main__.py
 
+EXTRA_DIST = __main__.py.in
 
 __main__.py: __main__.py.in
 	$(AM_V_GEN)$(SED)                       \
