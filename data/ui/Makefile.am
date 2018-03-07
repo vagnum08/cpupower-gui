@@ -2,7 +2,7 @@
 uidir = $(datadir)/cpupower-gui/ui
 ui_DATA = cpupower.glade
 
-EXTRA_DIST = cpupower.glade
+EXTRA_DIST = cpupower.glade.in
 
 cpupower.glade: cpupower.glade.in
 	$(AM_V_GEN)$(SED)                       \
