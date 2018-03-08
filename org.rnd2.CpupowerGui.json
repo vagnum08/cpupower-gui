@@ -1,5 +1,5 @@
 {
-    "app-id": "org.gnome.CpupowerGui",
+    "app-id": "org.rnd2.CpupowerGui",
     "runtime": "org.gnome.Platform",
     "runtime-version": "3.24",
     "sdk": "org.gnome.Sdk",
@@ -9,6 +9,8 @@
         "--share=ipc",
         "--socket=x11",
         "--socket=wayland",
+        "--socket=system-bus",
+        "--socket=session-bus",
         "--filesystem=xdg-run/dconf",
         "--filesystem=~/.config/dconf:ro",
         "--talk-name=ca.desrt.dconf",
@@ -46,13 +48,17 @@
                         "type": "git",
                         "url": "https://gitlab.com/vagnum08/cpupower-gui"
                     }
-            ]
+            ],
+            "config-opts": []
         },
         {
             "name": "dbus-python",
             "buildsystem": "simple",
             "ensure-writable": ["easy-install.pth"],
-            "build-commands": ["python3 setup.py install --prefix=/app"],
+            "build-commands": [
+                "python3 setup.py build -j 0",
+                "python3 setup.py install --prefix=/app --root=/ --optimize=1"
+            ],
             "sources": [
                     {
                         "type": "archive",
@@ -61,7 +67,6 @@
                     }
             ]
         }
-
     ]
 }
 

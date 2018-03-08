@@ -104,9 +104,6 @@ class Application(Gtk.Application):
             cpu_store.append([i, i])
 
         self.window = self['window']
-        self.window.set_decorated(False)
-        self.window.set_titlebar(self['header'])
-
         self['cpu_box'].set_model(cpu_store)
         self['cpu_box'].set_active(0)
         self.upd_sliders()
