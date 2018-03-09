@@ -87,7 +87,7 @@ class Application(Gtk.Application):
 
     def __init__(self, **kwargs):
         """ Init Gtk.Application"""
-        super().__init__(application_id='org.gnome.CpupowerGui',
+        super().__init__(application_id='org.rnd2.cpupower_gui',
                          **kwargs)
 
         with open(self.ONLINE, "r") as sys_file:

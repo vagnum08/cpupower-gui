@@ -9,11 +9,11 @@
         "--share=ipc",
         "--socket=x11",
         "--socket=wayland",
-        "--socket=system-bus",
-        "--socket=session-bus",
         "--filesystem=xdg-run/dconf",
         "--filesystem=~/.config/dconf:ro",
         "--talk-name=ca.desrt.dconf",
+        "--system-talk-name=org.rnd2.cpupower_gui.helper",
+        "--system-own-name=org.rnd2.cpupower_gui.helper",
         "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
     ],
     "build-options" : {

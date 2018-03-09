@@ -9,4 +9,6 @@ cpupower-gui.desktop: cpupower-gui.desktop.in
 		-e s!\@prefix\@!$(bindir)!    \
 		< $< > $@
 
+CLEANFILES = $(desktop_DATA)
+
 -include $(top_srcdir)/git.mk
