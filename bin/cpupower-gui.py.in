@@ -20,7 +20,6 @@ along with cpupower-gui.  If not, see <http://www.gnu.org/licenses/>.
 Author: Evangelos Rigas <erigas@rnd2.org>
 """
 
-import sys
 import locale
 import gettext
 
@@ -32,6 +31,5 @@ gettext.bindtextdomain('cpupower-gui', localedir)
 gettext.textdomain('cpupower-gui')
 
 if __name__ == "__main__":
-    sys.path.insert(1, '@pythondir@')
     from cpupower_gui import __main__
     __main__.main()
