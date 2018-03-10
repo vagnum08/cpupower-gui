@@ -8,5 +8,7 @@ __main__.py: __main__.py.in
 		-e s!\@datadir\@!$(datadir)!   \
 		< $< > $@
 	@chmod a+x $@
-	
+
+CLEANFILES = $(module_PYTHON)
+
 -include $(top_srcdir)/git.mk

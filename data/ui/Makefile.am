@@ -11,5 +11,6 @@ cpupower.glade: cpupower.glade.in
 		-e s!\@MICRO_VERSION\@!$(MICRO_VERSION)!   \
 		< $< > $@
 
+CLEANFILES = $(ui_DATA)
 
 -include $(top_srcdir)/git.mk
