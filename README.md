@@ -17,6 +17,13 @@ Prebuilt binary packages for Arch Linux and Debian exist in the releases section
 ### Arch Linux and derivatives
 Packages exist in AUR as [`cpupower-gui`](https://aur.archlinux.org/packages/cpupower-gui/) ([`cpupower-gui-git`](https://aur.archlinux.org/packages/cpupower-gui-git/)), built from this repo.
 
+### blackPanther OS 
+
+```
+updating repos
+installing cpupower-gui
+```
+
 ### Ubuntu
 Packages for Ubuntu can be installed from the following ppa: [ppa:erigas/cpupower-gui](https://launchpad.net/~erigas/+archive/ubuntu/cpupower-gui).
 
@@ -50,6 +57,19 @@ Build:
 
 Runtime:
 `python`, `gtk3`, `hicolor-icon-theme`, `polkit`, `python-dbus`, `python-gobject`
+
+## blackPanther OS and derivatives
+Build:
+`pkg-config`, `autoconf-archive`, `git`, `autoconf`, `make`
+
+Runtime:
+`python3`, `gtk3`, `hicolor-icon-theme`, `polkit`, `python3-dbus`, `python3-gobject3`
+
+Install:
+`updating repos`
+`installing cpupower-gui`
+
+Find in menu and click to start...
 
 ## Debian and derivatives
 Build:

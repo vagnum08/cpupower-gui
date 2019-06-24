@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR [RnD]²
+# This file is distributed under the same license as the cpupower-gui package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cpupower-gui 0.5.2\n"
+"Report-Msgid-Bugs-To: https://gitlab.com/vagnum08/cpupower-gui/issues\n"
+"POT-Creation-Date: 2018-01-27 19:09+0000\n"
+"PO-Revision-Date: 2019-06-24 11:13+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2\n"
+"Last-Translator: Barcza Károly <kbarcza@blackpanther.hu>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: hu_HU\n"
+
+#: data/ui/cpupower.glade.in:54
+msgid "About"
+msgstr "Névjegy"
+
+#: data/ui/cpupower.glade.in:68
+msgid "Quit"
+msgstr "Kilépés"
+
+#: data/ui/cpupower.glade.in:119
+msgid "Apply"
+msgstr "Alkalmazás"
+
+#: data/ui/cpupower.glade.in:124
+msgid "Apply changes"
+msgstr "A módosítások elmentése"
+
+#: data/ui/cpupower.glade.in:154
+msgid "Set CPU Frequency limits"
+msgstr "CPU frekvenciakorlát beállítása"
+
+#: data/ui/cpupower.glade.in:171
+msgid "Governor:"
+msgstr "Vezérlő:"
+
+#: data/ui/cpupower.glade.in:196
+msgid "Max freq. (MHz):"
+msgstr "Max frekv. (MHz):"
+
+#: data/ui/cpupower.glade.in:267
+msgid "Min freq. (MHz):"
+msgstr "Min frekv. (MHz):"
+
+#: data/ui/cpupower.glade.in:279
+msgid "CPU:"
+msgstr "CPU:"
+
+#: data/ui/cpupower.glade.in:303
+msgid "All CPUs:"
+msgstr "Összes CPU:"
+
+#: data/ui/cpupower.glade.in:351
+msgid "Settings"
+msgstr "Beállítások"
+
+#: data/ui/cpupower.glade.in:367
+msgid "Configuration:"
+msgstr "Beállítás:"
+
+#: data/ui/cpupower.glade.in:380
+msgid "Runtime"
+msgstr "Futtatókörnyezet"
+
+#: data/ui/cpupower.glade.in:381
+msgid "Persistent"
+msgstr "Állandó"
+
+#: data/ui/cpupower.glade.in:394
+msgid "Apply at boot:"
+msgstr "Alkalmaz induláskor:"
+
+#: data/ui/cpupower.glade.in:433
+msgid "Copyright (C) 2017-2018 [RnD]²"
+msgstr "Copyright (C) 2017-2018 [RnD]²"
+
+#: data/ui/cpupower.glade.in:466
+msgid "cpupower-gui"
+msgstr "cpupower-gui"
+
+#: data/ui/cpupower.glade.in:467
+msgid "Frequency Setter"
+msgstr "Órajelbeállító"
