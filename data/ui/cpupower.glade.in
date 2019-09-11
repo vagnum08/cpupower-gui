@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.20.4 
 
-Copyright (C) 2017-2018 [RnD]²
+Copyright (C) 2017-2019 [RnD]²
 
 This file is part of cpupower-gui.
 
@@ -427,7 +427,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
     <property name="type_hint">dialog</property>
     <property name="transient_for">window</property>
     <property name="version">@MAJOR_VERSION@.@MINOR_VERSION@.@MICRO_VERSION@</property>
-    <property name="copyright" translatable="yes">Copyright (C) 2017-2018 [RnD]²</property>
+    <property name="copyright" translatable="yes">Copyright (C) 2017-2019 [RnD]²</property>
     <property name="website">htts://gitlab.com/vagnum08/cpupower-gui</property>
     <property name="authors">Evangelos Rigas</property>
     <property name="logo_icon_name">cpupower-gui</property>
