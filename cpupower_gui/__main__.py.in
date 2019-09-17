@@ -30,50 +30,12 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-SYS_PATH = "/sys/devices/system/cpu/cpu{}/cpufreq"
-FREQ_MIN = "scaling_min_freq"
-FREQ_MAX = "scaling_max_freq"
-FREQ_MIN_HW = "cpuinfo_min_freq"
-FREQ_MAX_HW = "cpuinfo_max_freq"
-AVAIL_GOV = "scaling_available_governors"
-GOVERNOR = "scaling_governor"
-
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(
     "org.rnd2.cpupower_gui.helper", "/org/rnd2/cpupower_gui/helper"
 )
 
 HELPER = dbus.Interface(SESSION, "org.rnd2.cpupower_gui.helper")
-
-
-def read_settings(cpu, lims=False):
-    """ Reads files from sysfs """
-    sys_path = SYS_PATH.format(cpu)
-    with open(os.path.join(sys_path, FREQ_MIN), "r") as sys_file:
-        freq_min = int(sys_file.readline())
-
-    with open(os.path.join(sys_path, FREQ_MAX), "r") as sys_file:
-        freq_max = int(sys_file.readline())
-
-    with open(os.path.join(sys_path, FREQ_MIN_HW), "r") as sys_file:
-        freq_minhw = int(sys_file.readline())
-
-    with open(os.path.join(sys_path, FREQ_MAX_HW), "r") as sys_file:
-        freq_maxhw = int(sys_file.readline())
-
-    with open(os.path.join(sys_path, AVAIL_GOV), "r") as sys_file:
-        govs = sys_file.readline().strip().split(" ")
-        governors = {}
-        for num, item in enumerate(govs):
-            governors[num] = item
-
-    with open(os.path.join(sys_path, GOVERNOR), "r") as sys_file:
-        governor = sys_file.readline().strip()
-
-    if lims:
-        return freq_minhw, freq_maxhw, governors, governor
-
-    return freq_min, freq_minhw, freq_max, freq_maxhw, governors, governor
 
 
 def dialog_response(widget, response_id):
@@ -87,38 +49,45 @@ def dialog_response(widget, response_id):
     widget.destroy()
 
 
+def error_message(msg, transient):
+    message = Gtk.MessageDialog(type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK)
+    message.set_markup(msg)
+    message.set_transient_for(transient)
+    message.show()
+    message.connect("response", dialog_response)
+
+
 class Application(Gtk.Application):
     """ Main Application, inherits from Gtk.Application"""
 
-    ONLINE = "/sys/devices/system/cpu/online"
     ATBOOT = False
 
     def __init__(self, **kwargs):
         """ Init Gtk.Application"""
         super().__init__(application_id="org.rnd2.cpupower_gui", **kwargs)
 
-        with open(self.ONLINE, "r") as sys_file:
-            cpu_count = sys_file.readline().strip().split("-")[-1]
-            self.cpu_avail = int(cpu_count) + 1
-
         self.widgets = {}
         self.builder = Gtk.Builder()
         self.builder.add_from_file("@datadir@/cpupower-gui/ui/cpupower.glade")
 
-        self._read_settings(0)
-
-        cpu_store = Gtk.ListStore(int, int)
-
-        for i in range(self.cpu_avail):
-            cpu_store.append([i, i])
+        self.update_cpubox()
+        self._read_settings(self._get_active_cpu())
 
         self.window = self["window"]
-        self["cpu_box"].set_model(cpu_store)
-        self["cpu_box"].set_active(0)
+
         self.upd_sliders()
         self.status_icon = self["status"]
         self.status_icon.connect("popup-menu", self.right_click_event)
         self.status_icon.connect("activate", self.status_activate)
+
+    def update_cpubox(self):
+        self.cpu_store = Gtk.ListStore(int)
+
+        for cpu in self.online_cpus:
+            self.cpu_store.append([cpu])
+
+        self["cpu_box"].set_model(self.cpu_store)
+        self["cpu_box"].set_active(0)
 
     def right_click_event(self, icon, button, time):
         """Handler for right click action on status icon """
@@ -151,10 +120,21 @@ class Application(Gtk.Application):
         # self.status_icon.destroy()
         Gtk.main_quit(*args)
 
+    def _get_active_cpu(self):
+        iter = self["cpu_box"].get_active_iter()
+        if iter is not None:
+            return int(self.cpu_store[iter][0])
+
+        self.update_cpubox()
+        return 0
+
     def upd_sliders(self):
         """ Updates the slider widgets by reading the sys files"""
-        cpu = self["cpu_box"].get_active()
+        cpu = self._get_active_cpu()
+
         self._read_settings(cpu)
+        freq_min, freq_max = HELPER.get_cpu_frequencies(cpu)
+
         gov_store = Gtk.ListStore(str, int)
         for gov in self.governors.items():
             if gov[1] == self.governor:
@@ -233,31 +213,30 @@ class Application(Gtk.Application):
         """ Write changes back to sysfs """
         fmin = int(self["adj_min"].get_value() * 1000)
         fmax = int(self["adj_max"].get_value() * 1000)
+        cpu = self._get_active_cpu()
+        ret = -1
         if HELPER.isauthorized():
             if self["toall"].get_active():
-                for i in range(self.cpu_avail):
-                    HELPER.update_cpu_settings(i, fmin, fmax, self.governor)
+                for i in self.online_cpus:
+                    ret = HELPER.update_cpu_settings(i, fmin, fmax, self.governor)
             else:
-                cpu = int(self["cpu_box"].get_active())
-                ret = HELPER.update_cpu_settings(cpu, fmin, fmax, self.governor)
-                if ret == 0:
-                    button.set_sensitive(False)
+                if self.is_online(cpu):
+                    ret = HELPER.update_cpu_settings(cpu, fmin, fmax, self.governor)
                 else:
-                    message = Gtk.MessageDialog(
-                        type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK
-                    )
-                    message.set_markup("Error occurred, check if you have permissions.")
-                    message.set_transient_for(self.window)
-                    message.show()
-                    message.connect("response", dialog_response)
+                    error_message("The CPU you selected is not online.", self.window)
+                    self.update_cpubox()
+                    return
+
+            if ret == 0:
+                button.set_sensitive(False)
+            else:
+                error_message(
+                    "Error occurred, check if you have permissions.", self.window
+                )
         else:
-            message = Gtk.MessageDialog(
-                type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK
+            error_message(
+                "You don't have permissions to update cpu settings!", self.window
             )
-            message.set_markup("You don't have permissions to update cpu settings!")
-            message.set_transient_for(self.window)
-            message.show()
-            message.connect("response", dialog_response)
 
     def on_about_clicked(self, button):
         self.show_about_dialog()
@@ -286,9 +265,26 @@ class Application(Gtk.Application):
         return self.builder.get_object(name) is not None
 
     def _read_settings(self, cpu):
-        settings = read_settings(cpu, True)
-        for i, prop in enumerate("freq_min_hw", "freq_max_hw", "governors", "governor"):
-            setattr(self, prop, settings[i])
+        if self.is_online(cpu):
+            self.freq_min_hw, self.freq_max_hw = HELPER.get_cpu_limits(cpu)
+            self.governor = HELPER.get_cpu_governor(cpu)
+            self.governors = {}
+            for i, gov in enumerate(HELPER.get_cpu_governors(cpu)):
+                self.governors[i] = gov
+        else:
+            error_message("The CPU you selected is not online.", self.window)
+            self.update_cpubox()
+            self._read_settings(self._get_active_cpu())
+
+    @property
+    def online_cpus(self):
+        return HELPER.get_cpus_available()
+
+    @staticmethod
+    def is_online(cpu):
+        online = HELPER.get_cpus_online()
+        present = HELPER.get_cpus_present()
+        return (cpu in present) and (cpu in online)
 
 
 def main():

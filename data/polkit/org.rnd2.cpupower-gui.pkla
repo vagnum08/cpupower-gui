@@ -1,0 +1,9 @@
+# Allow users in group sudo to apply the settings without
+# authenticating. The others must authenticate as admin.
+
+[Sudo users allowed]
+Identity=unix-group:sudo
+Action=org.rnd2.cpupower_gui.apply_runtime
+ResultAny=no
+ResultInactive=no
+ResultActive=yes
