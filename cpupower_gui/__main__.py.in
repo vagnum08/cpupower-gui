@@ -27,47 +27,16 @@ import sys
 import dbus
 import gi
 
-gi.require_version('Gtk', '3.0')
+gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-SYS_PATH = "/sys/devices/system/cpu/cpu{}/cpufreq"
-FREQ_MIN = "scaling_min_freq"
-FREQ_MAX = "scaling_max_freq"
-FREQ_MIN_HW = "cpuinfo_min_freq"
-FREQ_MAX_HW = "cpuinfo_max_freq"
-AVAIL_GOV = "scaling_available_governors"
-GOVERNOR = "scaling_governor"
+BUS = dbus.SystemBus()
+SESSION = BUS.get_object(
+    "org.rnd2.cpupower_gui.helper", "/org/rnd2/cpupower_gui/helper"
+)
 
-bus = dbus.SystemBus()
-session = bus.get_object("org.rnd2.cpupower_gui.helper", "/org/rnd2/cpupower_gui/helper")
+HELPER = dbus.Interface(SESSION, "org.rnd2.cpupower_gui.helper")
 
-helper = dbus.Interface(session, "org.rnd2.cpupower_gui.helper")
-
-def read_settings(cpu):
-    """ Reads files from sysfs """
-    sys_path = SYS_PATH.format(cpu)
-    with open(os.path.join(sys_path, FREQ_MIN), "r") as sys_file:
-        freq_min = int(sys_file.readline())
-
-    with open(os.path.join(sys_path, FREQ_MAX), "r") as sys_file:
-        freq_max = int(sys_file.readline())
-
-    with open(os.path.join(sys_path, FREQ_MIN_HW), "r") as sys_file:
-        freq_minhw = int(sys_file.readline())
-
-    with open(os.path.join(sys_path, FREQ_MAX_HW), "r") as sys_file:
-        freq_maxhw = int(sys_file.readline())
-
-    with open(os.path.join(sys_path, AVAIL_GOV), "r") as sys_file:
-        govs = sys_file.readline().strip().split(" ")
-        governors = {}
-        for num, item in enumerate(govs):
-            governors[num] = item
-
-    with open(os.path.join(sys_path, GOVERNOR), "r") as sys_file:
-        governor = sys_file.readline().strip()
-
-    return freq_min, freq_minhw, freq_max, freq_maxhw, governors, governor
 
 def dialog_response(widget, response_id):
     """ Error message dialog """
@@ -80,38 +49,48 @@ def dialog_response(widget, response_id):
     widget.destroy()
 
 
+def error_message(msg, transient):
+    message = Gtk.MessageDialog(type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK)
+    message.set_markup(msg)
+    message.set_transient_for(transient)
+    message.show()
+    message.connect("response", dialog_response)
+
+
 class Application(Gtk.Application):
     """ Main Application, inherits from Gtk.Application"""
-    ONLINE = '/sys/devices/system/cpu/online'
+
     ATBOOT = False
 
     def __init__(self, **kwargs):
         """ Init Gtk.Application"""
-        super().__init__(application_id='org.rnd2.cpupower_gui',
-                         **kwargs)
-
-        with open(self.ONLINE, "r") as sys_file:
-            cpu_count = sys_file.readline().strip().split('-')[-1]
-            self.cpu_avail = int(cpu_count) + 1
+        super().__init__(application_id="org.rnd2.cpupower_gui", **kwargs)
 
         self.widgets = {}
         self.builder = Gtk.Builder()
         self.builder.add_from_file("@datadir@/cpupower-gui/ui/cpupower.glade")
-        _, self.freq_min_hw, _, self.freq_max_hw, self.governors, self.governor = read_settings(0)
-        cpu_store = Gtk.ListStore(int, int)
 
-        for i in range(self.cpu_avail):
-            cpu_store.append([i, i])
+        self.update_cpubox()
+        self._read_settings(self._get_active_cpu())
 
-        self.window = self['window']
-        self['cpu_box'].set_model(cpu_store)
-        self['cpu_box'].set_active(0)
+        self.window = self["window"]
+
         self.upd_sliders()
-        self.status_icon = self['status']
+        self.status_icon = self["status"]
         self.status_icon.connect("popup-menu", self.right_click_event)
         self.status_icon.connect("activate", self.status_activate)
 
+    def update_cpubox(self):
+        self.cpu_store = Gtk.ListStore(int)
+
+        for cpu in self.online_cpus:
+            self.cpu_store.append([cpu])
+
+        self["cpu_box"].set_model(self.cpu_store)
+        self["cpu_box"].set_active(0)
+
     def right_click_event(self, icon, button, time):
+        """Handler for right click action on status icon """
         self.menu = Gtk.Menu()
         about = Gtk.MenuItem()
         about.set_label("About")
@@ -125,6 +104,7 @@ class Application(Gtk.Application):
         self.menu.popup(None, None, None, self.status_icon, button, time)
 
     def status_activate(self, status_icon):
+        """Open window from status icon """
         self.window.deiconify()
         self.window.present()
 
@@ -135,30 +115,42 @@ class Application(Gtk.Application):
         Gtk.main()
 
     def quit(self, *args):
-        #helper.quit()
-        #self.status_icon.destroy()
+        """Quit """
+        # HELPER.quit()
+        # self.status_icon.destroy()
         Gtk.main_quit(*args)
+
+    def _get_active_cpu(self):
+        iter = self["cpu_box"].get_active_iter()
+        if iter is not None:
+            return int(self.cpu_store[iter][0])
+
+        self.update_cpubox()
+        return 0
 
     def upd_sliders(self):
         """ Updates the slider widgets by reading the sys files"""
-        cpu = self['cpu_box'].get_active()
-        freq_min, self.freq_min_hw, freq_max, self.freq_max_hw, self.governors, self.governor = read_settings(cpu)
+        cpu = self._get_active_cpu()
+
+        self._read_settings(cpu)
+        freq_min, freq_max = HELPER.get_cpu_frequencies(cpu)
+
         gov_store = Gtk.ListStore(str, int)
         for gov in self.governors.items():
             if gov[1] == self.governor:
                 gov_id = gov[0]
             gov_store.append([gov[1].capitalize(), gov[0]])
 
-        self['gov_box'].set_model(gov_store)
-        self['gov_box'].set_active(gov_id)
+        self["gov_box"].set_model(gov_store)
+        self["gov_box"].set_active(gov_id)
 
-        self['adj_min'].set_lower(int(self.freq_min_hw / 1000))
-        self['adj_min'].set_upper(int(self.freq_max_hw / 1000))
-        self['adj_max'].set_lower(int(self.freq_min_hw / 1000))
-        self['adj_max'].set_upper(int(self.freq_max_hw / 1000))
-        self['adj_min'].set_value(int(freq_min / 1000))
-        self['adj_max'].set_value(int(freq_max / 1000))
-        self['apply_btn'].set_sensitive(False)
+        self["adj_min"].set_lower(int(self.freq_min_hw / 1000))
+        self["adj_min"].set_upper(int(self.freq_max_hw / 1000))
+        self["adj_max"].set_lower(int(self.freq_min_hw / 1000))
+        self["adj_max"].set_upper(int(self.freq_max_hw / 1000))
+        self["adj_min"].set_value(int(freq_min / 1000))
+        self["adj_max"].set_value(int(freq_max / 1000))
+        self["apply_btn"].set_sensitive(False)
 
     def on_quit_clicked(self, *args):
         """ Exit application with cancel button """
@@ -176,74 +168,85 @@ class Application(Gtk.Application):
     def on_toall_state_set(self, _, val):
         """ Enable/Disable cpu_box """
         if val:
-            self['cpu_box'].set_sensitive(False)
+            self["cpu_box"].set_sensitive(False)
         else:
-            self['cpu_box'].set_sensitive(True)
+            self["cpu_box"].set_sensitive(True)
 
-    def on_atboot_state_set(self, _,val):
+    def on_atboot_state_set(self, _, val):
         if val:
             self.ATBOOT = True
-            print(helper.isauthorized())
+            print(HELPER.isauthorized())
         else:
             self.ATBOOT = False
 
     def on_adj_min_value_changed(self, *args):
         """ Callback for adj_min """
         # pylint: disable=W0612,W0613
-        if self['adj_min'].get_value() > self['adj_max'].get_value():
-            if self['adj_min'].get_value() + 10 > self.freq_max_hw / 1000:
-                self['adj_max'].set_value(self.freq_max_hw / 1000)
+        if self["adj_min"].get_value() > self["adj_max"].get_value():
+            if self["adj_min"].get_value() + 10 > self.freq_max_hw / 1000:
+                self["adj_max"].set_value(self.freq_max_hw / 1000)
             else:
-                self['adj_max'].set_value(self['adj_min'].get_value() + 10)
-        elif self['adj_max'].get_value() < self['adj_min'].get_value():
-            if self['adj_max'].get_value() - 10 < self.freq_min_hw / 1000:
-                self['adj_min'].set_value(self.freq_min_hw / 1000)
+                self["adj_max"].set_value(self["adj_min"].get_value() + 10)
+        elif self["adj_max"].get_value() < self["adj_min"].get_value():
+            if self["adj_max"].get_value() - 10 < self.freq_min_hw / 1000:
+                self["adj_min"].set_value(self.freq_min_hw / 1000)
             else:
-                self['adj_min'].set_value(self['adj_max'].get_value() - 10)
-        self['apply_btn'].set_sensitive(True)
+                self["adj_min"].set_value(self["adj_max"].get_value() - 10)
+        self["apply_btn"].set_sensitive(True)
 
     def on_adj_max_value_changed(self, *args):
         """ Callback for adj_max """
         # pylint: disable=W0612,W0613
-        if self['adj_max'].get_value() < self['adj_min'].get_value():
-            self['adj_min'].set_value(self['adj_max'].get_value() - 10)
-        self['apply_btn'].set_sensitive(True)
+        if self["adj_max"].get_value() < self["adj_min"].get_value():
+            self["adj_min"].set_value(self["adj_max"].get_value() - 10)
+        self["apply_btn"].set_sensitive(True)
 
     def on_governor_changed(self, *args):
         """ Change governor and enable apply_btn """
         # pylint: disable=W0612,W0613
-        mod = self['gov_box'].get_model()
-        text, tid = mod[self['gov_box'].get_active_iter()][:2]
+        mod = self["gov_box"].get_model()
+        text, tid = mod[self["gov_box"].get_active_iter()][:2]
         self.governor = self.governors[tid]
-        self['apply_btn'].set_sensitive(True)
+        self["apply_btn"].set_sensitive(True)
 
     def on_apply_clicked(self, button):
         """ Write changes back to sysfs """
-        fmin = int(self['adj_min'].get_value() * 1000)
-        fmax = int(self['adj_max'].get_value() * 1000)
-        if helper.isauthorized():
-            if self['toall'].get_active():
-                for i in range(self.cpu_avail):
-                    helper.update_cpu_settings(i, fmin, fmax, self.governor)
+        fmin = int(self["adj_min"].get_value() * 1000)
+        fmax = int(self["adj_max"].get_value() * 1000)
+        cpu = self._get_active_cpu()
+        ret = -1
+        if HELPER.isauthorized():
+            if self["toall"].get_active():
+                for i in self.online_cpus:
+                    ret = HELPER.update_cpu_settings(i, fmin, fmax, self.governor)
             else:
-                cpu = self['cpu_box'].get_active()
-                helper.update_cpu_settings(cpu, fmin, fmax, self.governor)
-            button.set_sensitive(False)
+                if self.is_online(cpu):
+                    ret = HELPER.update_cpu_settings(cpu, fmin, fmax, self.governor)
+                else:
+                    error_message("The CPU you selected is not online.", self.window)
+                    self.update_cpubox()
+                    return
+
+            if ret == 0:
+                button.set_sensitive(False)
+            else:
+                error_message(
+                    "Error occurred, check if you have permissions.", self.window
+                )
         else:
-            message = Gtk.MessageDialog(type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK)
-            message.set_markup("You don't have permissions to update cpu settings!")
-            message.show()
-            message.connect("response", dialog_response)
+            error_message(
+                "You don't have permissions to update cpu settings!", self.window
+            )
 
     def on_about_clicked(self, button):
         self.show_about_dialog()
 
     def show_about_dialog(self):
-        self['about_dialog'].run()
-        self['about_dialog'].hide()
+        self["about_dialog"].run()
+        self["about_dialog"].hide()
 
     def on_config_box_changed(self, button):
-        self['about_dialog'].hide()
+        self["about_dialog"].hide()
 
     def __getitem__(self, name):
         """ Convince method that allows widgets to be accessed via self["widget"] """
@@ -261,6 +264,28 @@ class Application(Gtk.Application):
             return True
         return self.builder.get_object(name) is not None
 
+    def _read_settings(self, cpu):
+        if self.is_online(cpu):
+            self.freq_min_hw, self.freq_max_hw = HELPER.get_cpu_limits(cpu)
+            self.governor = HELPER.get_cpu_governor(cpu)
+            self.governors = {}
+            for i, gov in enumerate(HELPER.get_cpu_governors(cpu)):
+                self.governors[i] = gov
+        else:
+            error_message("The CPU you selected is not online.", self.window)
+            self.update_cpubox()
+            self._read_settings(self._get_active_cpu())
+
+    @property
+    def online_cpus(self):
+        return HELPER.get_cpus_available()
+
+    @staticmethod
+    def is_online(cpu):
+        online = HELPER.get_cpus_online()
+        present = HELPER.get_cpus_present()
+        return (cpu in present) and (cpu in online)
+
 
 def main():
     """ Main runner"""
@@ -273,7 +298,5 @@ def main():
     sys.exit(ret)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
-
