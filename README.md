@@ -51,7 +51,7 @@ To install this program do the following:
 To uninstall run `make uninstall`.
 
 # Dependencies
-## Arch Lnux and derivatives
+## Arch Linux and derivatives
 Build:
 `pkg-config`, `autoconf-archive`, `git`, `autoconf`, `make`
 

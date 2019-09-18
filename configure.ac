@@ -5,10 +5,10 @@ dnl ***********************************************************************
 dnl Define Versioning Information
 dnl ***********************************************************************
 m4_define([major_version],[0])
-m4_define([minor_version],[6])
-m4_define([micro_version],[3])
+m4_define([minor_version],[7])
+m4_define([micro_version],[0])
 m4_define([package_version],[major_version.minor_version.micro_version])
-m4_define([bug_report_url],[https://gitlab.com/vagnum08/cpupower-gui/issues])
+m4_define([bug_report_url],[https://github.com/vagnum08/cpupower-gui/issues])
 m4_define([api_version],[major_version])
 
 AX_IS_RELEASE([micro-version])
