@@ -110,15 +110,20 @@ def read_freqs(cpu):
 
 def read_freq_lims(cpu):
     """ Reads frequency limits from sysfs """
-    sys_path = SYS_PATH.format(int(cpu))
-    with open(os.path.join(sys_path, FREQ_MIN_HW), "r") as sys_file:
-        freq_minhw = int(sys_file.readline())
+    try:
+        sys_path = SYS_PATH.format(int(cpu))
+        with open(os.path.join(sys_path, FREQ_MIN_HW), "r") as sys_file:
+            freq_minhw = int(sys_file.readline())
 
-    with open(os.path.join(sys_path, FREQ_MAX_HW), "r") as sys_file:
-        freq_maxhw = int(sys_file.readline())
+        with open(os.path.join(sys_path, FREQ_MAX_HW), "r") as sys_file:
+            freq_maxhw = int(sys_file.readline())
 
-    return freq_minhw, freq_maxhw
-
+        return freq_minhw, freq_maxhw
+    except Exception as e:
+        print(f"WARNING! Unknown CPU frequency, cause: {e}")
+        
+    return 0,0
+    
 
 def read_govs(cpu):
     """ Reads governors from sysfs """
