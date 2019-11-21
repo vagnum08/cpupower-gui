@@ -8,14 +8,17 @@ This program is designed to allow you to change the frequency limits of your cpu
 ![screenshot](./screenshot.png  "Screenshot")
 
 # Packages
+Cpupower-gui is available on the official repositories for a few distributions.
+
 [![Packaging status](https://repology.org/badge/vertical-allrepos/cpupower-gui.svg)](https://repology.org/metapackage/cpupower-gui/versions)
 
-Prebuilt binary packages for Arch Linux and Debian exist in the releases section.
+Prebuilt binary packages for Arch, Debian/Rasbian, Fedora, and Ubuntu are available on [openSUSE Build Service](https://software.opensuse.org//download.html?project=home%3Aerigas%3Acpupower-gui&package=cpupower-gui)
 
 ## Repositories:
 
 ### Arch Linux and derivatives
 Packages exist in AUR as [`cpupower-gui`](https://aur.archlinux.org/packages/cpupower-gui/) ([`cpupower-gui-git`](https://aur.archlinux.org/packages/cpupower-gui-git/)), built from this repo.
+
 
 ### blackPanther OS 
 
@@ -23,6 +26,7 @@ Packages exist in AUR as [`cpupower-gui`](https://aur.archlinux.org/packages/cpu
 updating repos
 installing cpupower-gui
 ```
+###
 
 ### Ubuntu
 Packages for Ubuntu can be installed from the following ppa: [ppa:erigas/cpupower-gui](https://launchpad.net/~erigas/+archive/ubuntu/cpupower-gui).
