@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+	<id>org.rnd2.cpupower_gui.desktop</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>GPL-3.0-or-later</project_license>
+	<name>CPU frequency settings</name>
+	<summary>Adjust the frequency of the CPU</summary>
+	<description>
+	    <p>A graphical utility for changing the CPU frequencies and governor.</p>
+	    <p>
+            This utility can change the operating frequency of the CPU for each core separately.
+            The program can detect offline cores and only present the available ones.
+            Furthermore, if a core doesn't support frequency scaling is not shown.
+            There is also an option to apply the same settings to all cores simultaneously.
+        </p>  
+        <p>
+            To apply the settings, the user must be local and active, as well as in group sudo.
+            Local and active users not in this group must  authenticate themselves as admin in order to apply the settings.
+        </p>
+	</description>
+	<url type="homepage">https://github.com/vagnum08/cpupower-gui</url>
+    <url type="bugtracker">https://github.com/vagnum08/cpupower-gui/issues</url>
+    <screenshots>
+        <screenshot type="default">
+          <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/master/screenshot.png</image>
+          <caption>Main application window</caption>
+        </screenshot>
+    </screenshots>
+    <developer_name>Evangelos Rigas</developer_name>
+    <content_rating type="oars-1.1"/>
+    <releases>
+​     <release version="0.7.0" date="2019-09-18">
+​      <description>
+​        <p>Refactor helper library and fix vulnerabilities</p>
+	  </description>
+	 </release>
+    </releases>
+</component>

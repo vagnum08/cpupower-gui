@@ -34,14 +34,14 @@ Author: Evangelos Rigas <erigas@rnd2.org>
     <property name="program_name">cpupower-gui</property>
     <property name="version">@VERSION@</property>
     <property name="copyright" translatable="yes">Copyright (C) 2017-2019 [RnD]²</property>
-    <property name="comments" translatable="yes">GUI utility to change the CPU frequency</property>
-    <property name="website">htts://gitlab.com/vagnum08/cpupower-gui</property>
+    <property name="comments" translatable="yes">GUI utility to change the CPU frequency and governor</property>
+    <property name="website">htts://github.com/vagnum08/cpupower-gui</property>
     <property name="license" translatable="yes">This program comes with absolutely no warranty.
 See the &lt;a href="https://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Public Licence, version 3 or later&lt;/a&gt; for details.</property>
     <property name="authors">Evangelos Rigas</property>
     <property name="translator_credits">Evangelos Rigas
 Barcza Károly</property>
-    <property name="logo_icon_name">cpupower-gui</property>
+    <property name="logo_icon_name">org.rnd2.cpupower_gui</property>
     <property name="wrap_license">True</property>
     <property name="license_type">gpl-3-0</property>
     <child>
@@ -121,7 +121,8 @@ Barcza Károly</property>
       <object class="GtkHeaderBar" id="header">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="title">CPU frequency setter</property>
+        <property name="title">CPU frequency settings</property>
+        <property name="subtitle" translatable="yes">Adjust the runtime CPU policies</property>
         <property name="has_subtitle">False</property>
         <property name="show_close_button">True</property>
         <property name="decoration_layout">menu:minimize,close</property>
@@ -136,7 +137,7 @@ Barcza Károly</property>
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="icon_name">cpupower-gui</property>
+                <property name="icon_name">org.rnd2.cpupower_gui</property>
               </object>
             </child>
           </object>

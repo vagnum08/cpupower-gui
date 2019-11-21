@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="cpupower-gui">
+	<schema id="org.rnd2.cpupower_gui" path="/org/rnd2/cpupower_gui/">
+	</schema>
+</schemalist>
