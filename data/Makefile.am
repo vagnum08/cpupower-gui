@@ -1,3 +1,3 @@
-SUBDIRS = applications dbus icons polkit systemd ui
+SUBDIRS = applications dbus icons polkit systemd
 
 -include $(top_srcdir)/git.mk

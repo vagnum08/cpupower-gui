@@ -1,14 +1,21 @@
-moduledir = $(pythondir)/cpupower_gui
-module_PYTHON = __main__.py
+moduledir = $(datadir)/cpupower-gui/cpupower_gui
+resourcedir = $(datadir)/cpupower-gui/
+module_DATA = __init__.py main.py window.py 
+resource_DATA = cpupower-gui.gresource
 
-EXTRA_DIST = __main__.py.in
+EXTRA_DIST = main.py window.glade.in window.py \
+	window.glade.in cpupower_gui.gresource.xml
 
-__main__.py: __main__.py.in
+window.glade: window.glade.in
 	$(AM_V_GEN)$(SED)                       \
-		-e s!\@datadir\@!$(datadir)!   \
+		-e s!\@VERSION\@!$(VERSION)!   \
 		< $< > $@
-	@chmod a+x $@
 
-CLEANFILES = $(module_PYTHON)
+cpupower-gui.gresource: cpupower_gui.gresource.xml window.glade
+	$(AM_V_GEN)glib-compile-resources \
+		--target=$@ $<
+
+		
+CLEANFILES = cpupower-gui.gresource window.glade
 
 -include $(top_srcdir)/git.mk

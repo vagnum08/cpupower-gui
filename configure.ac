@@ -96,7 +96,6 @@ AC_CONFIG_FILES([
 	data/icons/Makefile
 	data/polkit/Makefile
 	data/systemd/Makefile
-	data/ui/Makefile
 	po/Makefile.in
 ],[],
 [API_VERSION='$API_VERSION'])
