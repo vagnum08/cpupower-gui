@@ -1,6 +1,6 @@
 actions_dir = join_paths(get_option('datadir'), 'polkit-1/actions')
 authority_dir = join_paths(get_option('localstatedir'), 
-                                          'lib/polkit-1/localauthority/10-vendor.d')
+                                      'lib/polkit-1/localauthority/10-vendor.d')
 
 install_data(
     'org.rnd2.cpupower-gui.policy', 

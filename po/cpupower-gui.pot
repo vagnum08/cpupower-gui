@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR [RnD]²
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the cpupower-gui package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: cpupower-gui 0.5.2\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/vagnum08/cpupower-gui/issues\n"
-"POT-Creation-Date: 2018-01-27 19:09+0000\n"
+"Project-Id-Version: cpupower-gui\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-22 22:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,74 +17,138 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/ui/cpupower.glade.in:54
-msgid "About"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:68
-msgid "Quit"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:119
-msgid "Apply"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:124
-msgid "Apply changes"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:154
-msgid "Set CPU Frequency limits"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:171
-msgid "Governor:"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:196
-msgid "Max freq. (MHz):"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:267
-msgid "Min freq. (MHz):"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:279
-msgid "CPU:"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:303
-msgid "All CPUs:"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:351
-msgid "Settings"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:367
-msgid "Configuration:"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:380
-msgid "Runtime"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:381
-msgid "Persistent"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:394
-msgid "Apply at boot:"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:433
-msgid "Copyright (C) 2017-2018 [RnD]²"
-msgstr ""
-
-#: data/ui/cpupower.glade.in:466
+#: data/org.rnd2.cpupower_gui.desktop.in.in:4 cpupower_gui/window.glade.in:455
 msgid "cpupower-gui"
 msgstr ""
 
-#: data/ui/cpupower.glade.in:467
+#: data/org.rnd2.cpupower_gui.desktop.in.in:5
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:6
+msgid "CPU frequency settings"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:6
+msgid "Sets the frequency limits of the CPU"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:8
+msgid "@icon@"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:13
+msgid "frequency;limits;"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:7
+msgid "Adjust the frequency of the CPU"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:9
+msgid "A graphical utility for changing the CPU frequencies and governor."
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:10
+msgid ""
+"This utility can change the operating frequency of the CPU for each core "
+"separately. The program can detect offline cores and only present the "
+"available ones. Furthermore, if a core doesn't support frequency scaling is "
+"not shown. There is also an option to apply the same settings to all cores "
+"simultaneously."
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:16
+msgid ""
+"To apply the settings, the user must be local and active, as well as in "
+"group sudo. Local and active users not in this group must authenticate "
+"themselves as admin in order to apply the settings."
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:26
+msgid "Main application window"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:29
+msgid "Evangelos Rigas"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:34
+msgid "Refactor helper library and fix vulnerabilities"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:36
+msgid "Copyright (C) 2017-2019 [RnD]²"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:37
+msgid "GUI utility to change the CPU frequency and governor"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:39
+msgid ""
+"This program comes with absolutely no warranty.\n"
+"See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
+"Public Licence, version 3 or later</a> for details."
+msgstr ""
+
+#: cpupower_gui/window.glade.in:96
+msgid "About"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:125
+msgid "Adjust the runtime CPU policies"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:147
+msgid "Apply"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:152
+msgid "Apply changes"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:182
+msgid "Set CPU Frequency limits"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:199
+msgid "Governor:"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:224
+msgid "Max freq. (MHz):"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:295
+msgid "Min freq. (MHz):"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:307
+msgid "CPU:"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:331
+msgid "All CPUs:"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:378
+msgid "Settings"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:394
+msgid "Configuration:"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:407
+msgid "Runtime"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:408
+msgid "Persistent"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:421
+msgid "Apply at boot:"
+msgstr ""
+
+#: cpupower_gui/window.glade.in:456
 msgid "Frequency Setter"
 msgstr ""

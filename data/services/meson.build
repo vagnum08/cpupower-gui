@@ -1,4 +1,6 @@
-pkglibdir = join_paths(get_option('prefix'), get_option('libdir'), meson.project_name())
+pkglibdir = join_paths(get_option('prefix'), get_option('libdir'),
+                       meson.project_name())
+
 dbus_dir = join_paths(get_option('datadir'), 'dbus-1')
 
 service_conf = configuration_data() 
@@ -22,5 +24,5 @@ dbus_service  = configure_file(
 
 install_data(
     'org.rnd2.cpupower_gui.helper.conf', 
-    install_dir : dbus_dir / 'system.d'
+    install_dir : join_paths(dbus_dir, 'system.d')
 )
