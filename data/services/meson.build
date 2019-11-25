@@ -11,7 +11,7 @@ systemd_service  = configure_file(
   output: 'cpupower-gui-helper.service',
   configuration: service_conf,
   install: true,
-  install_dir: join_paths('lib', 'systemd', 'system')
+  install_dir: join_paths('/lib', 'systemd', 'system')
 )
 
 dbus_service  = configure_file(

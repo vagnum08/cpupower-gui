@@ -35,7 +35,7 @@ appstream_file = i18n.merge_file(
   output: 'org.rnd2.cpupower_gui.appdata.xml',
   po_dir: '../po',
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'appdata')
+  install_dir: join_paths(get_option('datadir'), 'metainfo')
 )
 
 appstream_util = find_program('appstream-util', required: false)
