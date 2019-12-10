@@ -1,0 +1,12 @@
+--- a/cpupower_gui/cpupower-gui-helper.py.in
++++ b/cpupower_gui/cpupower-gui-helper.py.in
+@@ -229,7 +229,7 @@
+     )
+     def update_cpu_settings(self, cpu, freq_min_hw, freq_max_hw, governor, sender=None):
+         if self._is_authorized(sender):
+-            ret = self._update_cpu(cpu, freq_min_hw, freq_max_hw, governor)
++            ret = self._update_cpu(int(cpu), int(freq_min_hw), int(freq_max_hw), str(governor))
+             return ret
+         else:
+             return -1
+
