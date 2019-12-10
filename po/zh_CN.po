@@ -1,0 +1,163 @@
+# Chinese (China) translation for cpupower-gui.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the cpupower-gui package.
+# 玉堂白鹤 <yjwork@qq.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cpupower-gui\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-22 22:48+0000\n"
+"PO-Revision-Date: 2019-12-10 10:40+0800\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: zh_CN\n"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:4 cpupower_gui/window.glade.in:455
+msgid "cpupower-gui"
+msgstr "cpupower 图形界面"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:5
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:6
+msgid "CPU frequency settings"
+msgstr "CPU 频率设置"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:6
+msgid "Sets the frequency limits of the CPU"
+msgstr "设置 CPU 的频率限制"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:8
+msgid "@icon@"
+msgstr "@icon@"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:13
+msgid "frequency;limits;"
+msgstr "频率;限制;"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:7
+msgid "Adjust the frequency of the CPU"
+msgstr "调整 CPU 频率"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:9
+msgid "A graphical utility for changing the CPU frequencies and governor."
+msgstr "用于更改 CPU 频率和调速器的图形实用程序。"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:10
+msgid ""
+"This utility can change the operating frequency of the CPU for each core "
+"separately. The program can detect offline cores and only present the "
+"available ones. Furthermore, if a core doesn't support frequency scaling is "
+"not shown. There is also an option to apply the same settings to all cores "
+"simultaneously."
+msgstr ""
+"该实用程序可以分别更改每个内核的 CPU 的工作频率。 该程序可以检测到离线核心，"
+"并且仅显示可用的核心。 此外，如果内核不支持频率调节，则不会显示。 还有一个选"
+"项可以将相同的设置同时应用于所有内核。"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:16
+msgid ""
+"To apply the settings, the user must be local and active, as well as in "
+"group sudo. Local and active users not in this group must authenticate "
+"themselves as admin in order to apply the settings."
+msgstr ""
+"要应用设置，用户必须是本地活动用户，而且必须在 sudo 组中。 不在此组中的本地"
+"活动用户必须以 admin 身份进行身份验证才能应用设置。"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:26
+msgid "Main application window"
+msgstr "主应用程序窗口"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:29
+msgid "Evangelos Rigas"
+msgstr "Evangelos Rigas"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:34
+msgid "Refactor helper library and fix vulnerabilities"
+msgstr "重构辅助库和修复漏洞"
+
+#: cpupower_gui/window.glade.in:36
+msgid "Copyright (C) 2017-2019 [RnD]²"
+msgstr "版权所有 (C) 2017-2019 [RnD]²"
+
+#: cpupower_gui/window.glade.in:37
+msgid "GUI utility to change the CPU frequency and governor"
+msgstr "可更改 CPU 频率和调节器的 GUI 图形界面实用程序"
+
+#: cpupower_gui/window.glade.in:39
+msgid ""
+"This program comes with absolutely no warranty.\n"
+"See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
+"Public Licence, version 3 or later</a> for details."
+msgstr ""
+"该程序绝无品质担保。\n"
+"有关详细信息，请参见<a href=\"https://www.gnu.org/licenses/gpl-3.0.html\"> "
+"GNU通用公共许可证版本 3 或更高版本</a>。"
+
+#: cpupower_gui/window.glade.in:96
+msgid "About"
+msgstr "关于"
+
+#: cpupower_gui/window.glade.in:125
+msgid "Adjust the runtime CPU policies"
+msgstr "调整运行时 CPU 策略"
+
+#: cpupower_gui/window.glade.in:147
+msgid "Apply"
+msgstr "应用"
+
+#: cpupower_gui/window.glade.in:152
+msgid "Apply changes"
+msgstr "应用更改"
+
+#: cpupower_gui/window.glade.in:182
+msgid "Set CPU Frequency limits"
+msgstr "设置 CPU 频率限制"
+
+#: cpupower_gui/window.glade.in:199
+msgid "Governor:"
+msgstr "调速器:"
+
+#: cpupower_gui/window.glade.in:224
+msgid "Max freq. (MHz):"
+msgstr "最大频率 (MHz):"
+
+#: cpupower_gui/window.glade.in:295
+msgid "Min freq. (MHz):"
+msgstr "最小频率 (MHz):"
+
+#: cpupower_gui/window.glade.in:307
+msgid "CPU:"
+msgstr "CPU:"
+
+#: cpupower_gui/window.glade.in:331
+msgid "All CPUs:"
+msgstr "所有 CPU:"
+
+#: cpupower_gui/window.glade.in:378
+msgid "Settings"
+msgstr "设置"
+
+#: cpupower_gui/window.glade.in:394
+msgid "Configuration:"
+msgstr "配置："
+
+#: cpupower_gui/window.glade.in:407
+msgid "Runtime"
+msgstr "运行时"
+
+#: cpupower_gui/window.glade.in:408
+msgid "Persistent"
+msgstr "持久化"
+
+#: cpupower_gui/window.glade.in:421
+msgid "Apply at boot:"
+msgstr "启动时应用 :"
+
+#: cpupower_gui/window.glade.in:456
+msgid "Frequency Setter"
+msgstr "频率设定器"
