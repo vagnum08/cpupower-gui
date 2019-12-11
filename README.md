@@ -1,8 +1,12 @@
 cpupower-gui
 --------------------
-[![latest packaged version(s)](https://repology.org/badge/latest-versions/cpupower-gui.svg)](https://repology.org/project/cpupower-gui/versions)
-
 This program is designed to allow you to change the frequency limits of your cpu and its governor. The application is similar in functionality to `cpupower`.
+
+[![GitHub release](https://img.shields.io/github/release/vagnum08/cpupower-gui.svg)](https://GitHub.com/vagnum08/cpupower-gui/releases/)
+[![latest packaged version(s)](https://repology.org/badge/latest-versions/cpupower-gui.svg)](https://repology.org/project/cpupower-gui/versions)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/vagnum08/cpupower-gui/blob/master/COPYING)
+[![GitHub repo size]( https://img.shields.io/github/repo-size/vagnum08/cpupower-gui.svg)](https://github.com/vagnum08/cpupower-gui/archive/master.zip)
+[![Github all releases](https://img.shields.io/github/downloads/vagnum08/cpupower-gui/total.svg)](https://GitHub.com/vagnum08/cpupower-gui/releases/)
 
 # Screenshots
 The theme used is [Arc-Darker](https://github.com/horst3180/arc-theme).
@@ -44,6 +48,7 @@ To install them,
 - On blackPanther OS and derivatives: (TBD)
 - On Debian and derivatives: `apt update && apt install  meson ninja-build, pkg-config, libglib2.0-bin, libglib2.0-dev`
 - On Fedora: (TBD)
+- On openSUSE Tumbleweed: `zypper install meson gettext-tools`
 
 Optionally (for meson check) the following programs are needed:  `desktop-file-validate`, `appstream-util`, `glib-compile-schemas`.
 
@@ -53,10 +58,11 @@ To install them,
 - On blackPanther OS and derivatives: (TBD)
 - On Debian and derivatives: `apt update && apt install appstream-util desktop-file-utils`
 - On Fedora: (TBD)
+- On openSUSE Tumbleweed: `zypper install glib2-devel`
 
 ## Build cpupower-gui
 ```bash
-meson build
+meson build --prefix /usr
 ninja -C build
 ```
 
@@ -78,3 +84,8 @@ To uninstall run `ninja -C build uninstall`.
 `libgtk-3-0` `gir1.2-gtk-3.0` `hicolor-icon-theme` `policykit-1` `python3-dbus` `python3-gi`
 
 Suggested for authentication dialogue: `policykit-1-gnome` or `mate-polkit` or `lxpolkit`
+
+## openSUSE
+`libgtk-3-0` `typelib-1_0-Gtk-3_0` `python3-gobject` `python3-gobject-Gdk` `python3-dbus-python` `hicolor-icon-theme`
+
+A polkit agent such as `mate-polkit`, `polkit-kde-agent-5`, `policykit-1-gnome`, etc.
