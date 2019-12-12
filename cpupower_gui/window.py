@@ -19,7 +19,7 @@ import os
 import sys
 import dbus
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Gio
 
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(
@@ -47,10 +47,11 @@ def error_message(msg, transient):
     message.show()
     message.connect("response", dialog_response)
 
-@Gtk.Template(resource_path='/org/rnd2/cpupower_gui/window.glade')
+
+@Gtk.Template(resource_path="/org/rnd2/cpupower_gui/window.glade")
 class CpupowerGuiWindow(Gtk.ApplicationWindow):
-    __gtype_name__ = 'CpupowerGuiWindow'
-    
+    __gtype_name__ = "CpupowerGuiWindow"
+
     cpu_box = Gtk.Template.Child()
     status = Gtk.Template.Child()
     gov_box = Gtk.Template.Child()
@@ -59,10 +60,10 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     apply_btn = Gtk.Template.Child()
     toall = Gtk.Template.Child()
     about_dialog = Gtk.Template.Child()
-    
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        
+
         self.update_cpubox()
         self._read_settings(self._get_active_cpu())
 
@@ -70,7 +71,12 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.status_icon = self.status
         self.status_icon.connect("popup-menu", self.right_click_event)
         self.status_icon.connect("activate", self.status_activate)
-    
+
+        # Application actions
+        action = Gio.SimpleAction.new("Exit", None)
+        action.connect("activate", self.quit)
+        self.add_action(action)
+
     def update_cpubox(self):
         self.cpu_store = Gtk.ListStore(int)
 
@@ -135,13 +141,13 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.adj_min.set_value(int(freq_min / 1000))
         self.adj_max.set_value(int(freq_max / 1000))
         self.apply_btn.set_sensitive(False)
-    
+
     @Gtk.Template.Callback()
     def on_cpu_changed(self, *args):
         """ Callback for cpu box """
         # pylint: disable=W0612,W0613
         self.upd_sliders()
-    
+
     @Gtk.Template.Callback()
     def on_toall_state_set(self, _, val):
         """ Enable/Disable cpu_box """
@@ -248,7 +254,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     @property
     def online_cpus(self):
         return HELPER.get_cpus_available()
-    
+
     @staticmethod
     def is_online(cpu):
         online = HELPER.get_cpus_online()
