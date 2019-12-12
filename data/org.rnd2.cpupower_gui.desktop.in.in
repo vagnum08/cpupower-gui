@@ -3,10 +3,20 @@ Version=1.1
 Name=cpupower-gui
 GenericName=CPU frequency settings
 Comment=Sets the frequency limits of the CPU
-Exec=cpupower-gui
+Exec=gapplication launch org.rnd2.cpupower_gui
 Icon=@icon@
 Terminal=false
 Type=Application
+DBusActivatable=true
 StartupNotify=true
-Categories=GNOME;GTK;Utility;System
+Categories=GNOME;GTK;Settings;HardwareSettings
 Keywords=frequency;limits;
+Actions=Performance;Balanced;
+
+[Desktop Action Performance]
+Name=Set all CPU governors to Performance
+Exec=gapplication launch org.rnd2.cpupower_gui Performance
+
+[Desktop Action Balanced]
+Name=Set all CPU governors to default
+Exec=gapplication launch org.rnd2.cpupower_gui Balanced

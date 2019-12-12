@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.rnd2.cpupower_gui
+Exec=@bindir@/cpupower-gui --gapplication-service

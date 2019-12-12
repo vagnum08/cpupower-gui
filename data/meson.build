@@ -16,7 +16,7 @@ desktop_file = i18n.merge_file(
     output: 'org.rnd2.cpupower_gui.desktop.in',
     configuration: desktop_conf
   ),
-  output: 'cpupower-gui.desktop',
+  output: 'org.rnd2.cpupower_gui.desktop',
   type: 'desktop',
   po_dir: '../po',
   install: true,
