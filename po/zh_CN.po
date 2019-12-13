@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-22 22:48+0000\n"
+"POT-Creation-Date: 2019-12-12 23:50+0000\n"
 "PO-Revision-Date: 2019-12-10 10:40+0800\n"
+"Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Language-Team: \n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.2.4\n"
-"Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Language: zh_CN\n"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:4 cpupower_gui/window.glade.in:455
 msgid "cpupower-gui"
@@ -35,9 +35,17 @@ msgstr "设置 CPU 的频率限制"
 msgid "@icon@"
 msgstr "@icon@"
 
-#: data/org.rnd2.cpupower_gui.desktop.in.in:13
+#: data/org.rnd2.cpupower_gui.desktop.in.in:14
 msgid "frequency;limits;"
 msgstr "频率;限制;"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:18
+msgid "Set all CPU governors to Performance"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:22
+msgid "Set all CPU governors to default"
+msgstr ""
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:7
 msgid "Adjust the frequency of the CPU"
@@ -65,8 +73,8 @@ msgid ""
 "group sudo. Local and active users not in this group must authenticate "
 "themselves as admin in order to apply the settings."
 msgstr ""
-"要应用设置，用户必须是本地活动用户，而且必须在 sudo 组中。 不在此组中的本地"
-"活动用户必须以 admin 身份进行身份验证才能应用设置。"
+"要应用设置，用户必须是本地活动用户，而且必须在 sudo 组中。 不在此组中的本地活"
+"动用户必须以 admin 身份进行身份验证才能应用设置。"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:26
 msgid "Main application window"

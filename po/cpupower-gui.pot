@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-22 22:48+0000\n"
+"POT-Creation-Date: 2019-12-12 23:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,8 +34,16 @@ msgstr ""
 msgid "@icon@"
 msgstr ""
 
-#: data/org.rnd2.cpupower_gui.desktop.in.in:13
+#: data/org.rnd2.cpupower_gui.desktop.in.in:14
 msgid "frequency;limits;"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:18
+msgid "Set all CPU governors to Performance"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:22
+msgid "Set all CPU governors to default"
 msgstr ""
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:7

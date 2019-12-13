@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui 0.7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-22 22:48+0000\n"
+"POT-Creation-Date: 2019-12-12 23:50+0000\n"
 "PO-Revision-Date: 2019-11-22 22:38+0000\n"
 "Last-Translator: Barcza Károly <kbarcza@blackpanther.hu>\n"
 "Language-Team: \n"
@@ -36,9 +36,17 @@ msgstr "CPU frekvenciakorlát beállítása"
 msgid "@icon@"
 msgstr ""
 
-#: data/org.rnd2.cpupower_gui.desktop.in.in:13
+#: data/org.rnd2.cpupower_gui.desktop.in.in:14
 msgid "frequency;limits;"
 msgstr "frekvencia;korlát;"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:18
+msgid "Set all CPU governors to Performance"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:22
+msgid "Set all CPU governors to default"
+msgstr ""
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:7
 msgid "Adjust the frequency of the CPU"

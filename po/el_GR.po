@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui 0.7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-22 22:48+0000\n"
-"PO-Revision-Date: 2019-11-22 22:53+0000\n"
+"POT-Creation-Date: 2019-12-12 23:50+0000\n"
+"PO-Revision-Date: 2019-12-13 00:02+0000\n"
 "Last-Translator: Evangelos Rigas <erigas@rnd2.org>\n"
 "Language-Team: \n"
 "Language: el_GR\n"
@@ -36,9 +36,17 @@ msgstr "Ορισμός ορίων συχνότητας επεξεργαστή"
 msgid "@icon@"
 msgstr ""
 
-#: data/org.rnd2.cpupower_gui.desktop.in.in:13
+#: data/org.rnd2.cpupower_gui.desktop.in.in:14
 msgid "frequency;limits;"
 msgstr "συχνότητα;όρια;"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:18
+msgid "Set all CPU governors to Performance"
+msgstr "Ορισμός όλων των επεξεργαστών σε προφίλ Απόδοσης"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:22
+msgid "Set all CPU governors to default"
+msgstr "Ορισμός όλων των επεξεργαστών σε προεπιλεγμένο προφίλ"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:7
 msgid "Adjust the frequency of the CPU"
@@ -57,8 +65,8 @@ msgid ""
 "simultaneously."
 msgstr ""
 "Αυτή η εφαρμογή μπορεί να αλλάξει τις συχνότητες λειτουργίας των πυρήνων του "
-"επεξεργαστή. Το πρόγραμμα αναγνωρίζει ποιοί πυρήνες είναι εκτός λειτουργίας "
-"και εμφανίζει μόνος τους διαθέσιμους. Επίσης, εάν ένας πηρήνας δεν "
+"επεξεργαστή. Το πρόγραμμα αναγνωρίζει ποιοι πυρήνες είναι εκτός λειτουργίας "
+"και εμφανίζει μόνος τους διαθέσιμους. Επίσης, εάν ένας πυρήνας δεν "
 "υποστηρίζει την αλλαγή των ορίων δεν εμφανίζεται στη λίστα. Τέλος, υπάρχει "
 "επιλογή να εφαρμοσθούν οι αλλαγές σε όλους τους διαθέσιμους πυρήνες "
 "συγχρόνως."
@@ -69,6 +77,10 @@ msgid ""
 "group sudo. Local and active users not in this group must authenticate "
 "themselves as admin in order to apply the settings."
 msgstr ""
+"Για την εφαρμογή των ρυθμίσεων, ο χρήστης θα πρέπει να είναι ενεργός και "
+"τοπικός, όπως επίσης και μέλος της ομάδας sudo. Οι υπόλοιποι χρήστες που δεν "
+"ανήκουν σε αυτήν την κατηγορία θα πρέπει να πιστοποιούνται ως διαχειριστές "
+"ώστε να εφαρμόσουν τις αλλαγές στις ρυθμίσεις."
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:26
 msgid "Main application window"
@@ -88,7 +100,7 @@ msgstr "Πνευματικά δικαιώματα (C) 2017-2019 [RnD]²"
 
 #: cpupower_gui/window.glade.in:37
 msgid "GUI utility to change the CPU frequency and governor"
-msgstr "Γραφικό εργαλείο για την αλλαγή των συχνότητων του επεξεργαστή"
+msgstr "Γραφικό εργαλείο για την αλλαγή των συχνοτήτων του επεξεργαστή"
 
 #: cpupower_gui/window.glade.in:39
 msgid ""

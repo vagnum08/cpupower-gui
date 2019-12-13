@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui 0.7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-22 22:48+0000\n"
-"PO-Revision-Date: 2019-11-22 22:26+0000\n"
-"Last-Translator: Evan Rigas <erigas@rnd2.org>\n"
+"POT-Creation-Date: 2019-12-12 23:50+0000\n"
+"PO-Revision-Date: 2019-12-13 00:02+0000\n"
+"Last-Translator: Evangelos Rigas <erigas@rnd2.org>\n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -35,9 +35,17 @@ msgstr "Sets the frequency limits of the CPU"
 msgid "@icon@"
 msgstr "@icon@"
 
-#: data/org.rnd2.cpupower_gui.desktop.in.in:13
+#: data/org.rnd2.cpupower_gui.desktop.in.in:14
 msgid "frequency;limits;"
 msgstr "frequency;limits;"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:18
+msgid "Set all CPU governors to Performance"
+msgstr "Set all CPU governors to Performance"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:22
+msgid "Set all CPU governors to default"
+msgstr "Set all CPU governors to default"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:7
 msgid "Adjust the frequency of the CPU"
