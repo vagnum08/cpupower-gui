@@ -106,7 +106,7 @@ class Application(Gtk.Application):
             if HELPER.isauthorized():
                 ret = HELPER.update_cpu_governor(cpu, gov)
                 if ret == 0:
-                    print("Set CPU {} to {}".format(cpu, gov))
+                    print("Set CPU {} to {}".format(int(cpu), gov))
 
         # Update window if exists
         win = self.props.active_window
@@ -118,14 +118,20 @@ class Application(Gtk.Application):
     def on_apply_default(self, params=None, platform_data={}):
         ret = -1
         for cpu in HELPER.get_cpus_available():
-            gov = HELPER.get_cpu_governors(cpu)[0]
+            govs = HELPER.get_cpu_governors(cpu)
+            for governor in govs:
+                if str(governor) != "performance":
+                    break
+
+            gov = str(governor)
             if not gov:
-                print("Failed to get default governor for CPU {}. Skip.".format(cpu))
+                print("Failed to get default governor for CPU {}.".format(int(cpu)))
+                continue
 
             if HELPER.isauthorized():
                 ret = HELPER.update_cpu_governor(cpu, gov)
                 if ret == 0:
-                    print("Set CPU {} to {}".format(cpu, gov))
+                    print("Set CPU {} to {}".format(int(cpu), gov))
 
         # Update window if exists
         win = self.props.active_window
