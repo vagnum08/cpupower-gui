@@ -47,7 +47,7 @@ To install them,
 - On Arch and derivatives: `pacman -Sy pkg-config meson`
 - On blackPanther OS and derivatives: (TBD)
 - On Debian and derivatives: `apt update && apt install  meson ninja-build, pkg-config, libglib2.0-bin, libglib2.0-dev`
-- On Fedora: (TBD)
+- On Fedora: `dnf install meson gettext pkg-config glib2-devel`
 - On openSUSE Tumbleweed: `zypper install meson gettext-tools`
 
 Optionally (for meson check) the following programs are needed:  `desktop-file-validate`, `appstream-util`, `glib-compile-schemas`.
@@ -57,7 +57,6 @@ To install them,
 - On Arch and derivatives: `pacman -Sy desktop-file-utils appstream-glib`
 - On blackPanther OS and derivatives: (TBD)
 - On Debian and derivatives: `apt update && apt install appstream-util desktop-file-utils`
-- On Fedora: (TBD)
 - On openSUSE Tumbleweed: `zypper install glib2-devel`
 
 ## Build cpupower-gui
@@ -85,7 +84,14 @@ To uninstall run `ninja -C build uninstall`.
 
 Suggested for authentication dialogue: `policykit-1-gnome` or `mate-polkit` or `lxpolkit`
 
-## openSUSE
-`libgtk-3-0` `typelib-1_0-Gtk-3_0` `python3-gobject` `python3-gobject-Gdk` `python3-dbus-python` `hicolor-icon-theme`
+## Fedora and openSUSE
+### Fedora only
+`gtk3` `python3-dbus` `python3-gobject` 
+
+### openSUSE only
+`libgtk-3-0` `typelib-1_0-Gtk-3_0` `python3-gobject` `python3-gobject-Gdk` `python3-dbus-python`
+
+### Common
+ `hicolor-icon-theme`
 
 A polkit agent such as `mate-polkit`, `polkit-kde-agent-5`, `policykit-1-gnome`, etc.
