@@ -102,8 +102,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
     def status_activate(self, status_icon):
         """Open window from status icon """
-        self.window.deiconify()
-        self.window.present()
+        self.deiconify()
+        self.present()
 
     def quit(self, *args):
         """Quit """
@@ -212,7 +212,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                 if self.is_online(cpu):
                     ret = HELPER.update_cpu_settings(cpu, fmin, fmax, self.governor)
                 else:
-                    error_message("The CPU you selected is not online.", self.window)
+                    error_message("The CPU you selected is not online.", self)
                     self.update_cpubox()
                     return
 
@@ -220,11 +220,11 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                 button.set_sensitive(False)
             else:
                 error_message(
-                    "Error occurred, check if you have permissions.", self.window
+                    "Error occurred, check if you have permissions.", self
                 )
         else:
             error_message(
-                "You don't have permissions to update cpu settings!", self.window
+                "You don't have permissions to update cpu settings!", self
             )
 
     @Gtk.Template.Callback()
@@ -247,7 +247,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             for i, gov in enumerate(HELPER.get_cpu_governors(cpu)):
                 self.governors[i] = gov
         else:
-            error_message("The CPU you selected is not online.", self.window)
+            error_message("The CPU you selected is not online.", self)
             self.update_cpubox()
             self._read_settings(self._get_active_cpu())
 
