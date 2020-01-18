@@ -29,6 +29,54 @@ Packages exist in AUR as [`cpupower-gui`](https://aur.archlinux.org/packages/cpu
 To install `cpupower-gui` run `updating repos` to update the repositories and install by running `installing cpupower-gui`.
 
 
+# Usage
+## Graphical
+
+To change the frequency settings, select the CPU from the drop-down menu, adjust the sliders and click `Apply`.
+Additionally, the cpu governor can be changed by selecting a governor from the drop-down menu.
+Last, to apply the same settings to all CPUs, toggle the `All CPUs` switch.
+
+There are two governor profiles available, `Performance` and `Balanced`.
+The performance profile sets the governor for all CPUs to `performance`.
+Similarly, the balanced profile set the governor to either `powersave` (if available) or to a scalling governor such as `ondemand` or `schedutil`.
+
+These profiles can be selected either from the desktop icon or the tray icon actions.
+
+## Command-line
+
+The governor profiles can be used from the command line.
+
+```bash
+$ cpupower-gui -h
+
+Usage:
+  cpupower-gui [OPTION…]
+
+Help Options:
+  -h, --help                 Show help options
+  --help-all                 Show all help options
+  --help-gapplication        Show GApplication options
+  --help-gtk                 Show GTK+ Options
+
+Application Options:
+  -p, --performance          Change governor to performance
+  -b, --balanced             Change governor to balanced
+  --display=DISPLAY          X display to use
+
+```
+
+For example to switch all governors to performance run `cpupower-gui -p`.
+Alternatively, the application actions can be executed via `gapplication`.
+
+```bash
+# Switch to balanced profile
+gapplication action org.rnd2.cpupower_gui Balanced
+
+# Switch to performance profile
+gapplication action org.rnd2.cpupower_gui Performance
+
+```
+
 # Manual Installation
 This package uses the [Meson build system](https://mesonbuild.com/) for build configuration and [Ninja](https://ninja-build.org/) as the backend build system.
 
@@ -74,7 +122,7 @@ To uninstall run `ninja -C build uninstall`.
 
 # Runtime Dependencies
 ## Arch Linux and derivatives
-`python` `gtk3` `hicolor-icon-theme` `polkit` `python-dbus` `python-gobject`
+`python` `gtk3` `hicolor-icon-theme` `polkit` `python-dbus` `python-gobject` `libappindicator-gtk3`
 
 ## blackPanther OS and derivatives
 `python3`, `gtk3`, `hicolor-icon-theme`, `polkit`, `python3-dbus`, `python3-gobject3`
@@ -83,6 +131,7 @@ To uninstall run `ninja -C build uninstall`.
 `libgtk-3-0` `gir1.2-gtk-3.0` `hicolor-icon-theme` `policykit-1` `python3-dbus` `python3-gi`
 
 Suggested for authentication dialogue: `policykit-1-gnome` or `mate-polkit` or `lxpolkit`
+For the tray icon `gir1.2-appindicator3-0.1`.
 
 ## Fedora and openSUSE
 ### Fedora only

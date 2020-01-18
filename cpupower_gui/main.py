@@ -1,6 +1,6 @@
 # main.py
 #
-# Copyright 2019 Evangelos Rigas
+# Copyright 2019-2020 Evangelos Rigas
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,6 +27,12 @@ gi.require_version("Gtk", "3.0")
 
 from gi.repository import Gtk, Gio, GLib
 
+try:
+    gi.require_version("AppIndicator3", "0.1")
+    from gi.repository import AppIndicator3 as AppIndicator
+except:
+    AppIndicator = None
+
 from .window import CpupowerGuiWindow
 
 BUS = dbus.SystemBus()
@@ -35,13 +41,13 @@ SESSION = BUS.get_object(
 )
 
 HELPER = dbus.Interface(SESSION, "org.rnd2.cpupower_gui.helper")
+APP_ID = "org.rnd2.cpupower_gui"
 
 
 class Application(Gtk.Application):
     def __init__(self):
         super().__init__(
-            application_id="org.rnd2.cpupower_gui",
-            flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
+            application_id=APP_ID, flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE
         )
 
         self.add_main_option(
@@ -69,11 +75,26 @@ class Application(Gtk.Application):
         action.connect("activate", self.on_apply_default)
         self.add_action(action)
 
+        if AppIndicator:
+            self.indicator = AppIndicator.Indicator.new(
+                APP_ID, APP_ID, AppIndicator.IndicatorCategory.APPLICATION_STATUS
+            )
+            self.indicator.set_status(AppIndicator.IndicatorStatus.ACTIVE)
+            builder = Gtk.Builder()
+            builder.add_from_resource("/org/rnd2/cpupower_gui/tray.ui")
+            builder.get_object("sw_perf").connect("activate", self.on_apply_performance)
+            builder.get_object("sw_balance").connect("activate", self.on_apply_default)
+            builder.get_object("quit").connect("activate", self.do_quit)
+            self.indicator.set_menu(builder.get_object("tray_menu"))
+
     def do_activate(self):
         win = self.props.active_window
         if not win:
             win = CpupowerGuiWindow(application=self)
         win.present()
+
+    def do_quit(self, *args):
+        exit(0)
 
     def do_command_line(self, command_line):
         options = command_line.get_options_dict()

@@ -1,6 +1,6 @@
 # window.py
 #
-# Copyright 2019 Evangelos Rigas
+# Copyright 2019-2020 Evangelos Rigas
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -39,7 +39,6 @@ def dialog_response(widget, response_id):
         print("dialog closed or cancelled")
     widget.destroy()
 
-
 def error_message(msg, transient):
     message = Gtk.MessageDialog(type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK)
     message.set_markup(msg)
@@ -48,12 +47,11 @@ def error_message(msg, transient):
     message.connect("response", dialog_response)
 
 
-@Gtk.Template(resource_path="/org/rnd2/cpupower_gui/window.glade")
+@Gtk.Template(resource_path="/org/rnd2/cpupower_gui/window.ui")
 class CpupowerGuiWindow(Gtk.ApplicationWindow):
     __gtype_name__ = "CpupowerGuiWindow"
 
     cpu_box = Gtk.Template.Child()
-    status = Gtk.Template.Child()
     gov_box = Gtk.Template.Child()
     adj_min = Gtk.Template.Child()
     adj_max = Gtk.Template.Child()
@@ -68,9 +66,6 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self._read_settings(self._get_active_cpu())
 
         self.upd_sliders()
-        self.status_icon = self.status
-        self.status_icon.connect("popup-menu", self.right_click_event)
-        self.status_icon.connect("activate", self.status_activate)
 
         # Application actions
         action = Gio.SimpleAction.new("Exit", None)
@@ -85,25 +80,6 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         self.cpu_box.set_model(self.cpu_store)
         self.cpu_box.set_active(0)
-
-    def right_click_event(self, icon, button, time):
-        """Handler for right click action on status icon """
-        self.menu = Gtk.Menu()
-        about = Gtk.MenuItem()
-        about.set_label("About")
-        about.connect("activate", self.on_about_clicked)
-        self.menu.append(about)
-        quit = Gtk.MenuItem()
-        quit.set_label("Quit")
-        quit.connect("activate", self.quit)
-        self.menu.append(quit)
-        self.menu.show_all()
-        self.menu.popup(None, None, None, self.status_icon, button, time)
-
-    def status_activate(self, status_icon):
-        """Open window from status icon """
-        self.deiconify()
-        self.present()
 
     def quit(self, *args):
         """Quit """

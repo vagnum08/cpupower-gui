@@ -29,11 +29,10 @@ configure_file(
 
 
 window = configure_file(
-  input: 'window.glade.in',
-  output: 'window.glade',
+  input: 'window.ui.in',
+  output: 'window.ui',
   configuration: conf,
 )
-
 
 gnome.compile_resources('cpupower-gui',
   'cpupower_gui.gresource.xml',
