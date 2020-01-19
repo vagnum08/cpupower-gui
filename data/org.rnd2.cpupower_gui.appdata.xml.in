@@ -32,20 +32,20 @@
 ​     <release version="0.8.0" date="2020-01-25">
 ​      <description>
 ​        <p>Add Chinese translation</p>
-​        <p>Add desktop actions and D-bus activation</p>
-​        <p>Add tray icon support using AppIndicator</p>
+        <p>Add desktop actions and D-bus activation</p>
+        <p>Add tray icon support using AppIndicator</p>
 	    </description>
 	   </release>
-​     <release version="0.7.2" date="2019-11-25">
+     <release version="0.7.2" date="2019-11-25">
 ​      <description>
 ​        <p>Fix meson build properties</p>
 	    </description>
 	   </release>
-​     <release version="0.7.1" date="2019-11-25">
-​      <description>
+     <release version="0.7.1" date="2019-11-25">
+     <description>
 ​        <p>Fix bug for unknown cpu</p>
-​        <p>Update translations</p>
-	    </description>
+        <p>Update translations</p>
+     </description>
 	   </release>
      <release version="0.7.0" date="2019-09-18">
 ​      <description>
