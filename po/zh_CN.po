@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-12 23:50+0000\n"
+"POT-Creation-Date: 2020-01-19 13:37+0000\n"
 "PO-Revision-Date: 2019-12-10 10:40+0800\n"
 "Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Poedit 2.2.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: data/org.rnd2.cpupower_gui.desktop.in.in:4 cpupower_gui/window.glade.in:455
+#: data/org.rnd2.cpupower_gui.desktop.in.in:4
 msgid "cpupower-gui"
 msgstr "cpupower 图形界面"
 
@@ -85,18 +85,55 @@ msgid "Evangelos Rigas"
 msgstr "Evangelos Rigas"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:34
+msgid "Add Chinese translation"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:35
+msgid "Add desktop actions and D-bus activation"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:36
+msgid "Add tray icon support using AppIndicator"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:41
+msgid "Fix meson build properties"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:46
+msgid "Fix bug for unknown cpu"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:47
+msgid "Update translations"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:52
 msgid "Refactor helper library and fix vulnerabilities"
 msgstr "重构辅助库和修复漏洞"
 
-#: cpupower_gui/window.glade.in:36
-msgid "Copyright (C) 2017-2019 [RnD]²"
+#: cpupower_gui/tray.ui:13
+msgid "Swith to performance profile"
+msgstr ""
+
+#: cpupower_gui/tray.ui:21
+msgid "Switch to balanced profile"
+msgstr ""
+
+#: cpupower_gui/tray.ui:35
+msgid "Quit"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:36
+#, fuzzy
+msgid "Copyright (C) 2017-2020 [RnD]²"
 msgstr "版权所有 (C) 2017-2019 [RnD]²"
 
-#: cpupower_gui/window.glade.in:37
+#: cpupower_gui/window.ui.in:37
 msgid "GUI utility to change the CPU frequency and governor"
 msgstr "可更改 CPU 频率和调节器的 GUI 图形界面实用程序"
 
-#: cpupower_gui/window.glade.in:39
+#: cpupower_gui/window.ui.in:39
 msgid ""
 "This program comes with absolutely no warranty.\n"
 "See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
@@ -106,66 +143,65 @@ msgstr ""
 "有关详细信息，请参见<a href=\"https://www.gnu.org/licenses/gpl-3.0.html\"> "
 "GNU通用公共许可证版本 3 或更高版本</a>。"
 
-#: cpupower_gui/window.glade.in:96
+#: cpupower_gui/window.ui.in:96
 msgid "About"
 msgstr "关于"
 
-#: cpupower_gui/window.glade.in:125
+#: cpupower_gui/window.ui.in:125
 msgid "Adjust the runtime CPU policies"
 msgstr "调整运行时 CPU 策略"
 
-#: cpupower_gui/window.glade.in:147
+#: cpupower_gui/window.ui.in:147
 msgid "Apply"
 msgstr "应用"
 
-#: cpupower_gui/window.glade.in:152
+#: cpupower_gui/window.ui.in:152
 msgid "Apply changes"
 msgstr "应用更改"
 
-#: cpupower_gui/window.glade.in:182
+#: cpupower_gui/window.ui.in:182
 msgid "Set CPU Frequency limits"
 msgstr "设置 CPU 频率限制"
 
-#: cpupower_gui/window.glade.in:199
+#: cpupower_gui/window.ui.in:199
 msgid "Governor:"
 msgstr "调速器:"
 
-#: cpupower_gui/window.glade.in:224
+#: cpupower_gui/window.ui.in:224
 msgid "Max freq. (MHz):"
 msgstr "最大频率 (MHz):"
 
-#: cpupower_gui/window.glade.in:295
+#: cpupower_gui/window.ui.in:295
 msgid "Min freq. (MHz):"
 msgstr "最小频率 (MHz):"
 
-#: cpupower_gui/window.glade.in:307
+#: cpupower_gui/window.ui.in:307
 msgid "CPU:"
 msgstr "CPU:"
 
-#: cpupower_gui/window.glade.in:331
+#: cpupower_gui/window.ui.in:331
 msgid "All CPUs:"
 msgstr "所有 CPU:"
 
-#: cpupower_gui/window.glade.in:378
+#: cpupower_gui/window.ui.in:378
 msgid "Settings"
 msgstr "设置"
 
-#: cpupower_gui/window.glade.in:394
+#: cpupower_gui/window.ui.in:394
 msgid "Configuration:"
 msgstr "配置："
 
-#: cpupower_gui/window.glade.in:407
+#: cpupower_gui/window.ui.in:407
 msgid "Runtime"
 msgstr "运行时"
 
-#: cpupower_gui/window.glade.in:408
+#: cpupower_gui/window.ui.in:408
 msgid "Persistent"
 msgstr "持久化"
 
-#: cpupower_gui/window.glade.in:421
+#: cpupower_gui/window.ui.in:421
 msgid "Apply at boot:"
 msgstr "启动时应用 :"
 
-#: cpupower_gui/window.glade.in:456
-msgid "Frequency Setter"
-msgstr "频率设定器"
+#~ msgid "Frequency Setter"
+#~ msgstr "频率设定器"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-12 23:50+0000\n"
+"POT-Creation-Date: 2020-01-19 13:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/org.rnd2.cpupower_gui.desktop.in.in:4 cpupower_gui/window.glade.in:455
+#: data/org.rnd2.cpupower_gui.desktop.in.in:4
 msgid "cpupower-gui"
 msgstr ""
 
@@ -79,84 +79,116 @@ msgid "Evangelos Rigas"
 msgstr ""
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:34
+msgid "Add Chinese translation"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:35
+msgid "Add desktop actions and D-bus activation"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:36
+msgid "Add tray icon support using AppIndicator"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:41
+msgid "Fix meson build properties"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:46
+msgid "Fix bug for unknown cpu"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:47
+msgid "Update translations"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:52
 msgid "Refactor helper library and fix vulnerabilities"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:36
-msgid "Copyright (C) 2017-2019 [RnD]²"
+#: cpupower_gui/tray.ui:13
+msgid "Swith to performance profile"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:37
+#: cpupower_gui/tray.ui:21
+msgid "Switch to balanced profile"
+msgstr ""
+
+#: cpupower_gui/tray.ui:35
+msgid "Quit"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:36
+msgid "Copyright (C) 2017-2020 [RnD]²"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:37
 msgid "GUI utility to change the CPU frequency and governor"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:39
+#: cpupower_gui/window.ui.in:39
 msgid ""
 "This program comes with absolutely no warranty.\n"
 "See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
 "Public Licence, version 3 or later</a> for details."
 msgstr ""
 
-#: cpupower_gui/window.glade.in:96
+#: cpupower_gui/window.ui.in:96
 msgid "About"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:125
+#: cpupower_gui/window.ui.in:125
 msgid "Adjust the runtime CPU policies"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:147
+#: cpupower_gui/window.ui.in:147
 msgid "Apply"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:152
+#: cpupower_gui/window.ui.in:152
 msgid "Apply changes"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:182
+#: cpupower_gui/window.ui.in:182
 msgid "Set CPU Frequency limits"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:199
+#: cpupower_gui/window.ui.in:199
 msgid "Governor:"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:224
+#: cpupower_gui/window.ui.in:224
 msgid "Max freq. (MHz):"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:295
+#: cpupower_gui/window.ui.in:295
 msgid "Min freq. (MHz):"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:307
+#: cpupower_gui/window.ui.in:307
 msgid "CPU:"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:331
+#: cpupower_gui/window.ui.in:331
 msgid "All CPUs:"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:378
+#: cpupower_gui/window.ui.in:378
 msgid "Settings"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:394
+#: cpupower_gui/window.ui.in:394
 msgid "Configuration:"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:407
+#: cpupower_gui/window.ui.in:407
 msgid "Runtime"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:408
+#: cpupower_gui/window.ui.in:408
 msgid "Persistent"
 msgstr ""
 
-#: cpupower_gui/window.glade.in:421
+#: cpupower_gui/window.ui.in:421
 msgid "Apply at boot:"
-msgstr ""
-
-#: cpupower_gui/window.glade.in:456
-msgid "Frequency Setter"
 msgstr ""

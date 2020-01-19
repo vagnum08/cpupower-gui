@@ -1,7 +1,8 @@
 data/org.rnd2.cpupower_gui.desktop.in.in
 data/org.rnd2.cpupower_gui.appdata.xml.in
 data/org.rnd2.cpupower_gui.gschema.xml
-cpupower_gui/window.glade.in
+cpupower_gui/tray.ui
+cpupower_gui/window.ui.in
 cpupower_gui/main.py
 cpupower_gui/window.py
 
