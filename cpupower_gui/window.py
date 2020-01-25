@@ -39,6 +39,7 @@ def dialog_response(widget, response_id):
         print("dialog closed or cancelled")
     widget.destroy()
 
+
 def error_message(msg, transient):
     message = Gtk.MessageDialog(type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK)
     message.set_markup(msg)
@@ -55,9 +56,14 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     gov_box = Gtk.Template.Child()
     adj_min = Gtk.Template.Child()
     adj_max = Gtk.Template.Child()
+    spin_min = Gtk.Template.Child()
+    spin_max = Gtk.Template.Child()
+    min_sl = Gtk.Template.Child()
+    max_sl = Gtk.Template.Child()
     apply_btn = Gtk.Template.Child()
     toall = Gtk.Template.Child()
     about_dialog = Gtk.Template.Child()
+    cpu_online = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -83,7 +89,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
     def quit(self, *args):
         """Quit """
-        # HELPER.quit()
+        HELPER.quit()
         exit(0)
 
     def _get_active_cpu(self):
@@ -117,6 +123,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.adj_min.set_value(int(freq_min / 1000))
         self.adj_max.set_value(int(freq_max / 1000))
         self.apply_btn.set_sensitive(False)
+        self.cpu_online.set_active(self.is_online(cpu))
+        self.cpu_online.set_sensitive(bool(HELPER.cpu_allowed_offline(cpu)))
 
     @Gtk.Template.Callback()
     def on_cpu_changed(self, *args):
@@ -165,6 +173,22 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.apply_btn.set_sensitive(True)
 
     @Gtk.Template.Callback()
+    def on_refresh_clicked(self, *args):
+        self.upd_sliders()
+
+    @Gtk.Template.Callback()
+    def on_cpu_online_toggled(self, *args):
+        cpu = self._get_active_cpu()
+        chk = self.cpu_online.get_active()
+        changed = self.is_online(cpu) ^ chk
+        tgl = self.apply_btn.get_sensitive() or changed
+        self.apply_btn.set_sensitive(tgl)
+        self.spin_min.set_sensitive(chk)
+        self.spin_max.set_sensitive(chk)
+        self.min_sl.set_sensitive(chk)
+        self.max_sl.set_sensitive(chk)
+
+    @Gtk.Template.Callback()
     def on_governor_changed(self, *args):
         """ Change governor and enable apply_btn """
         # pylint: disable=W0612,W0613
@@ -176,32 +200,32 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     @Gtk.Template.Callback()
     def on_apply_clicked(self, button):
         """ Write changes back to sysfs """
-        fmin = int(self.adj_min.get_value() * 1000)
-        fmax = int(self.adj_max.get_value() * 1000)
         cpu = self._get_active_cpu()
         ret = -1
         if HELPER.isauthorized():
             if self.toall.get_active():
                 for i in self.online_cpus:
-                    ret = HELPER.update_cpu_settings(i, fmin, fmax, self.governor)
+                    self.set_cpu_online(i)
+                    if self.is_online(cpu):
+                        ret = HELPER.update_cpu_settings(
+                            i, self.fmin, self.fmax, self.governor
+                        )
             else:
-                if self.is_online(cpu):
-                    ret = HELPER.update_cpu_settings(cpu, fmin, fmax, self.governor)
-                else:
-                    error_message("The CPU you selected is not online.", self)
-                    self.update_cpubox()
-                    return
+                ret = self.set_cpu_online(cpu)
+                if self.cpu_online.get_active():
+                    ret = HELPER.update_cpu_settings(
+                        cpu, self.fmin, self.fmax, self.governor
+                    )
+
+            # Update sliders
+            self.upd_sliders()
 
             if ret == 0:
                 button.set_sensitive(False)
             else:
-                error_message(
-                    "Error occurred, check if you have permissions.", self
-                )
+                error_message("Error occurred, check if you have permissions.", self)
         else:
-            error_message(
-                "You don't have permissions to update cpu settings!", self
-            )
+            error_message("You don't have permissions to update cpu settings!", self)
 
     @Gtk.Template.Callback()
     def on_about_clicked(self, button):
@@ -216,16 +240,19 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.about_dialog.hide()
 
     def _read_settings(self, cpu):
-        if self.is_online(cpu):
-            self.freq_min_hw, self.freq_max_hw = HELPER.get_cpu_limits(cpu)
-            self.governor = HELPER.get_cpu_governor(cpu)
-            self.governors = {}
-            for i, gov in enumerate(HELPER.get_cpu_governors(cpu)):
-                self.governors[i] = gov
-        else:
-            error_message("The CPU you selected is not online.", self)
-            self.update_cpubox()
-            self._read_settings(self._get_active_cpu())
+        self.freq_min_hw, self.freq_max_hw = HELPER.get_cpu_limits(cpu)
+        self.governor = HELPER.get_cpu_governor(cpu)
+        self.governors = {}
+        for i, gov in enumerate(HELPER.get_cpu_governors(cpu)):
+            self.governors[i] = gov
+
+    @property
+    def fmin(self):
+        return int(self.adj_min.get_value() * 1000)
+
+    @property
+    def fmax(self):
+        return int(self.adj_max.get_value() * 1000)
 
     @property
     def online_cpus(self):
@@ -236,3 +263,24 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         online = HELPER.get_cpus_online()
         present = HELPER.get_cpus_present()
         return (cpu in present) and (cpu in online)
+
+    @staticmethod
+    def is_offline(cpu):
+        offline = HELPER.get_cpus_offline()
+        present = HELPER.get_cpus_present()
+        return (cpu in present) and (cpu in offline)
+
+    def set_cpu_online(self, cpu):
+        # If cpu is offline, enable and update freq settings
+        if self.is_offline(cpu) and self.cpu_online.get_active():
+            ret = HELPER.set_cpu_online(cpu)
+            self.upd_sliders()
+            return ret
+
+        # If cpu is online, disable
+        if self.is_online(cpu) and not self.cpu_online.get_active():
+            if HELPER.cpu_allowed_offline(cpu):
+                return HELPER.set_cpu_offline(cpu)
+
+        # No change to the cpu
+        return 0

@@ -160,6 +160,26 @@ Barcza Károly</property>
             <property name="position">1</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkButton" id="refresh">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="on_refresh_clicked" swapped="no"/>
+            <child>
+              <object class="GtkImage" id="refresh_icon">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-refresh</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
       </object>
     </child>
     <child>
@@ -229,7 +249,7 @@ Barcza Károly</property>
               </packing>
             </child>
             <child>
-              <object class="GtkScale" id="max">
+              <object class="GtkScale" id="max_sl">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="margin_left">4</property>
@@ -246,7 +266,7 @@ Barcza Károly</property>
               </packing>
             </child>
             <child>
-              <object class="GtkSpinButton">
+              <object class="GtkSpinButton" id="spin_max">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="adjustment">adj_max</property>
@@ -258,7 +278,7 @@ Barcza Károly</property>
               </packing>
             </child>
             <child>
-              <object class="GtkSpinButton">
+              <object class="GtkSpinButton" id="spin_min">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="adjustment">adj_min</property>
@@ -271,12 +291,13 @@ Barcza Károly</property>
               </packing>
             </child>
             <child>
-              <object class="GtkScale" id="min">
+              <object class="GtkScale" id="min_sl">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="margin_left">4</property>
                 <property name="margin_right">4</property>
                 <property name="adjustment">adj_min</property>
+                <property name="fill_level">100000</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
                 <property name="draw_value">False</property>
@@ -348,7 +369,18 @@ Barcza Károly</property>
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkCheckButton" id="cpu_online">
+                <property name="label" translatable="yes">Online</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="draw_indicator">True</property>
+                <signal name="toggled" handler="on_cpu_online_toggled" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">1</property>
+              </packing>
             </child>
             <child>
               <placeholder/>

@@ -47,6 +47,7 @@ AVAIL_GOV = "scaling_available_governors"
 GOVERNOR = "scaling_governor"
 ONLINE = "/sys/devices/system/cpu/online"
 PRESENT = "/sys/devices/system/cpu/present"
+ONLINE_PATH = "/sys/devices/system/cpu/cpu{}/online"
 
 
 def parse_corelist(string):
@@ -85,7 +86,7 @@ def cpus_offline():
 
 
 def cpus_available():
-    online = cpus_online()
+    online = cpus_present()
     avail = []
     for cpu in online:
         sys_path = SYS_PATH.format(cpu)
@@ -221,6 +222,12 @@ class CpupowerGui_DBus(dbus.service.Object):
         return cpus_present()
 
     @dbus.service.method(
+        "org.rnd2.cpupower_gui.helper", in_signature="i", out_signature="i"
+    )
+    def cpu_allowed_offline(self, cpu):
+        return int(os.path.exists(ONLINE_PATH.format(cpu)))
+
+    @dbus.service.method(
         "org.rnd2.cpupower_gui.helper", in_signature="i", out_signature="s"
     )
     def get_cpu_governor(self, cpu):
@@ -240,6 +247,36 @@ class CpupowerGui_DBus(dbus.service.Object):
                 int(cpu), int(freq_min_hw), int(freq_max_hw), str(governor)
             )
             return ret
+        else:
+            return -1
+
+    @dbus.service.method(
+        "org.rnd2.cpupower_gui.helper",
+        in_signature="i",
+        out_signature="i",
+        sender_keyword="sender",
+    )
+    def set_cpu_online(self, cpu, sender=None):
+        if self._is_authorized(sender):
+            sys_path = ONLINE_PATH.format(cpu)
+            with open(os.path.join(sys_path), "w") as sys_file:
+                sys_file.write("1")
+            return 0
+        else:
+            return -1
+
+    @dbus.service.method(
+        "org.rnd2.cpupower_gui.helper",
+        in_signature="i",
+        out_signature="i",
+        sender_keyword="sender",
+    )
+    def set_cpu_offline(self, cpu, sender=None):
+        if self._is_authorized(sender):
+            sys_path = ONLINE_PATH.format(cpu)
+            with open(os.path.join(sys_path), "w") as sys_file:
+                sys_file.write("0")
+            return 0
         else:
             return -1
 
