@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-19 13:37+0000\n"
+"POT-Creation-Date: 2020-01-25 18:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -149,46 +149,50 @@ msgstr ""
 msgid "Apply changes"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:182
+#: cpupower_gui/window.ui.in:202
 msgid "Set CPU Frequency limits"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:199
+#: cpupower_gui/window.ui.in:219
 msgid "Governor:"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:224
+#: cpupower_gui/window.ui.in:244
 msgid "Max freq. (MHz):"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:295
+#: cpupower_gui/window.ui.in:316
 msgid "Min freq. (MHz):"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:307
+#: cpupower_gui/window.ui.in:328
 msgid "CPU:"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:331
+#: cpupower_gui/window.ui.in:352
 msgid "All CPUs:"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:378
+#: cpupower_gui/window.ui.in:373
+msgid "Online"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:410
 msgid "Settings"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:394
+#: cpupower_gui/window.ui.in:426
 msgid "Configuration:"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:407
+#: cpupower_gui/window.ui.in:439
 msgid "Runtime"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:408
+#: cpupower_gui/window.ui.in:440
 msgid "Persistent"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:421
+#: cpupower_gui/window.ui.in:453
 msgid "Apply at boot:"
 msgstr ""

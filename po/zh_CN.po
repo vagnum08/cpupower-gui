@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-19 13:37+0000\n"
+"POT-Creation-Date: 2020-01-25 18:28+0000\n"
 "PO-Revision-Date: 2019-12-10 10:40+0800\n"
 "Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Language-Team: \n"
@@ -159,47 +159,51 @@ msgstr "应用"
 msgid "Apply changes"
 msgstr "应用更改"
 
-#: cpupower_gui/window.ui.in:182
+#: cpupower_gui/window.ui.in:202
 msgid "Set CPU Frequency limits"
 msgstr "设置 CPU 频率限制"
 
-#: cpupower_gui/window.ui.in:199
+#: cpupower_gui/window.ui.in:219
 msgid "Governor:"
 msgstr "调速器:"
 
-#: cpupower_gui/window.ui.in:224
+#: cpupower_gui/window.ui.in:244
 msgid "Max freq. (MHz):"
 msgstr "最大频率 (MHz):"
 
-#: cpupower_gui/window.ui.in:295
+#: cpupower_gui/window.ui.in:316
 msgid "Min freq. (MHz):"
 msgstr "最小频率 (MHz):"
 
-#: cpupower_gui/window.ui.in:307
+#: cpupower_gui/window.ui.in:328
 msgid "CPU:"
 msgstr "CPU:"
 
-#: cpupower_gui/window.ui.in:331
+#: cpupower_gui/window.ui.in:352
 msgid "All CPUs:"
 msgstr "所有 CPU:"
 
-#: cpupower_gui/window.ui.in:378
+#: cpupower_gui/window.ui.in:373
+msgid "Online"
+msgstr "线上"
+
+#: cpupower_gui/window.ui.in:410
 msgid "Settings"
 msgstr "设置"
 
-#: cpupower_gui/window.ui.in:394
+#: cpupower_gui/window.ui.in:426
 msgid "Configuration:"
 msgstr "配置："
 
-#: cpupower_gui/window.ui.in:407
+#: cpupower_gui/window.ui.in:439
 msgid "Runtime"
 msgstr "运行时"
 
-#: cpupower_gui/window.ui.in:408
+#: cpupower_gui/window.ui.in:440
 msgid "Persistent"
 msgstr "持久化"
 
-#: cpupower_gui/window.ui.in:421
+#: cpupower_gui/window.ui.in:453
 msgid "Apply at boot:"
 msgstr "启动时应用 :"
 

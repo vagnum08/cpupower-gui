@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui 0.7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-19 13:37+0000\n"
+"POT-Creation-Date: 2020-01-25 18:28+0000\n"
 "PO-Revision-Date: 2020-01-19 14:29+0000\n"
 "Last-Translator: Evangelos Rigas <erigas@rnd2.org>\n"
 "Language-Team: \n"
@@ -161,47 +161,51 @@ msgstr "Εκτέλεση"
 msgid "Apply changes"
 msgstr "Εφαρμογή αλλαγών"
 
-#: cpupower_gui/window.ui.in:182
+#: cpupower_gui/window.ui.in:202
 msgid "Set CPU Frequency limits"
 msgstr "Ορισμός ορίων συχνότητας επεξεργαστή"
 
-#: cpupower_gui/window.ui.in:199
+#: cpupower_gui/window.ui.in:219
 msgid "Governor:"
 msgstr "Κυβερνήτης:"
 
-#: cpupower_gui/window.ui.in:224
+#: cpupower_gui/window.ui.in:244
 msgid "Max freq. (MHz):"
 msgstr "Μέγ. συχν. (ΜHz):"
 
-#: cpupower_gui/window.ui.in:295
+#: cpupower_gui/window.ui.in:316
 msgid "Min freq. (MHz):"
 msgstr "Ελάχ. συχν. (MHz):"
 
-#: cpupower_gui/window.ui.in:307
+#: cpupower_gui/window.ui.in:328
 msgid "CPU:"
 msgstr "Επεξεργαστής:"
 
-#: cpupower_gui/window.ui.in:331
+#: cpupower_gui/window.ui.in:352
 msgid "All CPUs:"
 msgstr "Όλοι οι επεξεργαστές:"
 
-#: cpupower_gui/window.ui.in:378
+#: cpupower_gui/window.ui.in:373
+msgid "Online"
+msgstr "Ενεργός"
+
+#: cpupower_gui/window.ui.in:410
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
-#: cpupower_gui/window.ui.in:394
+#: cpupower_gui/window.ui.in:426
 msgid "Configuration:"
 msgstr "Προφίλ:"
 
-#: cpupower_gui/window.ui.in:407
+#: cpupower_gui/window.ui.in:439
 msgid "Runtime"
 msgstr "Τρέχον"
 
-#: cpupower_gui/window.ui.in:408
+#: cpupower_gui/window.ui.in:440
 msgid "Persistent"
 msgstr "Μόνιμο"
 
-#: cpupower_gui/window.ui.in:421
+#: cpupower_gui/window.ui.in:453
 msgid "Apply at boot:"
 msgstr "Εφαρμογή κατά την εκκίνηση:"
 
