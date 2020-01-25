@@ -2,6 +2,7 @@ project('cpupower-gui',
           version: '0.8.0',
     meson_version: '>= 0.50.0',
   default_options: [ 'warning_level=2',
+		     'systemddir=/lib',
                    ],
 )
 

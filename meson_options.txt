@@ -1,0 +1,3 @@
+option('systemddir', type : 'string',
+       description : '''Set the path for systemd units [default '/lib/systemd']''')
+
