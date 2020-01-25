@@ -42,6 +42,12 @@ Similarly, the balanced profile set the governor to either `powersave` (if avail
 
 These profiles can be selected either from the desktop icon or the tray icon actions.
 
+There is an option to enable or disable a specific cpu.
+This can be controlled via the the `Online` checkbox next to the `CPU` drop-down menu.
+Initially, the checkbox displays the state of the cpu, i.e. if it is online or offline.
+
+Note: If this checkbox is greyed-out, it means that this cpu is not allowed to go offline.
+
 ## Command-line
 
 The governor profiles can be used from the command line.
