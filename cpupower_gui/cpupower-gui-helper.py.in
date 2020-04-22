@@ -123,7 +123,7 @@ def read_freq_lims(cpu):
 
         return freq_minhw, freq_maxhw
     except Exception as e:
-        print(f"WARNING! Unknown CPU frequency, cause: {e}")
+        print("WARNING! Unknown CPU frequency, cause:", e)
 
     return 0, 0
 
