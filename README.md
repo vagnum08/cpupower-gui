@@ -127,6 +127,9 @@ To uninstall run `ninja -C build install`
 To uninstall run `ninja -C build uninstall`.
 
 # Runtime Dependencies
+### Note: 
+Since version 0.7.1, Python GObject version must be >= 3.30 
+
 ## Arch Linux and derivatives
 `python` `gtk3` `hicolor-icon-theme` `polkit` `python-dbus` `python-gobject` `libappindicator-gtk3`
 
