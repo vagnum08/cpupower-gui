@@ -115,9 +115,15 @@ To install them,
 
 ## Build cpupower-gui
 ```bash
-meson build --prefix /usr
+meson build --prefix /usr -Dsystemddir=<path-to-systemd-dir>
 ninja -C build
 ```
+
+The `systemddir` option should point to the systemd directory.
+If this option is not set the default is used (i.e. `/usr/lib/systemd`).
+
+- The default value is valid for Arch/Fedora/OpenSUSE and derivatives.
+- For Debian and Ubuntu based systems you should use `-Dsystemddir=/lib/systemd`.
 
 ## Install
 To uninstall run `ninja -C build install`
@@ -127,8 +133,8 @@ To uninstall run `ninja -C build install`
 To uninstall run `ninja -C build uninstall`.
 
 # Runtime Dependencies
-### Note: 
-Since version 0.7.1, Python GObject version must be >= 3.30 
+### Note:
+Since version 0.7.1, Python GObject version must be >= 3.30
 
 ## Arch Linux and derivatives
 `python` `gtk3` `hicolor-icon-theme` `polkit` `python-dbus` `python-gobject` `libappindicator-gtk3`
@@ -144,7 +150,7 @@ For the tray icon `gir1.2-appindicator3-0.1`.
 
 ## Fedora and openSUSE
 ### Fedora only
-`gtk3` `python3-dbus` `python3-gobject` 
+`gtk3` `python3-dbus` `python3-gobject`
 
 ### openSUSE only
 `libgtk-3-0` `typelib-1_0-Gtk-3_0` `python3-gobject` `python3-gobject-Gdk` `python3-dbus-python`
