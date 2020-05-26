@@ -64,9 +64,12 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     toall = Gtk.Template.Child()
     about_dialog = Gtk.Template.Child()
     cpu_online = Gtk.Template.Child()
+    gov_container = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.GOV_EN = True
 
         self.update_cpubox()
         self._read_settings(self._get_active_cpu())
@@ -107,14 +110,15 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self._read_settings(cpu)
         freq_min, freq_max = HELPER.get_cpu_frequencies(cpu)
 
-        gov_store = Gtk.ListStore(str, int)
-        for gov in self.governors.items():
-            if gov[1] == self.governor:
-                gov_id = gov[0]
-            gov_store.append([gov[1].capitalize(), gov[0]])
+        if self.GOV_EN:
+            gov_store = Gtk.ListStore(str, int)
+            for gov in self.governors.items():
+                if gov[1] == self.governor:
+                    gov_id = gov[0]
+                gov_store.append([gov[1].capitalize(), gov[0]])
 
-        self.gov_box.set_model(gov_store)
-        self.gov_box.set_active(gov_id)
+            self.gov_box.set_model(gov_store)
+            self.gov_box.set_active(gov_id)
 
         self.adj_min.set_lower(int(self.freq_min_hw / 1000))
         self.adj_min.set_upper(int(self.freq_max_hw / 1000))
@@ -207,15 +211,15 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                 for i in self.online_cpus:
                     self.set_cpu_online(i)
                     if self.is_online(cpu):
-                        ret = HELPER.update_cpu_settings(
-                            i, self.fmin, self.fmax, self.governor
-                        )
+                        ret = HELPER.update_cpu_settings(i, self.fmin, self.fmax)
+                        if self.GOV_EN:
+                            ret += HELPER.update_cpu_governor(i, self.governor)
             else:
                 ret = self.set_cpu_online(cpu)
                 if self.cpu_online.get_active():
-                    ret = HELPER.update_cpu_settings(
-                        cpu, self.fmin, self.fmax, self.governor
-                    )
+                    ret = HELPER.update_cpu_settings(cpu, self.fmin, self.fmax)
+                    if self.GOV_EN:
+                        ret += HELPER.update_cpu_governor(cpu, self.governor)
 
             # Update sliders
             self.upd_sliders()
@@ -242,6 +246,14 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     def _read_settings(self, cpu):
         self.freq_min_hw, self.freq_max_hw = HELPER.get_cpu_limits(cpu)
         self.governor = HELPER.get_cpu_governor(cpu)
+
+        # Failed to read governor
+        # https://github.com/vagnum08/cpupower-gui/issues/12
+        if self.governor == "ERROR":
+            self.GOV_EN = False
+            self.gov_container.hide()
+            return
+
         self.governors = {}
         for i, gov in enumerate(HELPER.get_cpu_governors(cpu)):
             self.governors[i] = gov

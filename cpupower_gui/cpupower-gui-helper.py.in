@@ -131,19 +131,25 @@ def read_freq_lims(cpu):
 def read_govs(cpu):
     """ Reads governors from sysfs """
     sys_path = SYS_PATH.format(int(cpu))
-    with open(os.path.join(sys_path, AVAIL_GOV), "r") as sys_file:
-        govs = sys_file.readline().strip().split(" ")
-
-    return govs
+    try:
+        with open(os.path.join(sys_path, AVAIL_GOV), "r") as sys_file:
+            govs = sys_file.readline().strip().split(" ")
+    except OSError as e:
+        govs = []
+    finally:
+        return govs
 
 
 def read_governor(cpu):
     """ Reads governor from sysfs """
     sys_path = SYS_PATH.format(int(cpu))
-    with open(os.path.join(sys_path, GOVERNOR), "r") as sys_file:
-        governor = sys_file.readline().strip()
-
-    return governor
+    try:
+        with open(os.path.join(sys_path, GOVERNOR), "r") as sys_file:
+            governor = sys_file.readline().strip()
+    except OSError as e:
+        governor = "ERROR"
+    finally:
+        return governor
 
 
 class CpupowerGui_DBus(dbus.service.Object):
@@ -237,15 +243,13 @@ class CpupowerGui_DBus(dbus.service.Object):
 
     @dbus.service.method(
         "org.rnd2.cpupower_gui.helper",
-        in_signature="iiis",
+        in_signature="iii",
         out_signature="i",
         sender_keyword="sender",
     )
-    def update_cpu_settings(self, cpu, freq_min_hw, freq_max_hw, governor, sender=None):
+    def update_cpu_settings(self, cpu, freq_min_hw, freq_max_hw, sender=None):
         if self._is_authorized(sender):
-            ret = self._update_cpu(
-                int(cpu), int(freq_min_hw), int(freq_max_hw), str(governor)
-            )
+            ret = self._update_cpu(int(cpu), int(freq_min_hw), int(freq_max_hw))
             return ret
         else:
             return -1
@@ -311,7 +315,7 @@ class CpupowerGui_DBus(dbus.service.Object):
     def is_present(cpu):
         return cpu in cpus_present()
 
-    def _update_cpu(self, cpu, fmin, fmax, governor):
+    def _update_cpu(self, cpu, fmin, fmax):
         if self.is_present(cpu) and self.is_online(cpu):
             try:
                 sys_path = SYS_PATH.format(cpu)
@@ -319,8 +323,6 @@ class CpupowerGui_DBus(dbus.service.Object):
                     sys_file.write(str(fmin))
                 with open(os.path.join(sys_path, FREQ_MAX), "w") as sys_file:
                     sys_file.write(str(fmax))
-                with open(os.path.join(sys_path, GOVERNOR), "w") as sys_file:
-                    sys_file.write(governor)
                 return 0
             except IOError as e:
                 return -13
