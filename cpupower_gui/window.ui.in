@@ -35,7 +35,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
     <property name="version">@VERSION@</property>
     <property name="copyright" translatable="yes">Copyright (C) 2017-2020 [RnD]²</property>
     <property name="comments" translatable="yes">GUI utility to change the CPU frequency and governor</property>
-    <property name="website">htts://github.com/vagnum08/cpupower-gui</property>
+    <property name="website">https://github.com/vagnum08/cpupower-gui</property>
     <property name="license" translatable="yes">This program comes with absolutely no warranty.
 See the &lt;a href="https://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Public Licence, version 3 or later&lt;/a&gt; for details.</property>
     <property name="authors">Evangelos Rigas</property>
