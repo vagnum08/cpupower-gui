@@ -68,12 +68,10 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-        self.GOV_EN = True
-
+        self.conf_store = {}
+        self.refreshing = False
+        self.init_conf_store()
         self.update_cpubox()
-        self._read_settings(self._get_active_cpu())
-
         self.upd_sliders()
 
         # Application actions
@@ -81,13 +79,26 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         action.connect("activate", self.quit)
         self.add_action(action)
 
+    def init_conf_store(self):
+        """ Initialise the configuration store """
+        for cpu in self.online_cpus:
+            self._update_cpu_conf(int(cpu))
+
     def update_cpubox(self):
-        self.cpu_store = Gtk.ListStore(int)
+        """ Update the CPU Combobox """
+        self.cpu_store = Gtk.ListStore(int, str)
+        self.cpu_box.set_model(self.cpu_store)
+        # Get cell renderer
+        cells = self.cpu_box.get_cells()
+        if cells:
+            cell = cells[0]
+            # Change foreground based on second column of cpu_store
+            # If the cpu settings are changed then cpu text is coloured red
+            self.cpu_box.add_attribute(cell, "foreground", 1)
 
         for cpu in self.online_cpus:
-            self.cpu_store.append([cpu])
+            self.cpu_store.append([cpu, "black"])
 
-        self.cpu_box.set_model(self.cpu_store)
         self.cpu_box.set_active(0)
 
     def quit(self, *args):
@@ -96,39 +107,157 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         exit(0)
 
     def _get_active_cpu(self):
-        iter = self.cpu_box.get_active_iter()
-        if iter is not None:
-            return int(self.cpu_store[iter][0])
+        """ Helper function to get cpu from combobox """
+        cpu_iter = self.cpu_box.get_active_iter()
+        if cpu_iter is not None:
+            return int(self.cpu_store[cpu_iter][0])
 
         self.update_cpubox()
         return 0
 
-    def upd_sliders(self):
-        """ Updates the slider widgets by reading the sys files"""
+    def _update_cpu_conf(self, cpu):
+        """ Update the configuration store (dict) for cpu
+
+        Args:
+            cpu: Index number of cpu
+
+        """
+        # Initialise temporary config dictionary
+        confd = {
+            "hw_lims": (None, None),
+            "freqs": (None, None),
+            "online": None,
+            "governor": None,
+            "governors": [],
+            "changed": False,
+        }
+
+        # Gather values
+        hw_min, hw_max = HELPER.get_cpu_limits(cpu)
+        confd["hw_lims"] = (int(hw_min), int(hw_max))
+
+        fmin, fmax = HELPER.get_cpu_frequencies(cpu)
+        confd["freqs"] = (int(fmin), int(fmax))
+
+        confd["online"] = self.is_online(cpu)
+
+        gov_conf = self._update_gov_conf(cpu)
+        confd["governor"] = gov_conf[0]
+        confd["governors"] = gov_conf[1]
+
+        # Store settings
+        self.conf_store.update({cpu: confd})
+
+    def _update_gov_conf(self, cpu):
+        """ Helper function to get governor settings """
+        governor = str(HELPER.get_cpu_governor(cpu))
+        if governor == "ERROR":
+            govid = None
+            governors = []
+        else:
+            governors = self.get_cpu_governors(cpu)
+            if governor in governors:
+                govid = governors.index(governor)
+            else:
+                govid = None
+
+        return govid, governors
+
+    def _update_conf_store_freqs(self, cpu, fmin, fmax):
+        """ Updates conf_store frequency values for `cpu`
+
+        Args:
+            cpu: Index of cpu to update
+            fmin: Minimum scaling frequency
+            fmax: Minimum scaling frequency
+
+        """
+        conf = self.conf_store.get(cpu)
+        if conf is not None:
+            conf.update({"freqs": (fmin * 1000, fmax * 1000), "changed": True})
+        self._update_cpu_foreground(cpu, True)
+
+    def _update_conf_store_online(self, cpu, online):
+        """ Updates conf_store online value for `cpu`
+
+        Args:
+            cpu: Index of cpu to update
+            online: Boolean indication if cpu is online or offline
+
+        """
+        conf = self.conf_store.get(cpu)
+        changed = True if online != self.is_online(cpu) else False
+
+        if conf is not None:
+            conf["online"] = online
+            if changed:
+                conf["changed"] = True
+        self._update_cpu_foreground(cpu, True)
+
+    def _update_cpu_foreground(self, cpu, changed):
+        """Change colour on the combobox if cpu settings were changed
+
+        Args:
+            cpu: Index of cpu to update
+            changed: If changed is True, cpu text will be coloured red,
+             otherwise the text will be black
+
+        """
+        color = "red" if changed else "black"
+        if cpu <= len(self.cpu_store):
+            self.cpu_store[cpu][1] = color
+
+    def upd_sliders(self, refresh=False):
+        """ Updates the slider widgets by reading the sys files
+
+        Args:
+            refresh: If refresh is True, it resets the sliders to the values
+             as read from the hardware
+
+        """
         cpu = self._get_active_cpu()
+        conf = self.conf_store.get(cpu)
+        if not conf:
+            return
 
-        self._read_settings(cpu)
-        freq_min, freq_max = HELPER.get_cpu_frequencies(cpu)
+        freq_min_hw, freq_max_hw = conf.get("hw_lims")
+        if refresh:
+            cpu_online = self.is_online(cpu)
+            freq_min, freq_max = HELPER.get_cpu_frequencies(cpu)
+            conf["governor"], conf["governors"] = self._update_gov_conf(cpu)
+            conf["changed"] = False  # Reset changed status for cpu
+        else:
+            cpu_online = conf.get("online")
+            freq_min, freq_max = conf.get("freqs")
 
-        if self.GOV_EN:
+        governor = conf.get("governor")
+        governors = conf.get("governors")
+
+        self.refreshing = True  # Use the flag to skip callbacks
+
+        if governor is not None:
             gov_store = Gtk.ListStore(str, int)
-            for gov in self.governors.items():
-                if gov[1] == self.governor:
-                    gov_id = gov[0]
-                gov_store.append([gov[1].capitalize(), gov[0]])
+            for govid, gov in enumerate(governors):
+                gov_store.append([gov.capitalize(), govid])
 
             self.gov_box.set_model(gov_store)
-            self.gov_box.set_active(gov_id)
+            self.gov_box.set_active(governor)
+            self.gov_container.set_sensitive(True)
+        else:
+            self.gov_container.set_sensitive(False)
 
-        self.adj_min.set_lower(int(self.freq_min_hw / 1000))
-        self.adj_min.set_upper(int(self.freq_max_hw / 1000))
-        self.adj_max.set_lower(int(self.freq_min_hw / 1000))
-        self.adj_max.set_upper(int(self.freq_max_hw / 1000))
+        # Update sliders
+        self.adj_min.set_lower(int(freq_min_hw / 1000))
+        self.adj_min.set_upper(int(freq_max_hw / 1000))
+        self.adj_max.set_lower(int(freq_min_hw / 1000))
+        self.adj_max.set_upper(int(freq_max_hw / 1000))
         self.adj_min.set_value(int(freq_min / 1000))
         self.adj_max.set_value(int(freq_max / 1000))
-        self.apply_btn.set_sensitive(False)
-        self.cpu_online.set_active(self.is_online(cpu))
+        self.apply_btn.set_sensitive(self.is_conf_changed)
+        self.cpu_online.set_active(cpu_online)
         self.cpu_online.set_sensitive(bool(HELPER.cpu_allowed_offline(cpu)))
+        self.refreshing = False  # Now the callbacks work normally
+        self._update_cpu_foreground(cpu, conf["changed"])
 
     @Gtk.Template.Callback()
     def on_cpu_changed(self, *args):
@@ -156,32 +285,51 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     def on_adj_min_value_changed(self, *args):
         """ Callback for adj_min """
         # pylint: disable=W0612,W0613
-        if self.adj_min.get_value() > self.adj_max.get_value():
-            if self.adj_min.get_value() + 10 > self.freq_max_hw / 1000:
-                self.adj_max.set_value(self.freq_max_hw / 1000)
+        if self.refreshing:
+            return
+        cpu = self._get_active_cpu()
+        fmin = self.adj_min.get_value()
+        fmax = self.adj_max.get_value()
+        fmin_hw, fmax_hw = self.conf_store[cpu].get("hw_lims")
+
+        if fmin > fmax:
+            if fmin + 10 > fmax_hw / 1000:
+                self.adj_max.set_value(fmax_hw / 1000)
             else:
-                self.adj_max.set_value(self.adj_min.get_value() + 10)
-        elif self.adj_max.get_value() < self.adj_min.get_value():
-            if self.adj_max.get_value() - 10 < self.freq_min_hw / 1000:
-                self.adj_min.set_value(self.freq_min_hw / 1000)
+                self.adj_max.set_value(fmin + 10)
+        elif fmax < fmin:
+            if fmax - 10 < fmin_hw / 1000:
+                self.adj_min.set_value(fmin_hw / 1000)
             else:
-                self.adj_min.set_value(self.adj_max.get_value() - 10)
+                self.adj_min.set_value(fmax - 10)
+
+        self._update_conf_store_freqs(cpu, fmin, fmax)
         self.apply_btn.set_sensitive(True)
 
     @Gtk.Template.Callback()
     def on_adj_max_value_changed(self, *args):
         """ Callback for adj_max """
         # pylint: disable=W0612,W0613
-        if self.adj_max.get_value() < self.adj_min.get_value():
-            self.adj_min.set_value(self.adj_max.get_value() - 10)
+        if self.refreshing:
+            return
+        cpu = self._get_active_cpu()
+        fmin = self.adj_min.get_value()
+        fmax = self.adj_max.get_value()
+
+        if fmax < fmin:
+            self.adj_min.set_value(fmax - 10)
+
+        self._update_conf_store_freqs(cpu, fmin, fmax)
         self.apply_btn.set_sensitive(True)
 
     @Gtk.Template.Callback()
     def on_refresh_clicked(self, *args):
-        self.upd_sliders()
+        self.upd_sliders(refresh=True)
 
     @Gtk.Template.Callback()
     def on_cpu_online_toggled(self, *args):
+        if self.refreshing:
+            return
         cpu = self._get_active_cpu()
         chk = self.cpu_online.get_active()
         changed = self.is_online(cpu) ^ chk
@@ -191,37 +339,56 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.spin_max.set_sensitive(chk)
         self.min_sl.set_sensitive(chk)
         self.max_sl.set_sensitive(chk)
+        self.gov_container.set_sensitive(chk)
+        self._update_conf_store_online(cpu, chk)
 
     @Gtk.Template.Callback()
     def on_governor_changed(self, *args):
         """ Change governor and enable apply_btn """
         # pylint: disable=W0612,W0613
+        if self.refreshing:
+            return
         mod = self.gov_box.get_model()
         text, tid = mod[self.gov_box.get_active_iter()][:2]
-        self.governor = self.governors[tid]
+        # Update store
+        cpu = self._get_active_cpu()
+        conf = self.conf_store.get(cpu)
+        conf["governor"] = tid
+        conf["changed"] = True
         self.apply_btn.set_sensitive(True)
+        self._update_cpu_foreground(cpu, True)
 
     @Gtk.Template.Callback()
     def on_apply_clicked(self, button):
         """ Write changes back to sysfs """
-        cpu = self._get_active_cpu()
         ret = -1
+
         if HELPER.isauthorized():
             if self.toall.get_active():
-                for i in self.online_cpus:
-                    self.set_cpu_online(i)
+                for cpu in self.online_cpus:
+                    self.set_cpu_online(cpu)
                     if self.is_online(cpu):
-                        ret = HELPER.update_cpu_settings(i, self.fmin, self.fmax)
-                        if self.GOV_EN:
-                            ret += HELPER.update_cpu_governor(i, self.governor)
+                        ret = HELPER.update_cpu_settings(cpu, self.fmin, self.fmax)
+                        ret += self.set_cpu_governor(cpu)
             else:
-                ret = self.set_cpu_online(cpu)
-                if self.cpu_online.get_active():
-                    ret = HELPER.update_cpu_settings(cpu, self.fmin, self.fmax)
-                    if self.GOV_EN:
-                        ret += HELPER.update_cpu_governor(cpu, self.governor)
+                changed_cpus = [
+                    cpu for cpu, conf in self.conf_store.items() if conf.get("changed")
+                ]
+                if not changed_cpus:
+                    return
+
+                for cpu in changed_cpus:
+                    conf = self.conf_store.get(cpu)
+                    cpu_online = conf.get("online")
+                    ret = self.set_cpu_online(cpu)
+                    if cpu_online:
+                        ret += self.set_cpu_frequencies(cpu)
+                        ret += self.set_cpu_governor(cpu)
+                    conf["changed"] = False
+                    self._update_cpu_foreground(cpu, False)
 
             # Update sliders
+            self.init_conf_store()
             self.upd_sliders()
 
             if ret == 0:
@@ -243,21 +410,6 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     def on_config_box_changed(self, button):
         self.about_dialog.hide()
 
-    def _read_settings(self, cpu):
-        self.freq_min_hw, self.freq_max_hw = HELPER.get_cpu_limits(cpu)
-        self.governor = HELPER.get_cpu_governor(cpu)
-
-        # Failed to read governor
-        # https://github.com/vagnum08/cpupower-gui/issues/12
-        if self.governor == "ERROR":
-            self.GOV_EN = False
-            self.gov_container.hide()
-            return
-
-        self.governors = {}
-        for i, gov in enumerate(HELPER.get_cpu_governors(cpu)):
-            self.governors[i] = gov
-
     @property
     def fmin(self):
         return int(self.adj_min.get_value() * 1000)
@@ -269,6 +421,12 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     @property
     def online_cpus(self):
         return HELPER.get_cpus_available()
+
+    @property
+    def is_conf_changed(self):
+        """ Helper function to check if settings were changed """
+        changed = [cpu for cpu, conf in self.conf_store.items() if conf["changed"]]
+        return len(changed) > 0
 
     @staticmethod
     def is_online(cpu):
@@ -282,17 +440,62 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         present = HELPER.get_cpus_present()
         return (cpu in present) and (cpu in offline)
 
+    @staticmethod
+    def get_cpu_governors(cpu):
+        governors = []
+        for gov in HELPER.get_cpu_governors(cpu):
+            governors.append(str(gov))
+
+        return governors
+
     def set_cpu_online(self, cpu):
+        conf = self.conf_store.get(cpu)
+        if conf is None:
+            return
+
+        cpu_online = conf.get("online")
+
         # If cpu is offline, enable and update freq settings
-        if self.is_offline(cpu) and self.cpu_online.get_active():
+        if self.is_offline(cpu) and cpu_online:
             ret = HELPER.set_cpu_online(cpu)
             self.upd_sliders()
             return ret
 
         # If cpu is online, disable
-        if self.is_online(cpu) and not self.cpu_online.get_active():
+        if self.is_online(cpu) and not cpu_online:
+            # Set offline only if CPU is allowed to go offline
             if HELPER.cpu_allowed_offline(cpu):
                 return HELPER.set_cpu_offline(cpu)
 
         # No change to the cpu
         return 0
+
+    def set_cpu_governor(self, cpu):
+        ret = -1
+        conf = self.conf_store.get(cpu)
+        if conf is None:
+            return ret
+
+        govid = conf.get("governor")
+        # If govid is None means that there is an error with the kernel
+        # https://github.com/vagnum08/cpupower-gui/issues/12
+        if govid is None:
+            return ret
+
+        govs = conf.get("governors")
+        if govs:
+            ret = HELPER.update_cpu_governor(cpu, govs[govid])
+
+        return ret
+
+    def set_cpu_frequencies(self, cpu):
+        ret = -1
+        conf = self.conf_store.get(cpu)
+        if conf is None:
+            return ret
+
+        fmin, fmax = conf.get("freqs")
+        if (fmin is not None) and (fmax is not None):
+            ret = HELPER.update_cpu_settings(cpu, fmin, fmax)
+
+        return ret
