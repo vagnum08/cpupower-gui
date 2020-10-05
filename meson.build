@@ -6,6 +6,8 @@ project('cpupower-gui',
     ],
   )
 
+prefix = get_option('prefix')
+
 i18n = import('i18n')
 
 application_id = 'org.rnd2.cpupower_gui'

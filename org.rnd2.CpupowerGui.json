@@ -1,10 +1,10 @@
 {
-    "app-id": "org.rnd2.CpupowerGui",
-    "runtime": "org.gnome.Platform",
-    "runtime-version": "3.34",
-    "sdk": "org.gnome.Sdk",
-    "command": "cpupower-gui",
-    "finish-args": [
+    "app-id" : "org.rnd2.CpupowerGui",
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "3.36",
+    "sdk" : "org.gnome.Sdk",
+    "command" : "cpupower-gui",
+    "finish-args" : [
         "--share=network",
         "--share=ipc",
         "--socket=x11",
@@ -16,7 +16,7 @@
         "--system-own-name=org.rnd2.cpupower_gui.helper",
         "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
     ],
-    "cleanup": [
+    "cleanup" : [
         "/include",
         "/lib/pkgconfig",
         "/man",
@@ -28,33 +28,37 @@
         "*.la",
         "*.a"
     ],
-    "modules": [
+    "modules" : [
         {
-            "name": "cpupower-gui",
-            "builddir": true,
-            "buildsystem": "meson",
-            "sources": [
-                    {
-                        "type": "git",
-                        "url": "https://gitlab.com/vagnum08/cpupower-gui"
-                    }
+            "name" : "cpupower-gui",
+            "builddir" : true,
+            "buildsystem" : "meson",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.com/vagnum08/cpupower-gui"
+                }
             ],
-            "config-opts": []
+            "config-opts" : [
+            ]
         },
         {
-            "name": "dbus-python",
-            "buildsystem": "simple",
-            "build-commands": [
+            "name" : "dbus-python",
+            "buildsystem" : "simple",
+            "build-commands" : [
                 "pip3 install --prefix=${FLATPAK_DEST} dbus-python==1.2.16"
             ],
-            "sources": [
-                    {
-                        "type": "file",
-                        "url": "https://dbus.freedesktop.org/releases/dbus-python/dbus-python-1.2.16.tar.gz",
-                        "sha256": "11238f1d86c995d8aed2e22f04a1e3779f0d70e587caffeab4857f3c662ed5a4"
-                    }
+            "sources" : [
+                {
+                    "type" : "file",
+                    "url" : "https://dbus.freedesktop.org/releases/dbus-python/dbus-python-1.2.16.tar.gz",
+                    "sha256" : "11238f1d86c995d8aed2e22f04a1e3779f0d70e587caffeab4857f3c662ed5a4"
+                }
             ]
         }
-    ]
+    ],
+    "build-options" : {
+        "env" : {
+        }
+    }
 }
-
