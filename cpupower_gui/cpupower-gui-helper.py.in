@@ -357,3 +357,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\nThe cpupower_gui_helper will now close...")
         loop.quit()
+
+# vim:set filetype=python shiftwidth=4 softtabstop=4 expandtab:
+

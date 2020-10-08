@@ -31,8 +31,12 @@ localedir = "@localedir@"
 sys.path.insert(1, pkgdatadir)
 
 from cpupower_gui.config import CpuPowerConfig
-from cpupower_gui.helper import apply_cpu_profile
-
+from cpupower_gui.helper import (
+    apply_cpu_profile,
+    apply_configuration,
+    apply_balanced,
+    apply_performance,
+)
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 gettext.install("cpupower-gui", localedir)
@@ -48,15 +52,28 @@ parser.add_argument(
     "--version", action="version", version="%(prog)s {}".format(VERSION)
 )
 
-parser.add_argument(
+cmd_group = parser.add_mutually_exclusive_group()
+
+cmd_group.add_argument(
     "-l",
     "--list-profiles",
     action="store_true",
     help="List available cpupower profiles",
 )
 
+cmd_group.add_argument(
+    "--apply-config", action="store_true", help="Apply cpupower configuration",
+)
+
+cmd_group.add_argument(
+    "--apply-profile", type=str, metavar="PROFILE", help="Apply a cpupower profile",
+)
+
 parser.add_argument(
-    "--apply-profile", type=str, help="Apply a cpupower profile",
+    "-b", "--balanced", action="store_true", help="Change governor to balanced",
+)
+parser.add_argument(
+    "-p", "--performance", action="store_true", help="Change governor to performance",
 )
 
 parser.add_argument(
@@ -66,6 +83,14 @@ parser.add_argument(
 if __name__ == "__main__":
     args = parser.parse_args()
     conf = CpuPowerConfig()
+
+    if args.balanced:
+        apply_balanced()
+        sys.exit(0)
+
+    if args.performance:
+        apply_performance()
+        sys.exit(0)
 
     if args.list_profiles:  # List profiles
         profiles = conf.profiles
@@ -87,6 +112,11 @@ if __name__ == "__main__":
         else:
             print("Profile not found!")
             sys.exit(1)
+
+    if args.apply_config:
+        print("Applying configuration... ")
+        apply_configuration(conf)
+        sys.exit(0)
 
     import gi
 

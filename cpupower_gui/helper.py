@@ -37,4 +37,51 @@ def apply_cpu_profile(profile):
                     HELPER.set_cpu_online(cpu)
                 else:
                     HELPER.set_cpu_offline(cpu)
-        print(MSG.format(cpu, fmin/1e3, fmax/1e3, gov.capitalize(), online))
+        print(MSG.format(cpu, fmin / 1e3, fmax / 1e3, gov.capitalize(), online))
+
+
+def apply_configuration(config):
+    """Set cpu settings base on configuration
+
+    Args:
+        config: A cpupower configuration object
+
+    """
+    # TODO: Allow extra configuration to take place
+    profile = config.default_profile
+    if not profile in config.profiles:
+        return
+
+    apply_cpu_profile(config.get_profile(profile))
+
+def apply_performance():
+    """Set CPU governor to performance"""
+    for cpu in HELPER.get_cpus_available():
+        gov = "performance"
+        if dbus.String(gov) not in HELPER.get_cpu_governors(cpu):
+            gov = "schedutil"
+            if dbus.String(gov) not in HELPER.get_cpu_governors(cpu):
+                print("Failed to set governor to performance")
+
+        if HELPER.isauthorized():
+            ret = HELPER.update_cpu_governor(cpu, gov)
+            if ret == 0:
+                print("Set CPU {} to {}".format(int(cpu), gov))
+
+def apply_balanced():
+    """Set CPU governor to powersave or ondemand"""
+    for cpu in HELPER.get_cpus_available():
+        govs = HELPER.get_cpu_governors(cpu)
+        for governor in govs:
+            if str(governor) != "performance":
+                break
+
+        gov = str(governor)
+        if not gov:
+            print("Failed to get default governor for CPU {}.".format(int(cpu)))
+            continue
+
+        if HELPER.isauthorized():
+            ret = HELPER.update_cpu_governor(cpu, gov)
+            if ret == 0:
+                print("Set CPU {} to {}".format(int(cpu), gov))

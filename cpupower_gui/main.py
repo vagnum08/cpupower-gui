@@ -34,6 +34,7 @@ except:
     AppIndicator = None
 
 from .window import CpupowerGuiWindow
+from .helper import apply_performance, apply_balanced
 
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(
@@ -46,26 +47,7 @@ APP_ID = "org.rnd2.cpupower_gui"
 
 class Application(Gtk.Application):
     def __init__(self):
-        super().__init__(
-            application_id=APP_ID, flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE
-        )
-
-        self.add_main_option(
-            "performance",
-            ord("p"),
-            GLib.OptionFlags.NONE,
-            GLib.OptionArg.NONE,
-            "Change governor to performance",
-            None,
-        )
-        self.add_main_option(
-            "balanced",
-            ord("b"),
-            GLib.OptionFlags.NONE,
-            GLib.OptionArg.NONE,
-            "Change governor to balanced",
-            None,
-        )
+        super().__init__(application_id=APP_ID)
 
         action = Gio.SimpleAction.new("Performance", None)
         action.connect("activate", self.on_apply_performance)
@@ -96,70 +78,25 @@ class Application(Gtk.Application):
     def do_quit(self, *args):
         exit(0)
 
-    def do_command_line(self, command_line):
-        options = command_line.get_options_dict()
-        # convert GVariantDict -> GVariant -> dict
-        options = options.end().unpack()
+    def on_apply_performance(self, params=None, platform_data={}):
+        apply_performance()
 
-        if "performance" in options:
-            print("Setting governor to performance")
-            self.activate_action("Performance")
-            return 0
+        # Update window if exists
+        win = self.props.active_window
+        if win:
+            win.upd_sliders()
 
-        if "balanced" in options:
-            print("Setting governor to default")
-            self.activate_action("Balanced")
-            return 0
-
-        self.activate()
         return 0
 
-    def on_apply_performance(self, params=None, platform_data={}):
-        ret = -1
-        for cpu in HELPER.get_cpus_available():
-            gov = "performance"
-            if dbus.String(gov) not in HELPER.get_cpu_governors(cpu):
-                perf_gov = "schedutil"
-                if dbus.String(gov) not in HELPER.get_cpu_governors(cpu):
-                    print("Failed to set governor to performance")
-                    return ret
-
-            if HELPER.isauthorized():
-                ret = HELPER.update_cpu_governor(cpu, gov)
-                if ret == 0:
-                    print("Set CPU {} to {}".format(int(cpu), gov))
-
-        # Update window if exists
-        win = self.props.active_window
-        if win:
-            win.upd_sliders()
-
-        return ret
-
     def on_apply_default(self, params=None, platform_data={}):
-        ret = -1
-        for cpu in HELPER.get_cpus_available():
-            govs = HELPER.get_cpu_governors(cpu)
-            for governor in govs:
-                if str(governor) != "performance":
-                    break
-
-            gov = str(governor)
-            if not gov:
-                print("Failed to get default governor for CPU {}.".format(int(cpu)))
-                continue
-
-            if HELPER.isauthorized():
-                ret = HELPER.update_cpu_governor(cpu, gov)
-                if ret == 0:
-                    print("Set CPU {} to {}".format(int(cpu), gov))
+        apply_balanced()
 
         # Update window if exists
         win = self.props.active_window
         if win:
             win.upd_sliders()
 
-        return ret
+        return 0
 
 
 def main(version):
