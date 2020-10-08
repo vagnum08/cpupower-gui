@@ -47,6 +47,9 @@ cpupower_gui_sources = [
   '__init__.py',
   'main.py',
   'window.py',
+  'config.py',
+  'utils.py',
+  'helper.py'
 ]
 
 install_data(cpupower_gui_sources, install_dir: moduledir)

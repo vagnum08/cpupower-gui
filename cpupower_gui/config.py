@@ -6,7 +6,12 @@ from shlex import split
 
 from xdg import BaseDirectory
 
-from cpupower_gui.utils import read_govs, read_freq_lims, cpus_available, parse_core_list
+from cpupower_gui.utils import (
+    read_govs,
+    read_freq_lims,
+    cpus_available,
+    parse_core_list,
+)
 
 
 XDG_PATH = Path(BaseDirectory.save_config_path("cpupower_gui"))
@@ -118,6 +123,7 @@ class CpuPowerConfig:
 
 class Profile:
     """Wrapper for .profile files"""
+
     def __init__(self, filename=None):
         self.settings = {}
         self.name = ""
@@ -275,3 +281,4 @@ def parse_online(cpu: int, online: str):
         return True
 
     return False
+

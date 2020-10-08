@@ -21,21 +21,83 @@ import os
 import sys
 import signal
 import gettext
+import argparse
 
-VERSION = '@VERSION@'
-pkgdatadir = '@pkgdatadir@'
-localedir = '@localedir@'
+
+VERSION = "@VERSION@"
+pkgdatadir = "@pkgdatadir@"
+localedir = "@localedir@"
 
 sys.path.insert(1, pkgdatadir)
-signal.signal(signal.SIGINT, signal.SIG_DFL)
-gettext.install('cpupower-gui', localedir)
 
-if __name__ == '__main__':
+from cpupower_gui.config import CpuPowerConfig
+from cpupower_gui.helper import apply_cpu_profile
+
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+gettext.install("cpupower-gui", localedir)
+
+# Add argparse options
+parser = argparse.ArgumentParser(
+    prog="cpupower-gui",
+    description="cpupower-gui - Set the scaling frequencies and governor of a CPU",
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+)
+
+parser.add_argument(
+    "--version", action="version", version="%(prog)s {}".format(VERSION)
+)
+
+parser.add_argument(
+    "-l",
+    "--list-profiles",
+    action="store_true",
+    help="List available cpupower profiles",
+)
+
+parser.add_argument(
+    "--apply-profile", type=str, help="Apply a cpupower profile",
+)
+
+parser.add_argument(
+    "--gapplication-service", action="store_true", help="Start gui from gapplication",
+)
+
+if __name__ == "__main__":
+    args = parser.parse_args()
+    conf = CpuPowerConfig()
+
+    if args.list_profiles:  # List profiles
+        profiles = conf.profiles
+        if profiles:
+            print("The available profiles are:")
+            for prof in profiles:
+                print("\t- {}".format(prof))
+            sys.exit(0)
+
+        print("No profiles were found!")
+        sys.exit(0)
+
+    if args.apply_profile:
+        prof = args.apply_profile
+        if prof in conf.profiles:
+            print("Applying profile: ", prof)
+            apply_cpu_profile(conf.get_profile(prof))
+            sys.exit(0)
+        else:
+            print("Profile not found!")
+            sys.exit(1)
+
     import gi
 
     from gi.repository import Gio
-    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'cpupower-gui.gresource'))
+
+    resource = Gio.Resource.load(os.path.join(pkgdatadir, "cpupower-gui.gresource"))
     resource._register()
 
     from cpupower_gui import main
+
     sys.exit(main.main(VERSION))
+
+
+# vim:set filetype=python shiftwidth=4 softtabstop=4 expandtab:
