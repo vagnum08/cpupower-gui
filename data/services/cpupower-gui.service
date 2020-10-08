@@ -1,0 +1,10 @@
+[Unit]
+Description=Apply cpupower-gui config at boot
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/cpupower-gui --apply-config
+
+[Install]
+WantedBy=multi-user.target
+

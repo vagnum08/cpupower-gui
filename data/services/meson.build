@@ -37,3 +37,15 @@ install_data(
     'org.rnd2.cpupower_gui.helper.conf', 
     install_dir : join_paths(dbus_dir, 'system.d')
 )
+
+# SystemD system unit to apply config at boot
+install_data(
+    'cpupower-gui.service',
+    install_dir: join_paths(systemd_dir, 'system')
+)
+
+# SystemD user unit to apply config at login
+install_data(
+    'cpupower-gui-user.service',
+    install_dir: join_paths(prefix, 'lib/systemd/user')
+)

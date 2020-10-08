@@ -23,6 +23,10 @@ def apply_cpu_profile(profile):
 
     """
     settings = profile.settings
+    if not HELPER.isauthorized():
+        print("User is not authorised. No changes applied.")
+        return -1
+
     for cpu in settings.keys():
         fmin, fmax = settings[cpu].get("freqs")
         gov = settings[cpu].get("governor")
@@ -50,12 +54,16 @@ def apply_configuration(config):
     # TODO: Allow extra configuration to take place
     profile = config.default_profile
     if not profile in config.profiles:
-        return
+        return -1
 
     apply_cpu_profile(config.get_profile(profile))
 
 def apply_performance():
     """Set CPU governor to performance"""
+    if not HELPER.isauthorized():
+        print("User is not authorised. No changes applied.")
+        return -1
+
     for cpu in HELPER.get_cpus_available():
         gov = "performance"
         if dbus.String(gov) not in HELPER.get_cpu_governors(cpu):
@@ -63,13 +71,19 @@ def apply_performance():
             if dbus.String(gov) not in HELPER.get_cpu_governors(cpu):
                 print("Failed to set governor to performance")
 
-        if HELPER.isauthorized():
-            ret = HELPER.update_cpu_governor(cpu, gov)
-            if ret == 0:
-                print("Set CPU {} to {}".format(int(cpu), gov))
+
+        ret = HELPER.update_cpu_governor(cpu, gov)
+        if ret == 0:
+            print("Set CPU {} to {}".format(int(cpu), gov))
+
+    return 0
 
 def apply_balanced():
     """Set CPU governor to powersave or ondemand"""
+    if not HELPER.isauthorized():
+        print("User is not authorised. No changes applied.")
+        return -1
+
     for cpu in HELPER.get_cpus_available():
         govs = HELPER.get_cpu_governors(cpu)
         for governor in govs:
@@ -81,7 +95,8 @@ def apply_balanced():
             print("Failed to get default governor for CPU {}.".format(int(cpu)))
             continue
 
-        if HELPER.isauthorized():
-            ret = HELPER.update_cpu_governor(cpu, gov)
-            if ret == 0:
-                print("Set CPU {} to {}".format(int(cpu), gov))
+        ret = HELPER.update_cpu_governor(cpu, gov)
+        if ret == 0:
+            print("Set CPU {} to {}".format(int(cpu), gov))
+
+    return 0

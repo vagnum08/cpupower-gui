@@ -115,8 +115,8 @@ if __name__ == "__main__":
 
     if args.apply_config:
         print("Applying configuration... ")
-        apply_configuration(conf)
-        sys.exit(0)
+        ret = apply_configuration(conf)
+        sys.exit(ret)
 
     import gi
 
