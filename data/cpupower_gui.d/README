@@ -1,0 +1,45 @@
+# Cpupower-gui configuration
+
+cpupower-gui first tries to read the configuration from `/etc/cpupower_gui.conf`.
+Then it will read any `.conf` file in this directory (`/etc/cpupower_gui.d/`)
+in alphabetical order. The options defined on the last read file take precedence.
+
+For example, if threre are two files, named `10-config.conf` and `20-overrides.conf`, the shared options from the first will be overriden.
+
+Simillarly, files found in `$XDG_CONFIG_HOME/cpupower_gui/`, which usually points to `~/.config/cpupower_gui/`, will take precedence over the system-wide ones.
+
+
+# Profiles
+
+Profile files are text files with a `.profile` extension.
+The file must start with the following line:
+```
+# name: My_Profile
+```
+
+If profile name contains spaces it must be quoted like:
+```
+# name: "My awesome profile"
+```
+
+The profile settings have the following format:
+```
+# CPU MIN MAX GOVERNOR ONLINE(Optional)
+0-2  2500 3000 performance y
+```
+The options are separated with whitespace (spaces/tabs).
+
+For the cpu option valid values are the either a number or a range.
+For example, `0-2` sets the cores 0, 1, 2 (that is the first three cores).
+
+For the minimum and maximum frequency the values must be the clock frequency in MHz.
+If you want to omit a value use `-` and it will be set to the hardware frequency limit.
+
+For the governor value, either use the name of the governor or `-`.
+If `-` is used, then the first available governor will be selected.
+
+Lastly, for online option, you can omit the value or use:
+- `y`, `yes`, `true`, `1` to enable.
+- `n`, `no`, `false`, `0` to disable.
+
+An example profile is available at `/etc/cpupower_gui.d/my_profile.profile.ex

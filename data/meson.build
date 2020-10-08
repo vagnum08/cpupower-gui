@@ -56,6 +56,9 @@ if compile_schemas.found()
   )
 endif
 
+install_subdir('cpupower_gui.d', install_dir: get_option('sysconfdir'))
+install_data('cpupower_gui.conf', install_dir: get_option('sysconfdir'))
+
 
 subdir('services')
 subdir('polkit')
