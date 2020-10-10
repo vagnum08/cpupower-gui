@@ -27,6 +27,7 @@ class CpuPowerConfig:
     def __init__(self):
         self.config = ConfigParser()
         self.config.add_section("Profile")
+        self.config.add_section("GUI")
         self.config.set("Profile", "profile", "Balanced")
         self._profiles = {}
         # Initialise class
@@ -86,7 +87,7 @@ class CpuPowerConfig:
         return self._profiles.get(name)
 
     def get_profile_settings(self, name):
-        """Return profile settings
+        """Returns profile settings
 
         Args:
             name: Name of the profile
@@ -98,6 +99,15 @@ class CpuPowerConfig:
         if name in self._profiles:
             return self._profiles[name].settings
         return None
+
+    def get_gui_settings(self):
+        """Returns GUI settings
+
+        Returns:
+            settings: GUI settings
+
+        """
+        return self.config["GUI"]
 
     def _generate_default_profiles(self):
         """Generate default profiles based on current hardware.
@@ -281,4 +291,3 @@ def parse_online(cpu: int, online: str):
         return True
 
     return False
-

@@ -20,6 +20,7 @@ import sys
 import dbus
 
 from gi.repository import Gtk, Gio
+from .config import CpuPowerConfig
 
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(
@@ -68,10 +69,12 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.config = CpuPowerConfig().get_gui_settings()
         self.conf_store = {}
         self.refreshing = False
         self.init_conf_store()
         self.update_cpubox()
+        self.configure_gui()
         self.upd_sliders()
 
         # Application actions
@@ -100,6 +103,12 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             self.cpu_store.append([cpu, "black"])
 
         self.cpu_box.set_active(0)
+
+    def configure_gui(self):
+        """Configures GUI based on the config file"""
+        # To all cpus toggle
+        toggle_default = self.config.getboolean("toall_default", False)
+        self.toall.set_active(toggle_default)
 
     def quit(self, *args):
         """Quit"""
