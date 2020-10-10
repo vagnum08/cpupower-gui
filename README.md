@@ -12,13 +12,15 @@ This program is designed to allow you to change the frequency limits of your cpu
 The theme used is [Arc-Darker](https://github.com/horst3180/arc-theme).
 <img src="screenshots/screen_cpu0.png" alt="Default view" width="844"/>
 <img src="screenshots/screen_cpu1_freq.png" alt="Change frequencies" width="420"/>  <img src="screenshots/screen_cpu2_governor.png" alt="Change governors" width="420"/>
+<img src="https://user-images.githubusercontent.com/16070176/79335201-83c72d80-7f19-11ea-8143-f729d9fa9024.gif" alt="Using the gui" width="420"/>
+
 
 # Packages
 Cpupower-gui is available on the official repositories for a few distributions.
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/cpupower-gui.svg)](https://repology.org/metapackage/cpupower-gui/versions)
 
-Prebuilt binary packages for Arch, Debian/Rasbian, Fedora, and Ubuntu are available on [openSUSE Build Service](https://software.opensuse.org/download.html?project=home%3Aerigas%3Acpupower-gui&package=cpupower-gui)
+Prebuilt binary packages (latest repo version) for Arch, Debian/Rasbian, Fedora, and Ubuntu are available on  [openSUSE Build Service](https://software.opensuse.org/download.html?project=home%3Aerigas%3Acpupower-gui&package=cpupower-gui)
 
 ## Repositories:
 
@@ -28,6 +30,20 @@ Packages exist in AUR as [`cpupower-gui`](https://aur.archlinux.org/packages/cpu
 ### blackPanther OS 
 To install `cpupower-gui` run `updating repos` to update the repositories and install by running `installing cpupower-gui`.
 
+### Debian/Ubuntu and derivatives
+You can install `cpupower-gui` from the software manager or from the terminal by running:
+```bash
+sudo apt install cpupower-gui
+```
+
+To get the latest version either grab the debian packages from OpenSUSE build service or add the repository to your system.
+For example, in xUbuntu 20.04 run the following:
+```
+echo 'deb http://download.opensuse.org/repositories/home:/erigas:/cpupower-gui/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:erigas:cpupower-gui.list
+curl -fsSL https://download.opensuse.org/repositories/home:erigas:cpupower-gui/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home:erigas:cpupower-gui.gpg > /dev/null
+sudo apt update
+sudo apt install cpupower-gui
+```
 
 # Usage
 ## Graphical
@@ -52,22 +68,23 @@ Note: If this checkbox is greyed-out, it means that this cpu is not allowed to g
 
 The governor profiles can be used from the command line.
 
-```bash
+```
 $ cpupower-gui -h
 
-Usage:
-  cpupower-gui [OPTION…]
+usage: cpupower-gui [-h] [--version] [-l | --apply-config | --apply-profile PROFILE] [-b] [-p]
+                    [--gapplication-service]
 
-Help Options:
-  -h, --help                 Show help options
-  --help-all                 Show all help options
-  --help-gapplication        Show GApplication options
-  --help-gtk                 Show GTK+ Options
+cpupower-gui - Set the scaling frequencies and governor of a CPU
 
-Application Options:
-  -p, --performance          Change governor to performance
-  -b, --balanced             Change governor to balanced
-  --display=DISPLAY          X display to use
+optional arguments:
+  -h, --help               Show this help message and exit
+  --version                Show program's version number and exit
+  -l, --list-profiles      List available cpupower profiles
+  --apply-config           Apply cpupower configuration
+  --apply-profile PROFILE  Apply a cpupower profile
+  -b, --balanced           Change governor to balanced
+  -p, --performance        Change governor to performance
+  --gapplication-service   Start gui from gapplication
 
 ```
 
@@ -82,6 +99,56 @@ gapplication action org.rnd2.cpupower_gui Balanced
 gapplication action org.rnd2.cpupower_gui Performance
 
 ```
+Since version `0.9.0` the command line supports setting the CPUs based on a configuration file and setting user-defined profiles.
+
+To apply the default configuration just run `cpupower-gui --apply-config`.  
+To apply a profile run `cpupower-gui --apply-profile Performance`.  
+If the name of the profile contains spaces use quotes, e.g. `cpupower-gui --apply-profile "Custom profile"`.
+
+# System configuration and User profiles
+## System configuration
+
+Since version `0.9.0`, `cpupower-gui` can be configured using configuration files. The system configuration file is located in `/etc/cpupower_gui.conf`.
+Users can add `.conf` files in `/etc/cpupower_gui.d` to override the default behaviour. The settings in these files override the behaviour of `cpupower-gui` system-wide.
+
+Alternatively, users can add their configuration in `~/.config/cpupower_gui/`. The settings defined in that location take precedence over the ones defined in `/etc/`.
+
+Currently, the only available settings are:
+- `profile` under the `Profile` section,
+- `allcpus_default` under the `GUI` section.
+
+The `profile` option sets the name of the profile to use when using `--apply-config` option (Default: Balanced)
+The `allcpus_default` option controls the default state of the `To All CPUs` toggle of the GUI (Default: False).
+
+## User profiles
+
+User profiles are text files with a `.profile` suffix. These files should be placed either in `/etc/cpupower_gui.d/` or `~/.config/cpupower_gui/`.
+Profiles placed in `/etc/cpupower_gui.d/` are then available to all users.
+
+An [example profile](data/cpupower_gui.d/my_profile.profile.ex) is available at `/etc/cpupower_gui.d/my_profile.profile.ex`.
+For more information about the profile format see [here](data/cpupower_gui.d/README).
+
+By default, there are two auto-generated profiles named `Balanced` and `Performance`.
+
+
+## systemd units
+
+Since version 0.9.0, two systemd units have been added; a "system" and a "user" one.
+
+The `cpupower-gui.service` applies the configuration as defined in `/etc/cpupower_gui.conf` during boot.
+The `cpupower-gui-user.service` applies the user configuration during login (see notes below).
+
+In a single-user environment the system service is preferable.
+
+In a multi-user environment, the user service gives each user the ability to customise the profiles based on their needs.
+When the user logs into the system, their settings will automatically apply.
+
+Notes:
+- The `cpupower-gui-user.service` currently depends on `graphical.target`. This is tested and works with Gnome Shell. If it doesn't work on a different display manager, open an issue.
+- To apply the settings during login the user must be active and local to the system. This means that the user must have access to the hardware, so it won't work when the user logs in through `ssh`.
+- To apply the settings over `ssh` the user will need root access.
+
+
 
 # Manual Installation
 This package uses the [Meson build system](https://mesonbuild.com/) for build configuration and [Ninja](https://ninja-build.org/) as the backend build system.
