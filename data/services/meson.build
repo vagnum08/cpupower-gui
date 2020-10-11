@@ -1,9 +1,3 @@
-pkglibdir = join_paths(prefix, get_option('libdir'),
-                       meson.project_name())
-
-dbus_dir = join_paths(get_option('datadir'), 'dbus-1')
-systemd_dir = get_option('systemddir')
-
 service_conf = configuration_data() 
 service_conf.set('pkglibdir', pkglibdir)
 service_conf.set('bindir', join_paths(prefix,

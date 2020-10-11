@@ -1,3 +1,4 @@
+# Icons
 icondir = join_paths('icons', 'hicolor', 'scalable', 'apps')
 
 install_data(
@@ -6,7 +7,8 @@ install_data(
   rename: '@0@.svg'.format(application_id)
 )
 
-desktop_conf = configuration_data() 
+# Desktop configuration
+desktop_conf = configuration_data()
 desktop_conf.set('icon', application_id)
 
 desktop_file = i18n.merge_file(
@@ -30,6 +32,7 @@ if desktop_utils.found()
   )
 endif
 
+# Appstream metadata
 appstream_file = i18n.merge_file(
   input: 'org.rnd2.cpupower_gui.appdata.xml.in',
   output: 'org.rnd2.cpupower_gui.appdata.xml',
@@ -45,6 +48,7 @@ if appstream_util.found()
   )
 endif
 
+# Gschemas
 install_data('org.rnd2.cpupower_gui.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
@@ -56,9 +60,12 @@ if compile_schemas.found()
   )
 endif
 
+# System configuration
 install_subdir('cpupower_gui.d', install_dir: get_option('sysconfdir'))
 install_data('cpupower_gui.conf', install_dir: get_option('sysconfdir'))
 
+# Kernel modules configuration for extra governors
+install_data('scaling-governors.conf', install_dir: pkgdatadir)
 
 subdir('services')
 subdir('polkit')
