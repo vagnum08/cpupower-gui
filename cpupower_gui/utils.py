@@ -5,6 +5,7 @@ FREQ_MIN = "scaling_min_freq"
 FREQ_MAX = "scaling_max_freq"
 FREQ_MIN_HW = "cpuinfo_min_freq"
 FREQ_MAX_HW = "cpuinfo_max_freq"
+AVAIL_FREQS = "scaling_available_frequencies"
 AVAIL_GOV = "scaling_available_governors"
 GOVERNOR = "scaling_governor"
 ONLINE = Path("/sys/devices/system/cpu/online")
@@ -91,6 +92,18 @@ def read_govs(cpu):
         govs = []
     finally:
         return govs
+
+
+def read_available_frequencies(cpu):
+    """ Reads governors from sysfs """
+    sys_path = Path(SYS_PATH.format(int(cpu)))
+    try:
+        sys_file = sys_path / AVAIL_FREQS
+        freqs = sys_file.read_text().strip().split(" ")
+    except OSError:
+        freqs = []
+    finally:
+        return freqs
 
 
 def read_governor(cpu):

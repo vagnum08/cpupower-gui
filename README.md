@@ -154,7 +154,7 @@ When the user logs into the system, their settings will automatically apply.
 Notes:
 - The `cpupower-gui-user.service` currently depends on `graphical.target`. This is tested and works with Gnome Shell. If it doesn't work on a different display manager, open an issue.
 - To apply the settings during login the user must be active and local to the system. This means that the user must have access to the hardware, so it won't work when the user logs in through `ssh`.
-- To apply the settings over `ssh` the user will need root access.
+- To apply the settings over `ssh` the user will need root access.
 
 ## Enabling extra governors
 By default, `cpupower-gui` will only show the available governors for each cpu.
