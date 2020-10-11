@@ -45,6 +45,14 @@ sudo apt update
 sudo apt install cpupower-gui
 ```
 
+### Fedora
+You can install `cpupower-gui` by adding the repository from OpenSUSE build service.
+For example, in Fedora 32 run the following as root:
+```bash
+dnf config-manager --add-repo https://download.opensuse.org/repositories/home:erigas:cpupower-gui/Fedora_32/home:erigas:cpupower-gui.repo
+dnf install cpupower-gui
+```
+
 # Usage
 ## Graphical
 
@@ -148,6 +156,10 @@ Notes:
 - To apply the settings during login the user must be active and local to the system. This means that the user must have access to the hardware, so it won't work when the user logs in through `ssh`.
 - To apply the settings over `ssh` the user will need root access.
 
+## Enabling extra governors
+By default, `cpupower-gui` will only show the available governors for each cpu.
+To enable additional governors, such as `conservative` or `userspace`, copy the `scaling-governors.conf` file over to `/etc/modules-load.d`.
+This way the new governors will be available across reboots.
 
 
 # Manual Installation
