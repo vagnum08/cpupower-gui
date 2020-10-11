@@ -438,6 +438,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         profile = mod[self.profile_box.get_active_iter()][0]
         # Update store
         res = self._set_profile_settings(profile)
+        self.toall.set_active(False) # Disable toggle
         self.upd_sliders()
         self.apply_btn.set_sensitive(res)
 
@@ -473,6 +474,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                     self._update_cpu_foreground(cpu, False)
 
             # Update sliders
+            self.profile_box.set_active(0)
             self.init_conf_store()
             self.upd_sliders()
 
