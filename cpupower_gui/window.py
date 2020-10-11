@@ -21,6 +21,7 @@ import dbus
 
 from gi.repository import Gtk, Gio
 from .config import CpuPowerConfig
+from .utils import read_available_frequencies
 
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(
@@ -276,6 +277,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         # Update sliders
         self._set_sliders_sensitive(cpu_online)
+        self._update_frequency_marks(cpu)
         self.adj_min.set_lower(int(freq_min_hw / 1000))
         self.adj_min.set_upper(int(freq_max_hw / 1000))
         self.adj_max.set_lower(int(freq_min_hw / 1000))
@@ -326,6 +328,28 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.min_sl.set_sensitive(state)
         self.max_sl.set_sensitive(state)
         self.gov_container.set_sensitive(state)
+
+    def _update_frequency_marks(self, cpu):
+        """Add or remove slider marks for frequency steps
+
+        Args:
+            cpu: Index of cpu to query
+
+        """
+        # Clear marks
+        self.min_sl.clear_marks()
+        self.max_sl.clear_marks()
+
+        steps = self.get_cpu_frequency_steps(cpu)
+        if not steps:
+            return
+
+        markup = "{:1.1f} GHz"
+        for frequency in steps:
+            freq = float(frequency / 1e3)
+            mark = markup.format(freq)
+            self.min_sl.add_mark(frequency, Gtk.PositionType.TOP, mark)
+            self.max_sl.add_mark(frequency, Gtk.PositionType.TOP)
 
     @Gtk.Template.Callback()
     def on_cpu_changed(self, *args):
@@ -560,6 +584,21 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             governors.append(str(gov))
 
         return governors
+
+    @staticmethod
+    def get_cpu_frequency_steps(cpu):
+        """Wrapper to get the list of available frequencies
+
+        Args:
+            cpu: Index of cpu to query
+
+        """
+        frequencies = read_available_frequencies(cpu)
+        if not frequencies:
+            return []
+
+        # Convert and scale frequencies to MHz
+        return [int(freq) / 1e3 for freq in frequencies]
 
     def set_cpu_online(self, cpu):
         """Sets the online attribute for cpu
