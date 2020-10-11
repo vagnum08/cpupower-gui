@@ -107,7 +107,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     def configure_gui(self):
         """Configures GUI based on the config file"""
         # To all cpus toggle
-        toggle_default = self.config.getboolean("toall_default", False)
+        toggle_default = self.config.getboolean("allcpus_default", False)
         self.toall.set_active(toggle_default)
 
     def quit(self, *args):
