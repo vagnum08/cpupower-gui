@@ -66,14 +66,21 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     about_dialog = Gtk.Template.Child()
     cpu_online = Gtk.Template.Child()
     gov_container = Gtk.Template.Child()
+    profile_box = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.config = CpuPowerConfig().get_gui_settings()
+        # Read configuration
+        self.conf = CpuPowerConfig()
+        # Get GUI config and profiles
+        self.gui_conf = self.conf.get_gui_settings()
+        self.profiles = self.conf.profiles
+        self.profile = None
+
         self.conf_store = {}
         self.refreshing = False
-        self.init_conf_store()
         self.update_cpubox()
+        self.init_conf_store()
         self.configure_gui()
         self.upd_sliders()
 
@@ -86,6 +93,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         """Initialise the configuration store"""
         for cpu in self.online_cpus:
             self._update_cpu_conf(int(cpu))
+            self._update_cpu_foreground(int(cpu), False)
 
     def update_cpubox(self):
         """Update the CPU Combobox"""
@@ -107,8 +115,19 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     def configure_gui(self):
         """Configures GUI based on the config file"""
         # To all cpus toggle
-        toggle_default = self.config.getboolean("allcpus_default", False)
+        toggle_default = self.gui_conf.getboolean("allcpus_default", False)
         self.toall.set_active(toggle_default)
+
+        # Configure profiles box
+        self.prof_store = Gtk.ListStore(str)
+        self.profile_box.set_model(self.prof_store)
+
+        # Empty profile name to use for resetting settings
+        self.prof_store.append([""])
+
+        # Add the profiles from configuration
+        for prof in self.profiles:
+            self.prof_store.append([prof])
 
     def quit(self, *args):
         """Quit"""
@@ -256,6 +275,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             self.gov_container.set_sensitive(False)
 
         # Update sliders
+        self._set_sliders_sensitive(cpu_online)
         self.adj_min.set_lower(int(freq_min_hw / 1000))
         self.adj_min.set_upper(int(freq_max_hw / 1000))
         self.adj_max.set_lower(int(freq_min_hw / 1000))
@@ -276,6 +296,36 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         self.update_cpubox()
         return 0
+
+    def _set_profile_settings(self, profile):
+        """Set the settings based on the selected profile"""
+        self.init_conf_store()  # Discard any changes
+
+        # If no profile selected reset and disable apply_btn
+        if profile == "":
+            return False
+
+        prof_settings = self.conf.get_profile_settings(profile)
+        for cpu, settings in prof_settings.items():
+            cpu_conf = self.conf_store.get(cpu)
+            if not cpu_conf:
+                continue
+            cpu_conf["freqs"] = settings["freqs"]
+            if settings["governor"] in cpu_conf["governors"]:
+                govid = cpu_conf["governors"].index(settings["governor"])
+                cpu_conf["governor"] = govid
+            cpu_conf["online"] = settings["online"]
+            cpu_conf["changed"] = True
+            self._update_cpu_foreground(cpu, True)
+        return True
+
+    def _set_sliders_sensitive(self, state):
+        """Enable/Disable sliders and combo boxes"""
+        self.spin_min.set_sensitive(state)
+        self.spin_max.set_sensitive(state)
+        self.min_sl.set_sensitive(state)
+        self.max_sl.set_sensitive(state)
+        self.gov_container.set_sensitive(state)
 
     @Gtk.Template.Callback()
     def on_cpu_changed(self, *args):
@@ -354,12 +404,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         chk = self.cpu_online.get_active()
         changed = self.is_online(cpu) ^ chk
         tgl = self.apply_btn.get_sensitive() or changed
+        self._set_sliders_sensitive(chk)
         self.apply_btn.set_sensitive(tgl)
-        self.spin_min.set_sensitive(chk)
-        self.spin_max.set_sensitive(chk)
-        self.min_sl.set_sensitive(chk)
-        self.max_sl.set_sensitive(chk)
-        self.gov_container.set_sensitive(chk)
         self._update_conf_store_online(cpu, chk)
 
     @Gtk.Template.Callback()
@@ -379,6 +425,21 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         conf["changed"] = True
         self.apply_btn.set_sensitive(True)
         self._update_cpu_foreground(cpu, True)
+
+    @Gtk.Template.Callback()
+    def on_profile_changed(self, *args):
+        """Callback for profile combobox
+        Change profile and enable apply_btn
+        """
+        # pylint: disable=W0612,W0613
+        if self.refreshing:
+            return
+        mod = self.profile_box.get_model()
+        profile = mod[self.profile_box.get_active_iter()][0]
+        # Update store
+        res = self._set_profile_settings(profile)
+        self.upd_sliders()
+        self.apply_btn.set_sensitive(res)
 
     @Gtk.Template.Callback()
     def on_apply_clicked(self, button):
@@ -430,10 +491,6 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     def show_about_dialog(self):
         """Shows the about dialog"""
         self.about_dialog.run()
-        self.about_dialog.hide()
-
-    @Gtk.Template.Callback()
-    def on_config_box_changed(self, button):
         self.about_dialog.hide()
 
     @property

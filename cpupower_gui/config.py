@@ -32,10 +32,10 @@ class CpuPowerConfig:
         self._profiles = {}
         # Initialise class
         self._generate_default_profiles()
-        self.read_configuration()
-        self.read_profiles()
+        self._read_configuration()
+        self._read_profiles()
 
-    def read_configuration(self):
+    def _read_configuration(self):
         """Read and parse configuration files from
         /etc/cpupower_gui.d/ and XDG_CONFIG_HOME
 
@@ -54,7 +54,7 @@ class CpuPowerConfig:
         if conf_files:
             self.config.read(conf_files)
 
-    def read_profiles(self):
+    def _read_profiles(self):
         """Read .profile files from configuration directories"""
         files = self.user_conf.glob("*.profile")
         for file in files:

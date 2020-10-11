@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.22.2 
 
-Copyright (C) 2019-2020 [RnD]²
+Copyright (C) 2017-2020 [RnD]²
 
 This file is part of cpupower-gui.
 
@@ -26,7 +26,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name cpupower-gui -->
   <!-- interface-description CPU frequency setter -->
-  <!-- interface-copyright 2019 [RnD]\302\262 -->
+  <!-- interface-copyright 2017-2020 [RnD]\302\262 -->
   <!-- interface-authors Evangelos Rigas <erigas@rnd2.org> -->
   <object class="GtkAboutDialog" id="about_dialog">
     <property name="can_focus">False</property>
@@ -40,7 +40,9 @@ Author: Evangelos Rigas <erigas@rnd2.org>
 See the &lt;a href="https://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Public Licence, version 3 or later&lt;/a&gt; for details.</property>
     <property name="authors">Evangelos Rigas</property>
     <property name="translator_credits">Evangelos Rigas
-Barcza Károly</property>
+Barcza Károly
+Heimen Stoffels
+yjwork-cn</property>
     <property name="logo_icon_name">org.rnd2.cpupower_gui</property>
     <property name="wrap_license">True</property>
     <property name="license_type">gpl-3-0</property>
@@ -415,6 +417,7 @@ Barcza Károly</property>
         </child>
         <child>
           <object class="GtkGrid" id="settings">
+            <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="column_homogeneous">True</property>
             <child>
@@ -434,10 +437,11 @@ Barcza Károly</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="prof_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Configuration:</property>
+                <property name="halign">end</property>
+                <property name="label" translatable="yes">Profile:</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -445,15 +449,10 @@ Barcza Károly</property>
               </packing>
             </child>
             <child>
-              <object class="GtkComboBoxText" id="config_box">
+              <object class="GtkComboBoxText" id="profile_box">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="active">0</property>
-                <items>
-                  <item id="run" translatable="yes">Runtime</item>
-                  <item id="pers" translatable="yes">Persistent</item>
-                </items>
-                <signal name="changed" handler="on_config_box_changed" swapped="no"/>
+                <signal name="changed" handler="on_profile_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -461,25 +460,40 @@ Barcza Károly</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
+              <object class="GtkBox">
+                <property name="name">boot_options</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Apply at boot:</property>
+                <property name="spacing">1</property>
+                <property name="homogeneous">True</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Apply at boot:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="atboot">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <signal name="state-set" handler="on_atboot_state_set" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">3</property>
                 <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="atboot">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="state-set" handler="on_atboot_state_set" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">4</property>
-                <property name="top_attach">1</property>
+                <property name="width">2</property>
               </packing>
             </child>
             <child>
