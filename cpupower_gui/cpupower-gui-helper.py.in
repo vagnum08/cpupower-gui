@@ -162,12 +162,7 @@ class CpupowerGui_DBus(dbus.service.Object):
         self.authorized = {}
 
     def init_polkit(self):
-        proxy = self.bus.get_object(
-            "org.freedesktop.PolicyKit1", "/org/freedesktop/PolicyKit1/Authority"
-        )
-        self.authority = dbus.Interface(
-            proxy, dbus_interface="org.freedesktop.PolicyKit1.Authority"
-        )
+        """Set polkit flags"""
         self.name = self.bus.get_unique_name()
         self.subject = ("system-bus-name", {"name": self.name})
         self.details = {}
@@ -176,11 +171,30 @@ class CpupowerGui_DBus(dbus.service.Object):
         self.cancellation_id = ""  # No cancellation id
 
     def _is_authorized(self, sender, action_id="org.rnd2.cpupower_gui.apply_runtime"):
+        """"Checks if sender is authorized to perform the action with action_id
+
+        Args:
+            sender: D-Bus client name
+            action_id: PolicyKit1 action to be performed
+
+        Returns:
+            auth: 0 or 1 depending if user is authorized or not
+
+        """
+        # If user was previously authorized
         if sender in self.authorized:
             if self.authorized[sender]:
                 return 1
+
+        # Check if user is authorized using PolicyKit1
+        proxy = self.bus.get_object(
+            "org.freedesktop.PolicyKit1", "/org/freedesktop/PolicyKit1/Authority"
+        )
+        authority = dbus.Interface(
+            proxy, dbus_interface="org.freedesktop.PolicyKit1.Authority"
+        )
         subject = ("system-bus-name", {"name": sender})
-        result = self.authority.CheckAuthorization(
+        result = authority.CheckAuthorization(
             subject, action_id, self.details, self.flags, self.cancellation_id
         )
         auth = bool(result[0])
