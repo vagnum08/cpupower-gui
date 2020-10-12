@@ -1,3 +1,6 @@
 option('systemddir', type : 'string',
        description : '''Set the path for systemd units [default '/usr/lib/systemd']''')
 
+option('pkla', type : 'boolean',
+       description : '''Prefer pkla files over rules for polkit [default 'false']''')
+

@@ -194,15 +194,28 @@ To install them,
 
 ## Build cpupower-gui
 ```bash
-meson build --prefix /usr -Dsystemddir=<path-to-systemd-dir>
+meson build --prefix /usr -Dsystemddir=<path-to-systemd-dir> -Dpkla=<true|false>
 ninja -C build
 ```
+
+### Meson options
+
+#### `-Dsystemddir`
 
 The `systemddir` option should point to the systemd directory.
 If this option is not set the default is used (i.e. `/usr/lib/systemd`).
 
 - The default value is valid for Arch/Fedora/OpenSUSE and derivatives.
 - For Debian and Ubuntu based systems you should use `-Dsystemddir=/lib/systemd`.
+##### `-Dpkla`
+Since version **`0.9.0`** an additional option (**`-Dpkla`**) has been added for PolicyKit rules.
+This option is set to **`false`** by default.
+
+When `pkla` is set to `false` a polkit `.rules` file is installed under `/usr/share/polkit-1/rules.d/`.
+When `pkla` is set to `true` a `.pkla` file is installed under `/var/lib/polkit-1/localauthority/10-vendor.d/`.
+
+- The default value works Arch/Fedora/NixOS/OpenSUSE and derivatives.
+- For Debian and Ubuntu based systems you should use `-Dpkla=true`
 
 ## Install
 To uninstall run `ninja -C build install`
