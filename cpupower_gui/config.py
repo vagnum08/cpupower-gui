@@ -4,7 +4,13 @@ from configparser import ConfigParser
 from pathlib import Path
 from shlex import split
 
-from xdg import BaseDirectory
+try:
+    from xdg import BaseDirectory
+
+    XDG_PATH = Path(BaseDirectory.save_config_path("cpupower_gui"))
+except ImportError:
+    BaseDirectory = None
+    XDG_PATH = None
 
 from cpupower_gui.utils import (
     read_govs,
@@ -15,9 +21,6 @@ from cpupower_gui.utils import (
     is_online,
     parse_core_list,
 )
-
-
-XDG_PATH = Path(BaseDirectory.save_config_path("cpupower_gui"))
 
 
 class CpuPowerConfig:
@@ -53,9 +56,10 @@ class CpuPowerConfig:
                 self.config.read(confd_files)
 
         # user configuration
-        conf_files = sorted(self.user_conf.glob("*.conf"))
-        if conf_files:
-            self.config.read(conf_files)
+        if self.user_conf:
+            conf_files = sorted(self.user_conf.glob("*.conf"))
+            if conf_files:
+                self.config.read(conf_files)
 
     def _read_profiles(self):
         """Read .profile files from configuration directories"""
@@ -115,7 +119,7 @@ class CpuPowerConfig:
     def _generate_default_profiles(self):
         """Generate default profiles based on current hardware.
         The two profiles generated are 'Balanced' and 'Performance'.
-        The profiles apply either powersaving or performance governor.
+        The profiles apply either power-saving or performance governor.
 
         """
         # Get a governor list from first cpu
