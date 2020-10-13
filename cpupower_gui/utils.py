@@ -58,6 +58,22 @@ def cpus_available():
     return avail
 
 
+def is_online(cpu):
+    """Wrapper to get the online state for a cpu
+
+    Args:
+        cpu: Index of cpu to query
+
+    Returns:
+        bool: True if cpu is online, False otherwise
+
+    """
+
+    online = cpus_online()
+    present = cpus_present()
+    return (cpu in present) and (cpu in online)
+
+
 def read_freqs(cpu):
     """ Reads frequencies from sysfs """
     sys_path = Path(SYS_PATH.format(int(cpu)))
@@ -95,7 +111,7 @@ def read_govs(cpu):
 
 
 def read_available_frequencies(cpu):
-    """ Reads governors from sysfs """
+    """ Reads available frequencies from sysfs """
     sys_path = Path(SYS_PATH.format(int(cpu)))
     try:
         sys_file = sys_path / AVAIL_FREQS

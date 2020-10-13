@@ -8,8 +8,11 @@ from xdg import BaseDirectory
 
 from cpupower_gui.utils import (
     read_govs,
+    read_governor,
     read_freq_lims,
+    read_freqs,
     cpus_available,
+    is_online,
     parse_core_list,
 )
 
@@ -291,3 +294,90 @@ def parse_online(cpu: int, online: str):
         return True
 
     return False
+
+
+class CpuSettings:
+    """Abstraction class for cpu settings"""
+
+    def __init__(self, cpu):
+        self.cpu = cpu
+        self._settings = {}
+        self._new_settings = {}
+        # Attributes that don't change
+        self._lims = read_freq_lims(cpu)
+        self._governors = read_govs(cpu)
+        self.update_conf()
+
+    def update_conf(self):
+        cpu = self.cpu
+        self._settings["freqs"] = read_freqs(cpu)
+        self._settings["governor"] = read_governor(cpu)
+        self._settings["online"] = is_online(cpu)
+        # In case a new governor has been added
+        self._governors = read_govs(cpu)
+        self.reset_conf()
+
+    def reset_conf(self):
+        # Reset changed values
+        self._new_settings = self._settings.copy()
+
+    def __repr__(self):
+        return "Cpu: {}\nFreqs: {}\nGovernor: {}\n".format(
+            self.cpu, self.freqs, self.governor
+        )
+
+    @property
+    def changed(self):
+        return self._settings != self._new_settings
+
+    @property
+    def freqs(self):
+        freqs = self._new_settings["freqs"]
+        return int(freqs[0] / 1e3), int(freqs[1] / 1e3)
+
+    @freqs.setter
+    def freqs(self, freqs):
+        self._new_settings["freqs"] = (int(freqs[0] * 1e3), int(freqs[1] * 1e3))
+
+    @property
+    def freqs_scaled(self):
+        freqs = self._new_settings["freqs"]
+        return freqs[0], freqs[1]
+
+    @freqs_scaled.setter
+    def freqs_scaled(self, freqs):
+        self._new_settings["freqs"] = (freqs[0], freqs[1])
+
+    @property
+    def governor(self):
+        return self._new_settings["governor"]
+
+    @governor.setter
+    def governor(self, gov):
+        conf = self._new_settings
+        if isinstance(gov, str):
+            conf["governor"] = gov
+
+        if isinstance(gov, int):
+            conf["governor"] = self._governors[gov]
+
+    @property
+    def governors(self):
+        return self._governors
+
+    @property
+    def govid(self):
+        return self._governors.index(self.governor)
+
+    @property
+    def hw_lims(self):
+        freqs = self._lims
+        return int(freqs[0] / 1e3), int(freqs[1] / 1e3)
+
+    @property
+    def online(self):
+        return self._new_settings.get("online")
+
+    @online.setter
+    def online(self, on):
+        self._new_settings["online"] = bool(on)
