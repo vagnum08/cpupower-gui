@@ -70,6 +70,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     cpu_online = Gtk.Template.Child()
     gov_container = Gtk.Template.Child()
     profile_box = Gtk.Template.Child()
+    energy_pref_box = Gtk.Template.Child()
+    pstate_prefs = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -82,6 +84,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         self.refreshing = False
         self.settings = {}
+        self.energy_pref_avail = False
 
         self.update_cpubox()
         self.load_cpu_settings()
@@ -105,6 +108,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         for cpu in self.online_cpus:
             self.settings[cpu] = CpuSettings(cpu)
             self._update_cpu_foreground(cpu, False)
+        self.energy_pref_avail = self.settings[0].energy_pref_avail
 
     def update_cpubox(self):
         """Update the CPU Combobox"""
@@ -140,10 +144,24 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         for prof in self.profiles:
             self.prof_store.append([prof])
 
+        # Check if intel pstate perfs are available
+        if self.energy_pref_avail:
+            self.pstate_prefs.set_visible(True)
+
     def quit(self, *args):
         """Quit"""
         HELPER.quit()
         exit(0)
+
+    def _reset_energy_conf(self, cpu):
+        if cpu == -1:
+            # Reset conf for all cpus
+            for cpu, conf in self.settings.items():
+                conf.reset_energy_pref()
+                self._update_cpu_foreground(cpu, conf.changed)
+            return
+
+        self.settings[cpu].reset_energy_pref()
 
     def _update_settings_freqs(self, cpu, fmin, fmax):
         """Updates settings frequency values for `cpu`
@@ -199,6 +217,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         with self.lock():  # Use the flag to skip callbacks
             self._update_gov_box()
+            if self.energy_pref_avail:
+                self._update_energy_pref_box()
 
             # Update sliders
             self._set_sliders_sensitive(cpu_online)
@@ -255,6 +275,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.min_sl.set_sensitive(state)
         self.max_sl.set_sensitive(state)
         self.gov_container.set_sensitive(state)
+        self.pstate_prefs.set_sensitive(state)
 
     def _update_frequency_marks(self, cpu):
         """Add or remove slider marks for frequency steps
@@ -277,6 +298,27 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             mark = markup.format(freq)
             self.min_sl.add_mark(frequency, Gtk.PositionType.TOP, mark)
             self.max_sl.add_mark(frequency, Gtk.PositionType.TOP)
+
+    def _update_energy_pref_box(self):
+        """Updates the energy performance combobox"""
+        cpu = self._get_active_cpu()
+        conf = self.settings.get(cpu)
+
+        energy_pref = conf.energy_pref_id
+        energy_prefs = conf.energy_prefs
+
+        if energy_pref != -1:
+            pref_store = Gtk.ListStore(str, int)
+            for prefid, pref in enumerate(energy_prefs):
+                if "_" in pref:
+                    pref = pref.replace("_", " ")
+                pref_store.append([pref.capitalize(), prefid])
+
+            self.energy_pref_box.set_model(pref_store)
+            self.energy_pref_box.set_active(energy_pref)
+            self.pstate_prefs.set_sensitive(True)
+        else:
+            self.pstate_prefs.set_sensitive(False)
 
     def _update_gov_box(self):
         """Updates the governor combobox"""
@@ -332,14 +374,18 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         if fmin > fmax:
             if fmin + 10 > fmax_hw:
-                self.adj_max.set_value(fmax_hw)
+                fmax = fmax_hw
             else:
-                self.adj_max.set_value(fmin + 10)
+                fmax = fmin + 10
         elif fmax < fmin:
             if fmax - 10 < fmin_hw:
-                self.adj_min.set_value(fmin_hw)
+                fmin = fmin_hw
             else:
-                self.adj_min.set_value(fmax - 10)
+                fmin = fmax - 10
+
+        with self.lock():
+            self.adj_min.set_value(fmin)
+            self.adj_max.set_value(fmax)
 
         self._update_settings_freqs(cpu, fmin, fmax)
         self.apply_btn.set_sensitive(self.is_conf_changed)
@@ -355,7 +401,10 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         fmax = self.adj_max.get_value()
 
         if fmax < fmin:
-            self.adj_min.set_value(fmax - 10)
+            fmin = fmax - 10
+
+        with self.lock():
+            self.adj_min.set_value(fmin)
 
         self._update_settings_freqs(cpu, fmin, fmax)
         self.apply_btn.set_sensitive(self.is_conf_changed)
@@ -366,6 +415,11 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         cpu = self._get_active_cpu()
         self.settings[cpu].update_conf()
 
+        if self.energy_pref_avail:
+            if not self.gui_conf.get("energy_pref_per_cpu", False):
+                self._reset_energy_conf(-1)
+            else:
+                self._reset_energy_conf(cpu)
         self.upd_sliders()
 
     @Gtk.Template.Callback()
@@ -396,6 +450,30 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         conf.governor = tid
         self.apply_btn.set_sensitive(self.is_conf_changed)
         self._update_cpu_foreground(cpu, conf.changed)
+
+    @Gtk.Template.Callback()
+    def on_energy_pref_box_changed(self, *args):
+        """Callback for energy combobox
+        Change energy pref and enable apply_btn
+        """
+        # pylint: disable=W0612,W0613
+        if self.refreshing:
+            return
+        mod = self.energy_pref_box.get_model()
+        text, tid = mod[self.energy_pref_box.get_active_iter()][:2]
+        # Update store
+        cpu = self._get_active_cpu()
+
+        # Note that tasks may by migrated from one CPU to another by the scheduler’s
+        # load-balancing algorithm and if different energy vs performance hints are
+        # set for those CPUs, that may lead to undesirable outcomes.
+        # To avoid such issues it is better to set the same energy vs performance hint
+        # for all CPUs or to pin every task potentially sensitive to them to a specific CPU.
+        # https://www.kernel.org/doc/html/v4.12/admin-guide/pm/intel_pstate.html#energy-vs-performance-hints
+        conf = self.settings.get(cpu)
+        conf.energy_pref = tid
+        self._update_cpu_foreground(cpu, conf.changed)
+        self.apply_btn.set_sensitive(self.is_conf_changed)
 
     @Gtk.Template.Callback()
     def on_profile_changed(self, *args):
@@ -446,8 +524,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                 self._update_cpu_foreground(cpu, False)
 
         # Update sliders
-        with self.lock():
-            self.profile_box.set_active(0)
+        self.profile_box.set_active(0)
 
         self.load_cpu_settings()
         self.upd_sliders()
@@ -466,16 +543,6 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         """Shows the about dialog"""
         self.about_dialog.run()
         self.about_dialog.hide()
-
-    @property
-    def fmin(self):
-        """Convenience function to return minimum frequency"""
-        return int(self.adj_min.get_value() * 1000)
-
-    @property
-    def fmax(self):
-        """Convenience function to return maximum frequency"""
-        return int(self.adj_max.get_value() * 1000)
 
     @property
     def online_cpus(self):
