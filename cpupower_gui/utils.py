@@ -7,6 +7,8 @@ FREQ_MIN_HW = "cpuinfo_min_freq"
 FREQ_MAX_HW = "cpuinfo_max_freq"
 AVAIL_FREQS = "scaling_available_frequencies"
 AVAIL_GOV = "scaling_available_governors"
+AVAIL_PERF_PREF = "energy_performance_available_preferences"
+PERF_PREF = "energy_performance_preference"
 GOVERNOR = "scaling_governor"
 ONLINE = Path("/sys/devices/system/cpu/online")
 PRESENT = Path("/sys/devices/system/cpu/present")
@@ -132,3 +134,34 @@ def read_governor(cpu):
         governor = "ERROR"
     finally:
         return governor
+
+
+def read_available_energy_prefs(cpu):
+    """ Reads energy performance available preferences"""
+    sys_path = Path(SYS_PATH.format(int(cpu)))
+    try:
+        sys_file = sys_path / AVAIL_PERF_PREF
+        prefs = sys_file.read_text().strip().split(" ")
+    except OSError:
+        prefs = []
+    finally:
+        return prefs
+
+
+def read_energy_pref(cpu):
+    """ Reads energy performance available preferences"""
+    sys_path = Path(SYS_PATH.format(int(cpu)))
+    try:
+        sys_file = sys_path / PERF_PREF
+        pref = sys_file.read_text().strip()
+    except OSError:
+        pref = ""
+    finally:
+        return pref
+
+
+def is_energy_pref_avail(cpu):
+    """Check if Intel energy performance preferences are available"""
+    sys_path = Path(SYS_PATH.format(int(cpu)))
+    sys_file = sys_path / AVAIL_PERF_PREF
+    return sys_file.exists()

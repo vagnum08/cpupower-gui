@@ -20,6 +20,9 @@ from cpupower_gui.utils import (
     cpus_available,
     is_online,
     parse_core_list,
+    read_available_energy_prefs,
+    read_energy_pref,
+    is_energy_pref_avail,
 )
 
 
@@ -316,6 +319,8 @@ class CpuSettings:
         # Attributes that don't change
         self._lims = read_freq_lims(cpu)
         self._governors = read_govs(cpu)
+        self.energy_pref_avail = is_energy_pref_avail(cpu)
+        self.energy_prefs = []
         self.update_conf()
 
     def update_conf(self):
@@ -325,11 +330,22 @@ class CpuSettings:
         self._settings["online"] = is_online(cpu)
         # In case a new governor has been added
         self._governors = read_govs(cpu)
+        # If energy performance preferences are available
+        self._settings["energy_pref"] = None
+
+        if self.energy_pref_avail:
+            self._settings["energy_pref"] = read_energy_pref(cpu)
+            self.energy_prefs = read_available_energy_prefs(cpu)
+
         self.reset_conf()
 
     def reset_conf(self):
         # Reset changed values
         self._new_settings = self._settings.copy()
+
+    def reset_energy_pref(self):
+        # Reset changed values
+        self.energy_pref = self._settings["energy_pref"]
 
     def __repr__(self):
         return "Cpu: {}\nFreqs: {}\nGovernor: {}\n".format(
@@ -339,6 +355,27 @@ class CpuSettings:
     @property
     def changed(self):
         return self._settings != self._new_settings
+
+    @property
+    def energy_pref_id(self):
+        pref = self._new_settings.get("energy_pref")
+        if pref:
+            return self.energy_prefs.index(pref)
+        return -1
+
+    @property
+    def energy_pref(self):
+        pref = self._new_settings.get("energy_pref")
+        return pref
+
+    @energy_pref.setter
+    def energy_pref(self, pref):
+        conf = self._new_settings
+        if isinstance(pref, str):
+            conf["energy_pref"] = pref
+
+        if isinstance(pref, int):
+            conf["energy_pref"] = self.energy_prefs[pref]
 
     @property
     def freqs(self):

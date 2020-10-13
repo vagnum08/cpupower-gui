@@ -118,7 +118,7 @@ yjwork-cn</property>
     <accel-groups>
       <group name="accelgroup1"/>
     </accel-groups>
-    <signal name="destroy" handler="on_window_destroy" swapped="no"/>
+    <signal name="destroy" handler="quit" swapped="no"/>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -128,8 +128,6 @@ yjwork-cn</property>
           <object class="GtkGrid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">8</property>
-            <property name="margin_right">8</property>
             <property name="row_spacing">10</property>
             <property name="column_homogeneous">True</property>
             <child>
@@ -164,8 +162,8 @@ yjwork-cn</property>
               <object class="GtkScale" id="max_sl">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="margin_left">4</property>
-                <property name="margin_right">4</property>
+                <property name="margin_start">2</property>
+                <property name="margin_end">2</property>
                 <property name="adjustment">adj_max</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
@@ -219,8 +217,8 @@ yjwork-cn</property>
               <object class="GtkScale" id="min_sl">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="margin_left">4</property>
-                <property name="margin_right">4</property>
+                <property name="margin_start">2</property>
+                <property name="margin_end">2</property>
                 <property name="adjustment">adj_min</property>
                 <property name="fill_level">100000</property>
                 <property name="round_digits">0</property>
@@ -347,18 +345,47 @@ yjwork-cn</property>
               </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
+              <object class="GtkBox" id="pstate_prefs">
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="energy_perf_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="label" translatable="yes">Energy profile:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="energy_pref_box">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <signal name="changed" handler="on_energy_pref_box_changed" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="top_attach">4</property>
+                <property name="width">2</property>
+              </packing>
             </child>
             <child>
               <placeholder/>
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">False</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="padding">5</property>
             <property name="position">1</property>
           </packing>
@@ -510,7 +537,7 @@ yjwork-cn</property>
               <object class="GtkImage" id="refresh_icon">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="stock">gtk-refresh</property>
+                <property name="icon_name">view-refresh</property>
               </object>
             </child>
           </object>
