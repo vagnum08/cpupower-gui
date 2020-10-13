@@ -499,6 +499,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         conf = self.settings[cpu]
         fmin, fmax = conf.freqs_scaled
         gov = conf.governor
+        pref = conf.energy_pref
 
         if not HELPER.isauthorized():
             error_message("You don't have permissions to update cpu settings!", self)
@@ -510,6 +511,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                 if self.is_online(cpu):
                     ret = HELPER.update_cpu_settings(cpu, fmin, fmax)
                     ret += HELPER.update_cpu_governor(cpu, gov)
+                    if self.energy_pref_avail:
+                        ret += HELPER.update_cpu_energy_prefs(cpu, pref)
                     self._update_cpu_foreground(cpu, False)
         else:
             # Update only the cpus whose settings were changed
@@ -521,6 +524,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                 if cpu_online:
                     ret += self.set_cpu_frequencies(cpu)
                     ret += self.set_cpu_governor(cpu)
+                    ret += self.set_cpu_energy_preferences(cpu)
                 self._update_cpu_foreground(cpu, False)
 
         # Update sliders
@@ -665,6 +669,32 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             return ret
 
         ret = HELPER.update_cpu_governor(cpu, gov)
+
+        return ret
+
+    def set_cpu_energy_preferences(self, cpu):
+        """Sets the energy performance preference for cpu
+
+        Args:
+            cpu: Index of cpu to set
+
+        """
+
+        # Return success if not available
+        if not self.energy_pref_avail:
+            return 0
+
+        ret = -1
+        conf = self.settings.get(cpu)
+        if conf is None:
+            return ret
+
+
+        pref = conf.energy_pref
+        if not pref:
+            return ret
+
+        ret = HELPER.update_cpu_energy_prefs(cpu, pref)
 
         return ret
 
