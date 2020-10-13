@@ -303,8 +303,14 @@ def parse_online(cpu: int, online: str):
 class CpuSettings:
     """Abstraction class for cpu settings"""
 
+    units = {
+        "mhz": 1e3,
+        "ghz": 1e6,
+        }
+
     def __init__(self, cpu):
         self.cpu = cpu
+        self._factor = self.units["mhz"]
         self._settings = {}
         self._new_settings = {}
         # Attributes that don't change
@@ -337,11 +343,13 @@ class CpuSettings:
     @property
     def freqs(self):
         freqs = self._new_settings["freqs"]
-        return int(freqs[0] / 1e3), int(freqs[1] / 1e3)
+        f = self._factor
+        return freqs[0] / f, freqs[1] / f
 
     @freqs.setter
     def freqs(self, freqs):
-        self._new_settings["freqs"] = (int(freqs[0] * 1e3), int(freqs[1] * 1e3))
+        f = self._factor
+        self._new_settings["freqs"] = (int(freqs[0] * f), int(freqs[1] * f))
 
     @property
     def freqs_scaled(self):
@@ -376,7 +384,8 @@ class CpuSettings:
     @property
     def hw_lims(self):
         freqs = self._lims
-        return int(freqs[0] / 1e3), int(freqs[1] / 1e3)
+        f = self._factor
+        return freqs[0] / f, freqs[1] / f
 
     @property
     def online(self):
@@ -385,3 +394,9 @@ class CpuSettings:
     @online.setter
     def online(self, on):
         self._new_settings["online"] = bool(on)
+
+    def set_units(self, unit: str):
+        unit = unit.lower()
+        if unit not in self.units.keys():
+            return
+        self._factor = self.units[unit]
