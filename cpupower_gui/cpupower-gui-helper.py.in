@@ -22,14 +22,20 @@ along with cpupower-gui.  If not, see <http://www.gnu.org/licenses/>.
 Author: Evangelos Rigas <erigas@rnd2.org>
 """
 
-import os
-import locale
-import gettext
+import sys
 
-from gi.repository import GLib
+sys.path.insert(1, "@pkgdatadir@")
+
+import gettext
+import locale
+from pathlib import Path
+
 import dbus
 import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
+from gi.repository import GLib
+
+import cpupower_gui.utils as util
 
 localedir = "@localedir@"
 
@@ -41,115 +47,9 @@ gettext.textdomain("cpupower-gui")
 SYS_PATH = "/sys/devices/system/cpu/cpu{}/cpufreq"
 FREQ_MIN = "scaling_min_freq"
 FREQ_MAX = "scaling_max_freq"
-FREQ_MIN_HW = "cpuinfo_min_freq"
-FREQ_MAX_HW = "cpuinfo_max_freq"
-AVAIL_GOV = "scaling_available_governors"
 GOVERNOR = "scaling_governor"
-ONLINE = "/sys/devices/system/cpu/online"
-PRESENT = "/sys/devices/system/cpu/present"
 ONLINE_PATH = "/sys/devices/system/cpu/cpu{}/online"
-
-
-def parse_corelist(string):
-    """Parse string of cores like '0,2,4-10,12' into a list """
-    a = []
-    for el in string.split(","):
-        if "-" in el:
-            b, e = [int(c) for c in el.split("-")]
-            a.extend(range(b, e + 1))
-        else:
-            a.append(int(el))
-    return a
-
-
-def cpus_present():
-    """Returns a list of present CPUs """
-    with open(PRESENT, "r") as sys_file:
-        cpus_present = sys_file.readline().strip()
-
-    return parse_corelist(cpus_present)
-
-
-def cpus_online():
-    """Returns a list of online CPUs """
-    with open(ONLINE, "r") as sys_file:
-        cpus = sys_file.readline().strip()
-
-    return parse_corelist(cpus)
-
-
-def cpus_offline():
-    """Returns a list of offline CPUs """
-    online = cpus_online()
-    present = cpus_present()
-    return [cpu for cpu in present if cpu not in online]
-
-
-def cpus_available():
-    online = cpus_present()
-    avail = []
-    for cpu in online:
-        sys_path = SYS_PATH.format(cpu)
-        if (
-            os.path.exists(os.path.join(sys_path, FREQ_MIN_HW))
-            and os.path.exists(os.path.join(sys_path, FREQ_MAX_HW))
-            and os.path.exists(os.path.join(sys_path, AVAIL_GOV))
-        ):
-            avail.append(cpu)
-    return avail
-
-
-def read_freqs(cpu):
-    """ Reads frequencies from sysfs """
-    sys_path = SYS_PATH.format(int(cpu))
-    with open(os.path.join(sys_path, FREQ_MIN), "r") as sys_file:
-        freq_min = int(sys_file.readline())
-
-    with open(os.path.join(sys_path, FREQ_MAX), "r") as sys_file:
-        freq_max = int(sys_file.readline())
-
-    return freq_min, freq_max
-
-
-def read_freq_lims(cpu):
-    """ Reads frequency limits from sysfs """
-    try:
-        sys_path = SYS_PATH.format(int(cpu))
-        with open(os.path.join(sys_path, FREQ_MIN_HW), "r") as sys_file:
-            freq_minhw = int(sys_file.readline())
-
-        with open(os.path.join(sys_path, FREQ_MAX_HW), "r") as sys_file:
-            freq_maxhw = int(sys_file.readline())
-
-        return freq_minhw, freq_maxhw
-    except Exception as e:
-        print("WARNING! Unknown CPU frequency, cause:", e)
-
-    return 0, 0
-
-
-def read_govs(cpu):
-    """ Reads governors from sysfs """
-    sys_path = SYS_PATH.format(int(cpu))
-    try:
-        with open(os.path.join(sys_path, AVAIL_GOV), "r") as sys_file:
-            govs = sys_file.readline().strip().split(" ")
-    except OSError as e:
-        govs = []
-    finally:
-        return govs
-
-
-def read_governor(cpu):
-    """ Reads governor from sysfs """
-    sys_path = SYS_PATH.format(int(cpu))
-    try:
-        with open(os.path.join(sys_path, GOVERNOR), "r") as sys_file:
-            governor = sys_file.readline().strip()
-    except OSError as e:
-        governor = "ERROR"
-    finally:
-        return governor
+PERF_PREF = "energy_performance_preference"
 
 
 class CpupowerGui_DBus(dbus.service.Object):
@@ -171,7 +71,7 @@ class CpupowerGui_DBus(dbus.service.Object):
         self.cancellation_id = ""  # No cancellation id
 
     def _is_authorized(self, sender, action_id="org.rnd2.cpupower_gui.apply_runtime"):
-        """"Checks if sender is authorized to perform the action with action_id
+        """Checks if sender is authorized to perform the action with action_id
 
         Args:
             sender: D-Bus client name
@@ -206,7 +106,7 @@ class CpupowerGui_DBus(dbus.service.Object):
     )
     def get_cpu_frequencies(self, cpu):
         if self.is_present(cpu) and self.is_online(cpu):
-            return read_freqs(cpu)
+            return util.read_freqs(cpu)
         return 0, 0
 
     @dbus.service.method(
@@ -214,7 +114,7 @@ class CpupowerGui_DBus(dbus.service.Object):
     )
     def get_cpu_limits(self, cpu):
         if self.is_present(cpu) and self.is_online(cpu):
-            return read_freq_lims(cpu)
+            return util.read_freq_lims(cpu)
         return 0, 0
 
     @dbus.service.method(
@@ -222,37 +122,54 @@ class CpupowerGui_DBus(dbus.service.Object):
     )
     def get_cpu_governors(self, cpu):
         if self.is_present(cpu) and self.is_online(cpu):
-            return read_govs(cpu)
+            return util.read_govs(cpu)
+        return [""]
+
+    @dbus.service.method(
+        "org.rnd2.cpupower_gui.helper", in_signature="i", out_signature="as"
+    )
+    def get_cpu_energy_preferences(self, cpu):
+        if self.is_present(cpu) and self.is_online(cpu):
+            return util.read_available_energy_prefs(cpu)
         return [""]
 
     @dbus.service.method("org.rnd2.cpupower_gui.helper", out_signature="ai")
     def get_cpus_online(self):
-        return cpus_online()
+        return util.cpus_online()
 
     @dbus.service.method("org.rnd2.cpupower_gui.helper", out_signature="ai")
     def get_cpus_offline(self):
-        return cpus_offline()
+        return util.cpus_offline()
 
     @dbus.service.method("org.rnd2.cpupower_gui.helper", out_signature="ai")
     def get_cpus_available(self):
-        return cpus_available()
+        return util.cpus_available()
 
     @dbus.service.method("org.rnd2.cpupower_gui.helper", out_signature="ai")
     def get_cpus_present(self):
-        return cpus_present()
+        return util.cpus_present()
 
     @dbus.service.method(
         "org.rnd2.cpupower_gui.helper", in_signature="i", out_signature="i"
     )
     def cpu_allowed_offline(self, cpu):
-        return int(os.path.exists(ONLINE_PATH.format(cpu)))
+        path = Path(ONLINE_PATH.format(cpu))
+        return int(path.exists())
 
     @dbus.service.method(
         "org.rnd2.cpupower_gui.helper", in_signature="i", out_signature="s"
     )
     def get_cpu_governor(self, cpu):
         if self.is_present(cpu) and self.is_online(cpu):
-            return read_governor(cpu)
+            return util.read_governor(cpu)
+        return ""
+
+    @dbus.service.method(
+        "org.rnd2.cpupower_gui.helper", in_signature="i", out_signature="s"
+    )
+    def get_cpu_energy_preference(self, cpu):
+        if self.is_present(cpu) and self.is_online(cpu):
+            return util.read_energy_pref(cpu)
         return ""
 
     @dbus.service.method(
@@ -276,9 +193,8 @@ class CpupowerGui_DBus(dbus.service.Object):
     )
     def set_cpu_online(self, cpu, sender=None):
         if self._is_authorized(sender):
-            sys_path = ONLINE_PATH.format(cpu)
-            with open(os.path.join(sys_path), "w") as sys_file:
-                sys_file.write("1")
+            sys_file = Path(ONLINE_PATH.format(cpu))
+            sys_file.write_text("1")
             return 0
         else:
             return -1
@@ -291,9 +207,8 @@ class CpupowerGui_DBus(dbus.service.Object):
     )
     def set_cpu_offline(self, cpu, sender=None):
         if self._is_authorized(sender):
-            sys_path = ONLINE_PATH.format(cpu)
-            with open(os.path.join(sys_path), "w") as sys_file:
-                sys_file.write("0")
+            sys_file = Path(ONLINE_PATH.format(cpu))
+            sys_file.write_text("0")
             return 0
         else:
             return -1
@@ -312,6 +227,22 @@ class CpupowerGui_DBus(dbus.service.Object):
             return -1
 
     @dbus.service.method(
+        "org.rnd2.cpupower_gui.helper",
+        in_signature="is",
+        out_signature="i",
+        sender_keyword="sender",
+    )
+    def update_cpu_energy_prefs(self, cpu, pref, sender=None):
+        if pref not in util.read_available_energy_prefs(cpu):
+            return 0
+
+        if self._is_authorized(sender):
+            ret = self._update_cpu_energy_prefs(int(cpu), str(pref))
+            return ret
+        else:
+            return -1
+
+    @dbus.service.method(
         "org.rnd2.cpupower_gui.helper", sender_keyword="sender", out_signature="i"
     )
     def isauthorized(self, sender=None):
@@ -323,20 +254,22 @@ class CpupowerGui_DBus(dbus.service.Object):
 
     @staticmethod
     def is_online(cpu):
-        return cpu in cpus_online()
+        return cpu in util.cpus_online()
 
     @staticmethod
     def is_present(cpu):
-        return cpu in cpus_present()
+        return cpu in util.cpus_present()
 
     def _update_cpu(self, cpu, fmin, fmax):
         if self.is_present(cpu) and self.is_online(cpu):
             try:
-                sys_path = SYS_PATH.format(cpu)
-                with open(os.path.join(sys_path, FREQ_MIN), "w") as sys_file:
-                    sys_file.write(str(fmin))
-                with open(os.path.join(sys_path, FREQ_MAX), "w") as sys_file:
-                    sys_file.write(str(fmax))
+                sys_path = Path(SYS_PATH.format(cpu))
+
+                sys_file = sys_path / FREQ_MIN
+                sys_file.write_text(str(fmin))
+
+                sys_file = sys_path / FREQ_MAX
+                sys_file.write_text(str(fmax))
                 return 0
             except IOError as e:
                 return -13
@@ -346,9 +279,22 @@ class CpupowerGui_DBus(dbus.service.Object):
     def _update_cpu_governor(self, cpu, governor):
         if self.is_present(cpu) and self.is_online(cpu):
             try:
-                sys_path = SYS_PATH.format(cpu)
-                with open(os.path.join(sys_path, GOVERNOR), "w") as sys_file:
-                    sys_file.write(governor)
+                sys_path = Path(SYS_PATH.format(cpu))
+                sys_file = sys_path / GOVERNOR
+                sys_file.write_text(governor)
+                return 0
+            except IOError as e:
+                return -13
+        else:
+            return -1
+
+    def _update_cpu_energy_prefs(self, cpu, pref):
+        if self.is_present(cpu) and self.is_online(cpu):
+            try:
+                sys_path = Path(SYS_PATH.format(cpu))
+                sys_file = sys_path / PERF_PREF
+                if sys_file.exists():
+                    sys_file.write_text(pref)
                 return 0
             except IOError as e:
                 return -13
@@ -373,4 +319,3 @@ if __name__ == "__main__":
         loop.quit()
 
 # vim:set filetype=python shiftwidth=4 softtabstop=4 expandtab:
-
