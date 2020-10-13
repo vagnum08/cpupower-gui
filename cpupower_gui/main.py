@@ -30,7 +30,7 @@ from gi.repository import Gtk, Gio, GLib
 try:
     gi.require_version("AppIndicator3", "0.1")
     from gi.repository import AppIndicator3 as AppIndicator
-except:
+except ImportError:
     AppIndicator = None
 
 from .window import CpupowerGuiWindow
