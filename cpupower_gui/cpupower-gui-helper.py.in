@@ -22,18 +22,17 @@ along with cpupower-gui.  If not, see <http://www.gnu.org/licenses/>.
 Author: Evangelos Rigas <erigas@rnd2.org>
 """
 
-import sys
-
-sys.path.insert(1, "@pkgdatadir@")
-
 import gettext
 import locale
+import sys
 from pathlib import Path
 
 import dbus
 import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import GLib
+
+sys.path.insert(1, "@pkgdatadir@")
 
 import cpupower_gui.utils as util
 

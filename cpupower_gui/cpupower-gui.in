@@ -17,12 +17,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import sys
-import signal
-import gettext
 import argparse
-
+import gettext
+import os
+import signal
+import sys
 
 VERSION = "@VERSION@"
 pkgdatadir = "@pkgdatadir@"
@@ -32,14 +31,25 @@ sys.path.insert(1, pkgdatadir)
 
 from cpupower_gui.config import CpuPowerConfig
 from cpupower_gui.helper import (
-    apply_cpu_profile,
-    apply_configuration,
     apply_balanced,
+    apply_configuration,
+    apply_cpu_profile,
+    apply_energy_preference,
     apply_performance,
+)
+from cpupower_gui.utils import (
+    cpus_available,
+    is_energy_pref_avail,
+    parse_core_list,
+    read_available_energy_prefs,
+    read_energy_pref,
 )
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 gettext.install("cpupower-gui", localedir)
+
+CPUS = cpus_available()
+ENERGY_PREF_AVAIL = is_energy_pref_avail(0)
 
 # Add argparse options
 parser = argparse.ArgumentParser(
@@ -62,23 +72,53 @@ cmd_group.add_argument(
 )
 
 cmd_group.add_argument(
-    "--apply-config", action="store_true", help="Apply cpupower configuration",
+    "--apply-config",
+    action="store_true",
+    help="Apply cpupower configuration",
 )
-
 cmd_group.add_argument(
-    "--apply-profile", type=str, metavar="PROFILE", help="Apply a cpupower profile",
+    "--apply-profile",
+    type=str,
+    metavar="PROFILE",
+    help="Apply a cpupower profile",
 )
 
 parser.add_argument(
-    "-b", "--balanced", action="store_true", help="Change governor to balanced",
+    "-b",
+    "--balanced",
+    action="store_true",
+    help="Change governor to balanced",
 )
 parser.add_argument(
-    "-p", "--performance", action="store_true", help="Change governor to performance",
+    "-p",
+    "--performance",
+    action="store_true",
+    help="Change governor to performance",
 )
 
 parser.add_argument(
-    "--gapplication-service", action="store_true", help="Start gui from gapplication",
+    "--gapplication-service",
+    action="store_true",
+    help="Start gui from gapplication",
 )
+
+
+if ENERGY_PREF_AVAIL:
+    # Enable flags if hardware is compatible
+    parser.add_argument(
+        "--energy-performance-preference",
+        type=str,
+        choices=read_available_energy_prefs(0),
+        help="Set a global energy profile",
+    )
+    cmd_group.add_argument(
+        "--list-energy-preferences",
+        type=str,
+        nargs="?",
+        metavar="LIST OF CPUS",
+        const="{}-{}".format(CPUS[0], CPUS[-1]),
+        help="List available energy performance preferences (Default: all cpus) ",
+    )
 
 if __name__ == "__main__":
     args = parser.parse_args()
@@ -118,8 +158,31 @@ if __name__ == "__main__":
         ret = apply_configuration(conf)
         sys.exit(ret)
 
-    import gi
+    if ENERGY_PREF_AVAIL:
+        if args.energy_performance_preference:
+            pref = args.energy_performance_preference
+            print("Setting energy performance preference to: ", pref)
+            apply_energy_preference(pref)
+            sys.exit(0)
 
+        if args.list_energy_preferences is not None:
+            cpus = parse_core_list(args.list_energy_preferences)
+            print("The available energy performance preferences are:")
+            for cpu in cpus:
+                prefs = read_available_energy_prefs(cpu)
+                current_pref = read_energy_pref(cpu)
+                print("CPU {}:".format(cpu))
+                if prefs:
+                    for pref in prefs:
+                        if pref == current_pref:
+                            print("\t- {} (Current)".format(pref))
+                        else:
+                            print("\t- {}".format(pref))
+                else:
+                    print("No prefereneces were found!")
+            sys.exit(0)
+
+    import gi
     from gi.repository import Gio
 
     resource = Gio.Resource.load(os.path.join(pkgdatadir, "cpupower-gui.gresource"))

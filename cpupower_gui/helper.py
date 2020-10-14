@@ -2,6 +2,8 @@
 
 import dbus
 
+from .utils import cpus_available, read_available_energy_prefs, read_govs
+
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(
     "org.rnd2.cpupower_gui.helper", "/org/rnd2/cpupower_gui/helper"
@@ -53,10 +55,11 @@ def apply_configuration(config):
     """
     # TODO: Allow extra configuration to take place
     profile = config.default_profile
-    if not profile in config.profiles:
+    if profile not in config.profiles:
         return -1
 
     apply_cpu_profile(config.get_profile(profile))
+
 
 def apply_performance():
     """Set CPU governor to performance"""
@@ -64,19 +67,19 @@ def apply_performance():
         print("User is not authorised. No changes applied.")
         return -1
 
-    for cpu in HELPER.get_cpus_available():
+    for cpu in cpus_available():
         gov = "performance"
-        if dbus.String(gov) not in HELPER.get_cpu_governors(cpu):
+        if gov not in read_govs(cpu):
             gov = "schedutil"
-            if dbus.String(gov) not in HELPER.get_cpu_governors(cpu):
+            if gov not in read_govs(cpu):
                 print("Failed to set governor to performance")
-
 
         ret = HELPER.update_cpu_governor(cpu, gov)
         if ret == 0:
-            print("Set CPU {} to {}".format(int(cpu), gov))
+            print("Set CPU {} to {}".format(cpu, gov))
 
     return 0
+
 
 def apply_balanced():
     """Set CPU governor to powersave or ondemand"""
@@ -84,19 +87,37 @@ def apply_balanced():
         print("User is not authorised. No changes applied.")
         return -1
 
-    for cpu in HELPER.get_cpus_available():
-        govs = HELPER.get_cpu_governors(cpu)
+    for cpu in cpus_available():
+        govs = read_govs(cpu)
         for governor in govs:
-            if str(governor) != "performance":
+            if governor != "performance":
                 break
 
-        gov = str(governor)
+        gov = governor
         if not gov:
-            print("Failed to get default governor for CPU {}.".format(int(cpu)))
+            print("Failed to get default governor for CPU {}.".format(cpu))
             continue
 
         ret = HELPER.update_cpu_governor(cpu, gov)
         if ret == 0:
-            print("Set CPU {} to {}".format(int(cpu), gov))
+            print("Set CPU {} to {}".format(cpu, gov))
+
+    return 0
+
+
+def apply_energy_preference(pref):
+    """Set CPU energy profile"""
+    if not HELPER.isauthorized():
+        print("User is not authorised. No changes applied.")
+        return -1
+
+    for cpu in cpus_available():
+        if pref not in read_available_energy_prefs(cpu):
+            print("Preference not available for CPU {}.".format(cpu))
+            continue
+
+        ret = HELPER.update_cpu_energy_prefs(cpu, pref)
+        if ret == 0:
+            print("Set CPU {} to {}".format(cpu, pref))
 
     return 0
