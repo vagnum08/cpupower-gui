@@ -10,9 +10,14 @@ This program is designed to allow you to change the frequency limits of your cpu
 
 # Screenshots
 The theme used is [Arc-Darker](https://github.com/horst3180/arc-theme).
-<img src="screenshots/screen_cpu0.png" alt="Default view" width="844"/>
-<img src="screenshots/screen_cpu1_freq.png" alt="Change frequencies" width="420"/>  <img src="screenshots/screen_cpu2_governor.png" alt="Change governors" width="420"/>
-<img src="https://user-images.githubusercontent.com/16070176/79335201-83c72d80-7f19-11ea-8143-f729d9fa9024.gif" alt="Using the gui" width="420"/>
+
+If frequency steps are available, hints will be present on the sliders.
+<img src="screenshots/screen_marks_prof.png" alt="Custom Profile" width="844"/>
+
+If Intel P-state driver is used and the energy preferences are available a drop-down will be available.
+<img src="screenshots/screen_energy_prof.png" alt="Energy settings" width="844"/>
+
+<img src="https://user-images.githubusercontent.com/16070176/79335201-83c72d80-7f19-11ea-8143-f729d9fa9024.gif" alt="Using the gui" width=""/>
 
 
 # Packages
@@ -27,7 +32,7 @@ Prebuilt binary packages (latest repo version) for Arch, Debian/Rasbian, Fedora,
 ### Arch Linux and derivatives
 Packages exist in AUR as [`cpupower-gui`](https://aur.archlinux.org/packages/cpupower-gui/) ([`cpupower-gui-git`](https://aur.archlinux.org/packages/cpupower-gui-git/)), built from this repo.
 
-### blackPanther OS 
+### blackPanther OS
 To install `cpupower-gui` run `updating repos` to update the repositories and install by running `installing cpupower-gui`.
 
 ### Debian/Ubuntu and derivatives
@@ -79,20 +84,30 @@ The governor profiles can be used from the command line.
 ```
 $ cpupower-gui -h
 
-usage: cpupower-gui [-h] [--version] [-l | --apply-config | --apply-profile PROFILE] [-b] [-p]
+usage: cpupower-gui [-h] [--version] [-l] [--apply-config]
+                    [--apply-profile PROFILE] [-b] [-p]
                     [--gapplication-service]
+                    [--energy-performance-preference {default,performance,balance_performance,balance_power,power}]
+                    [--list-energy-preferences [LIST OF CPUS]]
 
 cpupower-gui - Set the scaling frequencies and governor of a CPU
 
 optional arguments:
-  -h, --help               Show this help message and exit
-  --version                Show program's version number and exit
-  -l, --list-profiles      List available cpupower profiles
-  --apply-config           Apply cpupower configuration
-  --apply-profile PROFILE  Apply a cpupower profile
-  -b, --balanced           Change governor to balanced
-  -p, --performance        Change governor to performance
-  --gapplication-service   Start gui from gapplication
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  -l, --list-profiles   List available cpupower profiles
+  --apply-config        Apply cpupower configuration
+  --apply-profile PROFILE
+                        Apply a cpupower profile
+  -b, --balanced        Change governor to balanced
+  -p, --performance     Change governor to performance
+  --gapplication-service
+                        Start gui from gapplication
+  --energy-performance-preference {default,performance,balance_performance,balance_power,power}
+                        Set a global energy profile
+  --list-energy-preferences [LIST OF CPUS]
+                        List available energy performance preferences
+                        (Default: all cpus)
 
 ```
 
@@ -107,11 +122,57 @@ gapplication action org.rnd2.cpupower_gui Balanced
 gapplication action org.rnd2.cpupower_gui Performance
 
 ```
+
+### Profiles and configuration
 Since version `0.9.0` the command line supports setting the CPUs based on a configuration file and setting user-defined profiles.
 
-To apply the default configuration just run `cpupower-gui --apply-config`.  
-To apply a profile run `cpupower-gui --apply-profile Performance`.  
+To apply the default configuration just run `cpupower-gui --apply-config`.
+To apply a profile run `cpupower-gui --apply-profile Performance`.
 If the name of the profile contains spaces use quotes, e.g. `cpupower-gui --apply-profile "Custom profile"`.
+
+### Intel P-State energy performance preferences
+The last two options (`energy-performance-preference`, `list-energy-preferences`) are only available
+on Intel systems that use the `intel_pstate` driver.
+
+The `energy-performance-preference` option changes the preference to one of the available preferences for all CPUs.
+
+
+The `list-energy-preferences` option accepts a list of CPUs writen in the following format.
+Comma separated values for listing CPU and hyphen for specifying a range.
+For example `0-3` and `0,2-5,8` become `0,1,2,3` and `0,2,3,4,5,8` respectively.
+
+If no value is passed it will report the preferences for all available cpus.
+The current preference is indicated inside the parentheses.
+
+```
+$ cpupower-gui --list-energy-preferences 0-3
+The available energy performance preferences are:
+CPU 0:
+	- default
+	- performance
+	- balance_performance (Current)
+	- balance_power
+	- power
+CPU 1:
+	- default
+	- performance
+	- balance_performance (Current)
+	- balance_power
+	- power
+CPU 2:
+	- default
+	- performance
+	- balance_performance (Current)
+	- balance_power
+	- power
+CPU 3:
+	- default
+	- performance
+	- balance_performance (Current)
+	- balance_power
+	- power
+```
+
 
 # System configuration and User profiles
 ## System configuration
