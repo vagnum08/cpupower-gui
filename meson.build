@@ -31,7 +31,7 @@ use_libexec = get_option('use_libexec')
 if use_libexec
   helperdir = prefix / libexecdir / name
 else
-  helperdir = prefix / libidr / name
+  helperdir = prefix / libdir / name
 endif
 
 subdir('cpupower_gui')

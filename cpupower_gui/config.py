@@ -6,6 +6,7 @@ from shlex import split
 
 try:
     from xdg import BaseDirectory
+
     XDG_PATH = Path(BaseDirectory.save_config_path("cpupower_gui"))
 except ImportError:
     BaseDirectory = None

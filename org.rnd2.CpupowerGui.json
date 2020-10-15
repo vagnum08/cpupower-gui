@@ -39,8 +39,7 @@
                     "url" : "https://gitlab.com/vagnum08/cpupower-gui"
                 }
             ],
-            "config-opts" : [
-            ]
+            "config-opts" : []
         },
         {
             "name" : "dbus-python",
@@ -58,7 +57,6 @@
         }
     ],
     "build-options" : {
-        "env" : {
-        }
+        "env" : {        }
     }
 }

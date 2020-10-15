@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 
+<!-- Generated with glade 3.22.2 
 
 Copyright (C) 2017-2020 [RnD]²
 
@@ -23,6 +23,7 @@ Author: Evangelos Rigas <erigas@rnd2.org>
 -->
 <interface domain="cpupower-gui">
   <requires lib="gtk+" version="3.22"/>
+  <requires lib="libhandy" version="0.0"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name cpupower-gui -->
   <!-- interface-description CPU frequency setter -->
@@ -46,6 +47,9 @@ yjwork-cn</property>
     <property name="logo_icon_name">org.rnd2.cpupower_gui</property>
     <property name="wrap_license">True</property>
     <property name="license_type">gpl-3-0</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -66,9 +70,6 @@ yjwork-cn</property>
           <placeholder/>
         </child>
       </object>
-    </child>
-    <child type="titlebar">
-      <placeholder/>
     </child>
   </object>
   <object class="GtkAccelGroup" id="accelgroup1"/>
@@ -91,6 +92,19 @@ yjwork-cn</property>
         <property name="orientation">vertical</property>
         <property name="homogeneous">True</property>
         <child>
+          <object class="GtkModelButton" id="pref_diag">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="text" translatable="yes">Preferences</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkModelButton" id="about">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -101,7 +115,7 @@ yjwork-cn</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">0</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
@@ -113,417 +127,49 @@ yjwork-cn</property>
   </object>
   <template class="CpupowerGuiWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
-    <property name="resizable">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
     <property name="window_position">center</property>
+    <property name="icon_name">org.rnd2.cpupower_gui</property>
+    <property name="type_hint">utility</property>
+    <property name="gravity">center</property>
+    <property name="show_menubar">False</property>
     <accel-groups>
       <group name="accelgroup1"/>
     </accel-groups>
     <signal name="destroy" handler="quit" swapped="no"/>
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin_end">15</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child>
-          <object class="GtkGrid">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="row_spacing">10</property>
-            <property name="column_homogeneous">True</property>
-            <property name="baseline_row">3</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Set CPU Frequency limits</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                  <attribute name="scale" value="1.1000000000000001"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-                <property name="width">5</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="max_freq_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <property name="label" translatable="yes">Max freq. (MHz):</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkScale" id="max_sl">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="margin_start">2</property>
-                <property name="margin_end">2</property>
-                <property name="adjustment">adj_max</property>
-                <property name="round_digits">0</property>
-                <property name="digits">0</property>
-                <property name="draw_value">False</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">3</property>
-                <property name="width">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSpinButton" id="spin_max">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="width_chars">8</property>
-                <property name="caps_lock_warning">False</property>
-                <property name="secondary_icon_tooltip_text" translatable="yes">Maximum allowed CPU frequency</property>
-                <property name="adjustment">adj_max</property>
-                <property name="climb_rate">0.01</property>
-                <property name="digits">2</property>
-                <property name="snap_to_ticks">True</property>
-                <property name="numeric">True</property>
-                <property name="update_policy">if-valid</property>
-              </object>
-              <packing>
-                <property name="left_attach">4</property>
-                <property name="top_attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSpinButton" id="spin_min">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="width_chars">8</property>
-                <property name="caps_lock_warning">False</property>
-                <property name="secondary_icon_tooltip_text" translatable="yes">Minimum allowed CPU frequency</property>
-                <property name="adjustment">adj_min</property>
-                <property name="climb_rate">0.01</property>
-                <property name="digits">2</property>
-                <property name="snap_to_ticks">True</property>
-                <property name="numeric">True</property>
-                <property name="update_policy">if-valid</property>
-              </object>
-              <packing>
-                <property name="left_attach">4</property>
-                <property name="top_attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkScale" id="min_sl">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="margin_start">2</property>
-                <property name="margin_end">2</property>
-                <property name="adjustment">adj_min</property>
-                <property name="fill_level">100000000</property>
-                <property name="round_digits">0</property>
-                <property name="digits">0</property>
-                <property name="draw_value">False</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">2</property>
-                <property name="width">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="min_freq_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <property name="label" translatable="yes">Min freq. (MHz):</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="cpu_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <property name="label" translatable="yes">CPU:</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="cpu_box">
-                <property name="width_request">0</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <signal name="changed" handler="on_cpu_changed" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkCheckButton" id="cpu_online">
-                <property name="label" translatable="yes">Online</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">True</property>
-                <signal name="toggled" handler="on_cpu_online_toggled" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox" id="gov_container">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="spacing">1</property>
-                <property name="homogeneous">True</property>
-                <child>
-                  <object class="GtkLabel" id="gov_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">end</property>
-                    <property name="label" translatable="yes">Governor:</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkComboBoxText" id="gov_box">
-                    <property name="width_request">0</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <signal name="changed" handler="on_governor_changed" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">4</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox" id="pstate_prefs">
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkLabel" id="energy_perf_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">end</property>
-                    <property name="label" translatable="yes">Energy profile:</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkComboBoxText" id="energy_pref_box">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <signal name="changed" handler="on_energy_pref_box_changed" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">4</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="homogeneous">True</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">end</property>
-                    <property name="label" translatable="yes">All CPUs:</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSwitch" id="toall">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="halign">center</property>
-                    <signal name="state-set" handler="on_toall_state_set" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">4</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="padding">5</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkGrid" id="settings">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="column_homogeneous">True</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Settings</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                  <attribute name="scale" value="1.1000000000000001"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-                <property name="width">5</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="prof_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <property name="label" translatable="yes">Profile:</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="profile_box">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <signal name="changed" handler="on_profile_changed" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox">
-                <property name="name">boot_options</property>
-                <property name="can_focus">False</property>
-                <property name="spacing">1</property>
-                <property name="homogeneous">True</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Apply at boot:</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSwitch" id="atboot">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <signal name="state-set" handler="on_atboot_state_set" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">1</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="padding">6</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
     <child type="titlebar">
-      <object class="GtkHeaderBar" id="header">
+      <object class="HdyHeaderBar">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="title">CPU frequency settings</property>
-        <property name="subtitle" translatable="yes">Adjust the runtime CPU policies</property>
+        <property name="hexpand">True</property>
         <property name="has_subtitle">False</property>
+        <property name="spacing">0</property>
         <property name="show_close_button">True</property>
-        <property name="decoration_layout">menu:minimize,close</property>
-        <child>
-          <object class="GtkMenuButton" id="menubutton1">
+        <property name="decoration_layout">:close</property>
+        <property name="centering_policy">strict</property>
+        <child type="title">
+          <object class="HdySqueezer" id="squeezer">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="relief">none</property>
-            <property name="popover">popovermenu</property>
+            <property name="can_focus">False</property>
+            <property name="transition_type">crossfade</property>
             <child>
-              <object class="GtkImage">
+              <object class="HdyViewSwitcher" id="headerbar_switcher">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="icon_name">org.rnd2.cpupower_gui</property>
+                <property name="stack">stack1</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="title_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">CPU settings</property>
+                <property name="justify">center</property>
+                <property name="ellipsize">end</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
               </object>
             </child>
           </object>
@@ -543,6 +189,25 @@ yjwork-cn</property>
           </object>
           <packing>
             <property name="pack_type">end</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkMenuButton" id="more_menu">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="focus_on_click">False</property>
+            <property name="receives_default">True</property>
+            <property name="popover">popovermenu</property>
+            <child>
+              <object class="GtkImage" id="more">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">view-more</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -554,16 +219,470 @@ yjwork-cn</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="on_refresh_clicked" swapped="no"/>
             <child>
-              <object class="GtkImage" id="refresh_icon">
+              <object class="GtkImage" id="refresh_img">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="icon_name">view-refresh</property>
+                <property name="stock">gtk-refresh</property>
               </object>
             </child>
           </object>
           <packing>
-            <property name="pack_type">end</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToggleButton" id="toall">
+            <property name="label" translatable="yes">All CPUs</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="toggled" handler="on_toall_toggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="baseline_position">top</property>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="shadow_type">in</property>
+            <property name="propagate_natural_height">True</property>
+            <child>
+              <object class="GtkViewport">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_start">10</property>
+                <property name="margin_end">10</property>
+                <property name="margin_bottom">5</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <child>
+                  <object class="GtkStack" id="stack1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="transition_type">slide-left-right</property>
+                    <child>
+                      <object class="HdyClamp">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="valign">start</property>
+                        <property name="hexpand">True</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">5</property>
+                            <child>
+                              <object class="HdyPreferencesGroup">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="title" translatable="yes">Frequency profiles</property>
+                                <child>
+                                  <object class="HdyComboRow" id="profile_box">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="activatable">False</property>
+                                    <property name="selectable">False</property>
+                                    <property name="title" translatable="yes">Profile</property>
+                                    <property name="use_subtitle">True</property>
+                                    <signal name="notify::selected-index" handler="on_profile_changed" swapped="no"/>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <object class="GtkScrolledWindow">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="shadow_type">in</property>
+                                    <property name="min_content_height">125</property>
+                                    <property name="propagate_natural_width">True</property>
+                                    <property name="propagate_natural_height">True</property>
+                                    <child>
+                                      <object class="GtkTreeView" id="tree_view">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="vexpand">True</property>
+                                        <property name="hscroll_policy">natural</property>
+                                        <property name="vscroll_policy">natural</property>
+                                        <child internal-child="selection">
+                                          <object class="GtkTreeSelection">
+                                            <signal name="changed" handler="on_tree_selection" swapped="no"/>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="HdyPreferencesGroup">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="title" translatable="yes">Frequency settings</property>
+                                <child>
+                                  <object class="HdyComboRow" id="cpu_box">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="activatable">False</property>
+                                    <property name="selectable">False</property>
+                                    <property name="title" translatable="yes">CPU</property>
+                                    <property name="icon_name">org.rnd2.cpupower_gui</property>
+                                    <signal name="notify::selected-index" handler="on_cpu_changed" swapped="no"/>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <object class="GtkGrid">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="row_spacing">2</property>
+                                    <property name="baseline_row">3</property>
+                                    <child>
+                                      <object class="GtkLabel" id="min_freq_label">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="halign">start</property>
+                                        <property name="label" translatable="yes">Min freq.</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSpinButton" id="spin_max">
+                                        <property name="can_focus">True</property>
+                                        <property name="halign">end</property>
+                                        <property name="width_chars">8</property>
+                                        <property name="text" translatable="yes">0.00</property>
+                                        <property name="caps_lock_warning">False</property>
+                                        <property name="adjustment">adj_max</property>
+                                        <property name="climb_rate">0.01</property>
+                                        <property name="digits">2</property>
+                                        <property name="snap_to_ticks">True</property>
+                                        <property name="numeric">True</property>
+                                        <property name="update_policy">if-valid</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">3</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkScale" id="max_sl">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="margin_start">2</property>
+                                        <property name="margin_end">2</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="vexpand">True</property>
+                                        <property name="adjustment">adj_max</property>
+                                        <property name="restrict_to_fill_level">False</property>
+                                        <property name="fill_level">1200</property>
+                                        <property name="digits">0</property>
+                                        <property name="has_origin">False</property>
+                                        <property name="value_pos">bottom</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">2</property>
+                                        <property name="width">2</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkScale" id="min_sl">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="margin_start">2</property>
+                                        <property name="margin_end">2</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="vexpand">True</property>
+                                        <property name="adjustment">adj_min</property>
+                                        <property name="fill_level">100000000</property>
+                                        <property name="digits">0</property>
+                                        <property name="has_origin">False</property>
+                                        <property name="value_pos">bottom</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">1</property>
+                                        <property name="width">2</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="max_freq_label">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="halign">end</property>
+                                        <property name="label" translatable="yes">Max freq. (MHz)</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSpinButton" id="spin_min">
+                                        <property name="can_focus">True</property>
+                                        <property name="halign">end</property>
+                                        <property name="width_chars">8</property>
+                                        <property name="text" translatable="yes">0.00</property>
+                                        <property name="caps_lock_warning">False</property>
+                                        <property name="adjustment">adj_min</property>
+                                        <property name="climb_rate">0.01</property>
+                                        <property name="digits">2</property>
+                                        <property name="snap_to_ticks">True</property>
+                                        <property name="numeric">True</property>
+                                        <property name="update_policy">if-valid</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">3</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="HdyPreferencesGroup">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="title" translatable="yes">Power settings</property>
+                                <child>
+                                  <object class="HdyComboRow" id="gov_box">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="activatable">False</property>
+                                    <property name="title" translatable="yes">Governor policy</property>
+                                    <signal name="notify::selected-index" handler="on_governor_changed" swapped="no"/>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="HdyComboRow" id="energy_pref_box">
+                                    <property name="can_focus">True</property>
+                                    <property name="activatable">False</property>
+                                    <property name="title" translatable="yes">Energy preference</property>
+                                    <signal name="notify::selected-index" handler="on_energy_pref_box_changed" swapped="no"/>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="name">page_settings</property>
+                        <property name="title" translatable="yes">Settings</property>
+                        <property name="icon_name">settings</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="HdyClamp">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="HdyPreferencesGroup">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="title" translatable="yes">Power settings</property>
+                                <child>
+                                  <object class="HdyComboRow" id="default_profile_pref">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="activatable">False</property>
+                                    <property name="selectable">False</property>
+                                    <property name="title" translatable="yes">Profile</property>
+                                    <property name="subtitle" translatable="yes">Default profile to apply at boot</property>
+                                    <signal name="notify::selected-index" handler="on_prefs_changed" swapped="no"/>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="HdyActionRow" id="energy_pref_percpu">
+                                    <property name="can_focus">True</property>
+                                    <property name="selectable">False</property>
+                                    <property name="title" translatable="yes">Energy performance preference per CPU</property>
+                                    <property name="activatable_widget">default_ticks</property>
+                                    <child>
+                                      <object class="GtkSwitch" id="default_energy_per_cpu">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="valign">center</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="HdyPreferencesGroup">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="title" translatable="yes">GUI settings</property>
+                                <child>
+                                  <object class="HdyActionRow" id="allcpus_pref">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="activatable">False</property>
+                                    <property name="selectable">False</property>
+                                    <property name="title" translatable="yes">All CPUs toggle enabled by default</property>
+                                    <child>
+                                      <object class="GtkSwitch" id="default_allcpus">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="valign">center</property>
+                                        <signal name="state-set" handler="on_prefs_changed" swapped="no"/>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="HdyActionRow" id="ticks_pref">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="selectable">False</property>
+                                    <property name="title" translatable="yes">Display tick marks</property>
+                                    <property name="activatable_widget">default_ticks</property>
+                                    <child>
+                                      <object class="GtkSwitch" id="default_ticks">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="valign">center</property>
+                                        <signal name="state-set" handler="on_prefs_changed" swapped="no"/>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="HdyActionRow" id="ticks_num_pref">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="selectable">False</property>
+                                    <property name="title" translatable="yes">Display frequency at tick marks</property>
+                                    <property name="activatable_widget">default_ticks</property>
+                                    <child>
+                                      <object class="GtkSwitch" id="default_ticks_num">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="valign">center</property>
+                                        <signal name="state-set" handler="on_prefs_changed" swapped="no"/>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="padding">10</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="name">prefs-page</property>
+                        <property name="title" translatable="yes">Preferences</property>
+                        <property name="icon_name">preferences-desktop</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HdyViewSwitcherBar" id="bottom_switcher">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="policy">auto</property>
+            <property name="stack">stack1</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
