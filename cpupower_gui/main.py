@@ -31,7 +31,7 @@ from gi.repository import Gio, GLib, Gtk
 try:
     gi.require_version("AppIndicator3", "0.1")
     from gi.repository import AppIndicator3 as AppIndicator
-except ImportError:
+except (ValueError, ImportError):
     AppIndicator = None
 
 from .helper import apply_balanced, apply_performance
