@@ -18,12 +18,10 @@
 from contextlib import contextmanager
 
 import dbus
-from gi.repository import Gtk, Gio
+from gi.repository import Gio, Gtk
 
 from .config import CpuPowerConfig, CpuSettings
 from .utils import read_available_frequencies
-
-
 
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(
@@ -72,6 +70,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     profile_box = Gtk.Template.Child()
     energy_pref_box = Gtk.Template.Child()
     pstate_prefs = Gtk.Template.Child()
+    tree_view = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -85,9 +84,11 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.refreshing = False
         self.settings = {}
         self.energy_pref_avail = False
+        self.tree_store = None
 
         self.update_cpubox()
         self.load_cpu_settings()
+        self._update_tree_view()
         self.configure_gui()
         self.upd_sliders()
 
@@ -175,6 +176,9 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         conf = self.settings.get(cpu)
         if conf is not None:
             conf.freqs = (fmin, fmax)
+
+        self.tree_store[cpu][2] = fmin
+        self.tree_store[cpu][3] = fmax
         self._update_cpu_foreground(cpu, conf.changed)
 
     def _update_settings_online(self, cpu, online):
@@ -202,6 +206,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         """
         color = "red" if changed else "black"
         if cpu <= len(self.settings):
+            if self.tree_store:
+                self.tree_store[cpu][5] = color
             self.cpu_store[cpu][1] = color
 
     def upd_sliders(self):
@@ -265,6 +271,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             if settings["governor"] in conf.governors:
                 conf.governor = settings["governor"]
             conf.online = settings["online"]
+            self.update_tree_view(cpu, conf)
             self._update_cpu_foreground(cpu, conf.changed)
         return True
 
@@ -338,6 +345,45 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             self.gov_container.set_sensitive(True)
         else:
             self.gov_container.set_sensitive(False)
+
+    def _update_tree_view(self):
+        """Updates the governor combobox"""
+        self.tree_store = Gtk.ListStore(int, bool, float, float, str, str)
+        for cpu, conf in self.settings.items():
+            fmin, fmax = conf.freqs
+            self.tree_store.append(
+                [cpu, conf.online, fmin, fmax, conf.governor, "black"]
+            )
+
+        self.tree_view.set_model(self.tree_store)
+        for i, column_title in enumerate(["CPU", "Online", "Min", "Max", "Governor"]):
+            if column_title == "Online":
+                renderer = Gtk.CellRendererToggle()
+                column = Gtk.TreeViewColumn(column_title, renderer, active=i)
+
+            elif column_title in ["Min", "Max"]:
+                renderer = Gtk.CellRendererSpin()
+                column = Gtk.TreeViewColumn(
+                    column_title, renderer, text=i, foreground=5
+                )
+            else:
+                renderer = Gtk.CellRendererText()
+                column = Gtk.TreeViewColumn(
+                    column_title, renderer, text=i, foreground=5
+                )
+            self.tree_view.append_column(column)
+
+    def update_tree_view(self, cpu, conf):
+        row = self.tree_store[cpu]
+        row[2], row[3] = conf.freqs
+        row[1] = conf.online
+        row[4] = conf.governor
+
+    @Gtk.Template.Callback()
+    def on_tree_selection(self, selection):
+        model, treeiter = selection.get_selected()
+        if treeiter is not None:
+            self.cpu_box.set_active(model[treeiter][0])
 
     @Gtk.Template.Callback()
     def on_cpu_changed(self, *args):
@@ -432,6 +478,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         conf.online = self.cpu_online.get_active()
         self._set_sliders_sensitive(conf.online)
         self.apply_btn.set_sensitive(self.is_conf_changed)
+        self.tree_store[cpu][1] = conf.online
         self._update_cpu_foreground(cpu, conf.changed)
 
     @Gtk.Template.Callback()
@@ -449,6 +496,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         conf = self.settings.get(cpu)
         conf.governor = tid
         self.apply_btn.set_sensitive(self.is_conf_changed)
+        self.tree_store[cpu][4] = text.lower()
         self._update_cpu_foreground(cpu, conf.changed)
 
     @Gtk.Template.Callback()
@@ -468,7 +516,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         # load-balancing algorithm and if different energy vs performance hints are
         # set for those CPUs, that may lead to undesirable outcomes.
         # To avoid such issues it is better to set the same energy vs performance hint
-        # for all CPUs or to pin every task potentially sensitive to them to a specific CPU.
+        # for all CPUs or to pin every task potentially sensitive to them
+        # to a specific CPU.
         # https://www.kernel.org/doc/html/v4.12/admin-guide/pm/intel_pstate.html#energy-vs-performance-hints
         conf = self.settings.get(cpu)
         conf.energy_pref = tid
@@ -688,7 +737,6 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         conf = self.settings.get(cpu)
         if conf is None:
             return ret
-
 
         pref = conf.energy_pref
         if not pref:
