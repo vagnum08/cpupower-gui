@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui 0.7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-25 18:28+0000\n"
+"POT-Creation-Date: 2020-10-15 00:50+0100\n"
 "PO-Revision-Date: 2020-01-19 13:44+0000\n"
 "Last-Translator: Evangelos Rigas <erigas@rnd2.org>\n"
 "Language-Team: \n"
@@ -83,35 +83,78 @@ msgstr ""
 msgid "Main application window"
 msgstr "Main application window"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:29
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:30
+msgid "Main window on an Intel system with P-states"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:34
+msgid "Changing settings using the sliders"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:38
+msgid "Applying custom settings using profiles"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:42
+msgid "Selecting a custom profile"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:46
+msgid "Changing CPU parameters"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:50
+#, fuzzy
+msgid "Changing energy performance profiles"
+msgstr "Swith to performance profile"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:53
 msgid "Evangelos Rigas"
 msgstr "Evangelos Rigas"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:34
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:58
+#, fuzzy
+msgid "Add Dutch translation"
+msgstr "Add Chinese translation"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:59
+msgid "Add custom profiles and configuration"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:60
+msgid ""
+"Add support for changing the energy performance preferences on Intel systems"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:61
+msgid "Add systemd services to apply settings at boot or login"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:66
 msgid "Add Chinese translation"
 msgstr "Add Chinese translation"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:35
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:67
 msgid "Add desktop actions and D-bus activation"
 msgstr "Add desktop actions and D-bus activation"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:36
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:68
 msgid "Add tray icon support using AppIndicator"
 msgstr "Add tray icon support using AppIndicator"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:41
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:73
 msgid "Fix meson build properties"
 msgstr "Fix meson build properties"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:46
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:78
 msgid "Fix bug for unknown cpu"
 msgstr "Fix bug for unknown cpu"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:47
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:79
 msgid "Update translations"
 msgstr "Update translations"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:52
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:84
 msgid "Refactor helper library and fix vulnerabilities"
 msgstr "Refactor helper library and fix vulnerabilities"
 
@@ -145,69 +188,82 @@ msgstr ""
 "See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
 "Public Licence, version 3 or later</a> for details."
 
-#: cpupower_gui/window.ui.in:96
+#: cpupower_gui/window.ui.in:98
 msgid "About"
 msgstr "About"
 
-#: cpupower_gui/window.ui.in:125
-msgid "Adjust the runtime CPU policies"
-msgstr "Adjust the runtime CPU policies"
-
-#: cpupower_gui/window.ui.in:147
-msgid "Apply"
-msgstr "Apply"
-
-#: cpupower_gui/window.ui.in:152
-msgid "Apply changes"
-msgstr "Apply changes"
-
-#: cpupower_gui/window.ui.in:202
+#: cpupower_gui/window.ui.in:137
 msgid "Set CPU Frequency limits"
 msgstr "Set CPU Frequency limits"
 
-#: cpupower_gui/window.ui.in:219
-msgid "Governor:"
-msgstr "Governor:"
-
-#: cpupower_gui/window.ui.in:244
+#: cpupower_gui/window.ui.in:154
 msgid "Max freq. (MHz):"
 msgstr "Max freq. (MHz):"
 
-#: cpupower_gui/window.ui.in:316
+#: cpupower_gui/window.ui.in:184
+msgid "Maximum allowed CPU frequency"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:203
+msgid "Minimum allowed CPU frequency"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:239
 msgid "Min freq. (MHz):"
 msgstr "Min freq. (MHz):"
 
-#: cpupower_gui/window.ui.in:328
+#: cpupower_gui/window.ui.in:251
 msgid "CPU:"
 msgstr "CPU:"
 
-#: cpupower_gui/window.ui.in:352
+#: cpupower_gui/window.ui.in:275
 msgid "All CPUs:"
 msgstr "All CPUs:"
 
-#: cpupower_gui/window.ui.in:373
+#: cpupower_gui/window.ui.in:296
 msgid "Online"
 msgstr "Online"
 
-#: cpupower_gui/window.ui.in:410
+#: cpupower_gui/window.ui.in:319
+msgid "Governor:"
+msgstr "Governor:"
+
+#: cpupower_gui/window.ui.in:355
+msgid "Energy profile:"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:402
 msgid "Settings"
 msgstr "Settings"
 
-#: cpupower_gui/window.ui.in:426
-msgid "Configuration:"
-msgstr "Configuration:"
+#: cpupower_gui/window.ui.in:419
+msgid "Profile:"
+msgstr ""
 
-#: cpupower_gui/window.ui.in:439
-msgid "Runtime"
-msgstr "Runtime"
-
-#: cpupower_gui/window.ui.in:440
-msgid "Persistent"
-msgstr "Persistent"
-
-#: cpupower_gui/window.ui.in:453
+#: cpupower_gui/window.ui.in:447
 msgid "Apply at boot:"
 msgstr "Apply at boot:"
+
+#: cpupower_gui/window.ui.in:491
+msgid "Adjust the runtime CPU policies"
+msgstr "Adjust the runtime CPU policies"
+
+#: cpupower_gui/window.ui.in:513
+msgid "Apply"
+msgstr "Apply"
+
+#: cpupower_gui/window.ui.in:518
+msgid "Apply changes"
+msgstr "Apply changes"
+
+#~ msgid "Configuration:"
+#~ msgstr "Configuration:"
+
+#~ msgid "Runtime"
+#~ msgstr "Runtime"
+
+#~ msgid "Persistent"
+#~ msgstr "Persistent"
 
 #~ msgid "Frequency Setter"
 #~ msgstr "Frequency Setter"

@@ -17,6 +17,7 @@
 
 import os
 import sys
+
 import dbus
 import gi
 
@@ -25,7 +26,7 @@ gi.check_version("3.30")
 
 gi.require_version("Gtk", "3.0")
 
-from gi.repository import Gtk, Gio, GLib
+from gi.repository import Gio, GLib, Gtk
 
 try:
     gi.require_version("AppIndicator3", "0.1")
@@ -33,8 +34,8 @@ try:
 except ImportError:
     AppIndicator = None
 
+from .helper import apply_balanced, apply_performance
 from .window import CpupowerGuiWindow
-from .helper import apply_performance, apply_balanced
 
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(

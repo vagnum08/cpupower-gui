@@ -299,6 +299,7 @@ Since version 0.7.1, Python GObject version must be >= 3.30
 `libgtk-3-0` `gir1.2-gtk-3.0` `hicolor-icon-theme` `policykit-1` `python3-dbus` `python3-gi`
 
 Suggested for authentication dialogue: `policykit-1-gnome` or `mate-polkit` or `lxpolkit`
+
 For the tray icon `gir1.2-appindicator3-0.1`.
 
 ## Fedora and openSUSE
@@ -308,7 +309,8 @@ For the tray icon `gir1.2-appindicator3-0.1`.
 ### openSUSE only
 `libgtk-3-0` `typelib-1_0-Gtk-3_0` `python3-gobject` `python3-gobject-Gdk` `python3-dbus-python`
 
-### Common
+## Common
  `hicolor-icon-theme`
 
 A polkit agent such as `mate-polkit`, `polkit-kde-agent-5`, `policykit-1-gnome`, etc.
+Suggested for reading configuration from user's home directory: [`xdg`](https://repology.org/project/python:pyxdg/versions)

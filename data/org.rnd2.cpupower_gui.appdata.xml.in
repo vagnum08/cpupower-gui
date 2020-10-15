@@ -12,7 +12,7 @@
             The program can detect offline cores and only present the available ones.
             Furthermore, if a core doesn't support frequency scaling is not shown.
             There is also an option to apply the same settings to all cores simultaneously.
-        </p>  
+        </p>
         <p>
             To apply the settings, the user must be local and active, as well as in group sudo.
             Local and active users not in this group must  authenticate themselves as admin in order to apply the settings.
@@ -21,35 +21,67 @@
 	<url type="homepage">https://github.com/vagnum08/cpupower-gui</url>
     <url type="bugtracker">https://github.com/vagnum08/cpupower-gui/issues</url>
     <screenshots>
-        <screenshot type="default">
-          <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/master/screenshot.png</image>
-          <caption>Main application window</caption>
-        </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/default_view.png</image>
+      <caption>Main application window</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/default_energy.png</image>
+      <caption>Main window on an Intel system with P-states</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/change_settings.png</image>
+      <caption>Changing settings using the sliders</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/apply_profile.png</image>
+      <caption>Applying custom settings using profiles</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/profile_selected.png</image>
+      <caption>Selecting a custom profile</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/changed_cpus.png</image>
+      <caption>Changing CPU parameters</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/change_energy.png</image>
+      <caption>Changing energy performance profiles</caption>
+    </screenshot>
     </screenshots>
     <developer_name>Evangelos Rigas</developer_name>
     <content_rating type="oars-1.1"/>
     <releases>
-​     <release version="0.8.0" date="2020-01-25">
-​      <description>
-​        <p>Add Chinese translation</p>
+     <release version="0.9.0" date="2020-10-15">
+      <description>
+        <p>Add Dutch translation</p>
+        <p>Add custom profiles and configuration</p>
+        <p>Add support for changing the energy performance preferences on Intel systems</p>
+        <p>Add systemd services to apply settings at boot or login</p>
+	    </description>
+	   </release>
+     <release version="0.8.0" date="2020-01-25">
+      <description>
+        <p>Add Chinese translation</p>
         <p>Add desktop actions and D-bus activation</p>
         <p>Add tray icon support using AppIndicator</p>
 	    </description>
 	   </release>
      <release version="0.7.2" date="2019-11-25">
-​      <description>
-​        <p>Fix meson build properties</p>
+      <description>
+        <p>Fix meson build properties</p>
 	    </description>
 	   </release>
      <release version="0.7.1" date="2019-11-25">
      <description>
-​        <p>Fix bug for unknown cpu</p>
+        <p>Fix bug for unknown cpu</p>
         <p>Update translations</p>
      </description>
 	   </release>
      <release version="0.7.0" date="2019-09-18">
-​      <description>
-​        <p>Refactor helper library and fix vulnerabilities</p>
+      <description>
+        <p>Refactor helper library and fix vulnerabilities</p>
 	    </description>
 	   </release>
    </releases>

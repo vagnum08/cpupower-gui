@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-25 18:28+0000\n"
+"POT-Creation-Date: 2020-10-15 00:50+0100\n"
 "PO-Revision-Date: 2020-04-25 16:59+0200\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: \n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.3\n"
-"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: nl\n"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:4
 msgid "cpupower-gui"
@@ -68,8 +68,8 @@ msgstr ""
 "Met deze toepassing kun je de handelingssnelheid aanpassen van de CPU, evt. "
 "zelfs per kern. De toepassing detecteert automatisch inactieve kernen en "
 "toont alleen de actieve. Als een kern geen ondersteuning heeft voor "
-"snelheidsaanpassingen, wordt deze niet getoond. Er is tevens een optie om "
-"de instellingen toe te passen op alle kernen."
+"snelheidsaanpassingen, wordt deze niet getoond. Er is tevens een optie om de "
+"instellingen toe te passen op alle kernen."
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:16
 msgid ""
@@ -77,44 +77,86 @@ msgid ""
 "group sudo. Local and active users not in this group must authenticate "
 "themselves as admin in order to apply the settings."
 msgstr ""
-"De instellingen kunnen alleen worden toegepast als het een lokaal account "
-"en actief account betreft, en de gebruiker onderdeel is van de groep "
-"'sudo'. Als dat niet het geval is, dan moet de gebruiker inloggen als "
-"administrator."
+"De instellingen kunnen alleen worden toegepast als het een lokaal account en "
+"actief account betreft, en de gebruiker onderdeel is van de groep 'sudo'. "
+"Als dat niet het geval is, dan moet de gebruiker inloggen als administrator."
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:26
 msgid "Main application window"
 msgstr "Hoofdvenster"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:29
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:30
+msgid "Main window on an Intel system with P-states"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:34
+msgid "Changing settings using the sliders"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:38
+msgid "Applying custom settings using profiles"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:42
+msgid "Selecting a custom profile"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:46
+msgid "Changing CPU parameters"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:50
+#, fuzzy
+msgid "Changing energy performance profiles"
+msgstr "Overschakelen op 'performance'-profiel"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:53
 msgid "Evangelos Rigas"
 msgstr "Evangelos Rigas"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:34
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:58
+#, fuzzy
+msgid "Add Dutch translation"
+msgstr "Chinese vertaling toegevoegd"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:59
+msgid "Add custom profiles and configuration"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:60
+msgid ""
+"Add support for changing the energy performance preferences on Intel systems"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:61
+msgid "Add systemd services to apply settings at boot or login"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:66
 msgid "Add Chinese translation"
 msgstr "Chinese vertaling toegevoegd"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:35
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:67
 msgid "Add desktop actions and D-bus activation"
 msgstr "Bureaubladacties en D-busactivatie toegevoegd"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:36
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:68
 msgid "Add tray icon support using AppIndicator"
 msgstr "Systeemvakpictogram toegevoegd middels AppIndicator"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:41
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:73
 msgid "Fix meson build properties"
 msgstr "Meson-bouwseleigenschappen gerepareerd"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:46
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:78
 msgid "Fix bug for unknown cpu"
 msgstr "Bug opgelost omtrent onbekende CPU"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:47
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:79
 msgid "Update translations"
 msgstr "Vertalingen bijgewerkt"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:52
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:84
 msgid "Refactor helper library and fix vulnerabilities"
 msgstr "Hulpbibliotheek opnieuw ontworpen en kwaadaardigheden gerepareerd"
 
@@ -149,66 +191,79 @@ msgstr ""
 "Lees de <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
 "Public License, version 3 of hoger</a> voor meer informatie."
 
-#: cpupower_gui/window.ui.in:96
+#: cpupower_gui/window.ui.in:98
 msgid "About"
 msgstr "Over"
 
-#: cpupower_gui/window.ui.in:125
-msgid "Adjust the runtime CPU policies"
-msgstr "Actief CPU-beleid aanpassen"
-
-#: cpupower_gui/window.ui.in:147
-msgid "Apply"
-msgstr "Toepassen"
-
-#: cpupower_gui/window.ui.in:152
-msgid "Apply changes"
-msgstr "Wijzigingen toepassen"
-
-#: cpupower_gui/window.ui.in:202
+#: cpupower_gui/window.ui.in:137
 msgid "Set CPU Frequency limits"
 msgstr "CPU-snelheidsbeperkingen instellen"
 
-#: cpupower_gui/window.ui.in:219
-msgid "Governor:"
-msgstr "Governor:"
-
-#: cpupower_gui/window.ui.in:244
+#: cpupower_gui/window.ui.in:154
 msgid "Max freq. (MHz):"
 msgstr "Max freq. (MHz):"
 
-#: cpupower_gui/window.ui.in:316
+#: cpupower_gui/window.ui.in:184
+msgid "Maximum allowed CPU frequency"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:203
+msgid "Minimum allowed CPU frequency"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:239
 msgid "Min freq. (MHz):"
 msgstr "Min freq. (MHz):"
 
-#: cpupower_gui/window.ui.in:328
+#: cpupower_gui/window.ui.in:251
 msgid "CPU:"
 msgstr "CPU:"
 
-#: cpupower_gui/window.ui.in:352
+#: cpupower_gui/window.ui.in:275
 msgid "All CPUs:"
 msgstr "Alle CPU's:"
 
-#: cpupower_gui/window.ui.in:373
+#: cpupower_gui/window.ui.in:296
 msgid "Online"
 msgstr "Actief"
 
-#: cpupower_gui/window.ui.in:410
+#: cpupower_gui/window.ui.in:319
+msgid "Governor:"
+msgstr "Governor:"
+
+#: cpupower_gui/window.ui.in:355
+msgid "Energy profile:"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:402
 msgid "Settings"
 msgstr "Instellingen"
 
-#: cpupower_gui/window.ui.in:426
-msgid "Configuration:"
-msgstr "Instellingen:"
+#: cpupower_gui/window.ui.in:419
+msgid "Profile:"
+msgstr ""
 
-#: cpupower_gui/window.ui.in:439
-msgid "Runtime"
-msgstr "Actief"
-
-#: cpupower_gui/window.ui.in:440
-msgid "Persistent"
-msgstr "Permanent"
-
-#: cpupower_gui/window.ui.in:453
+#: cpupower_gui/window.ui.in:447
 msgid "Apply at boot:"
 msgstr "Toepassen bij opstarten:"
+
+#: cpupower_gui/window.ui.in:491
+msgid "Adjust the runtime CPU policies"
+msgstr "Actief CPU-beleid aanpassen"
+
+#: cpupower_gui/window.ui.in:513
+msgid "Apply"
+msgstr "Toepassen"
+
+#: cpupower_gui/window.ui.in:518
+msgid "Apply changes"
+msgstr "Wijzigingen toepassen"
+
+#~ msgid "Configuration:"
+#~ msgstr "Instellingen:"
+
+#~ msgid "Runtime"
+#~ msgstr "Actief"
+
+#~ msgid "Persistent"
+#~ msgstr "Permanent"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-25 18:28+0000\n"
+"POT-Creation-Date: 2020-10-15 00:50+0100\n"
 "PO-Revision-Date: 2019-12-10 10:40+0800\n"
 "Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Language-Team: \n"
@@ -80,35 +80,76 @@ msgstr ""
 msgid "Main application window"
 msgstr "主应用程序窗口"
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:29
-msgid "Evangelos Rigas"
-msgstr "Evangelos Rigas"
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:30
+msgid "Main window on an Intel system with P-states"
+msgstr ""
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:34
-msgid "Add Chinese translation"
+msgid "Changing settings using the sliders"
 msgstr ""
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:35
-msgid "Add desktop actions and D-bus activation"
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:38
+msgid "Applying custom settings using profiles"
 msgstr ""
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:36
-msgid "Add tray icon support using AppIndicator"
-msgstr ""
-
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:41
-msgid "Fix meson build properties"
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:42
+msgid "Selecting a custom profile"
 msgstr ""
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:46
+msgid "Changing CPU parameters"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:50
+msgid "Changing energy performance profiles"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:53
+msgid "Evangelos Rigas"
+msgstr "Evangelos Rigas"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:58
+msgid "Add Dutch translation"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:59
+msgid "Add custom profiles and configuration"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:60
+msgid ""
+"Add support for changing the energy performance preferences on Intel systems"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:61
+msgid "Add systemd services to apply settings at boot or login"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:66
+msgid "Add Chinese translation"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:67
+msgid "Add desktop actions and D-bus activation"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:68
+msgid "Add tray icon support using AppIndicator"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:73
+msgid "Fix meson build properties"
+msgstr ""
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:78
 msgid "Fix bug for unknown cpu"
 msgstr ""
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:47
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:79
 msgid "Update translations"
 msgstr ""
 
-#: data/org.rnd2.cpupower_gui.appdata.xml.in:52
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:84
 msgid "Refactor helper library and fix vulnerabilities"
 msgstr "重构辅助库和修复漏洞"
 
@@ -143,69 +184,82 @@ msgstr ""
 "有关详细信息，请参见<a href=\"https://www.gnu.org/licenses/gpl-3.0.html\"> "
 "GNU通用公共许可证版本 3 或更高版本</a>。"
 
-#: cpupower_gui/window.ui.in:96
+#: cpupower_gui/window.ui.in:98
 msgid "About"
 msgstr "关于"
 
-#: cpupower_gui/window.ui.in:125
-msgid "Adjust the runtime CPU policies"
-msgstr "调整运行时 CPU 策略"
-
-#: cpupower_gui/window.ui.in:147
-msgid "Apply"
-msgstr "应用"
-
-#: cpupower_gui/window.ui.in:152
-msgid "Apply changes"
-msgstr "应用更改"
-
-#: cpupower_gui/window.ui.in:202
+#: cpupower_gui/window.ui.in:137
 msgid "Set CPU Frequency limits"
 msgstr "设置 CPU 频率限制"
 
-#: cpupower_gui/window.ui.in:219
-msgid "Governor:"
-msgstr "调速器:"
-
-#: cpupower_gui/window.ui.in:244
+#: cpupower_gui/window.ui.in:154
 msgid "Max freq. (MHz):"
 msgstr "最大频率 (MHz):"
 
-#: cpupower_gui/window.ui.in:316
+#: cpupower_gui/window.ui.in:184
+msgid "Maximum allowed CPU frequency"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:203
+msgid "Minimum allowed CPU frequency"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:239
 msgid "Min freq. (MHz):"
 msgstr "最小频率 (MHz):"
 
-#: cpupower_gui/window.ui.in:328
+#: cpupower_gui/window.ui.in:251
 msgid "CPU:"
 msgstr "CPU:"
 
-#: cpupower_gui/window.ui.in:352
+#: cpupower_gui/window.ui.in:275
 msgid "All CPUs:"
 msgstr "所有 CPU:"
 
-#: cpupower_gui/window.ui.in:373
+#: cpupower_gui/window.ui.in:296
 msgid "Online"
 msgstr "线上"
 
-#: cpupower_gui/window.ui.in:410
+#: cpupower_gui/window.ui.in:319
+msgid "Governor:"
+msgstr "调速器:"
+
+#: cpupower_gui/window.ui.in:355
+msgid "Energy profile:"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:402
 msgid "Settings"
 msgstr "设置"
 
-#: cpupower_gui/window.ui.in:426
-msgid "Configuration:"
-msgstr "配置："
+#: cpupower_gui/window.ui.in:419
+msgid "Profile:"
+msgstr ""
 
-#: cpupower_gui/window.ui.in:439
-msgid "Runtime"
-msgstr "运行时"
-
-#: cpupower_gui/window.ui.in:440
-msgid "Persistent"
-msgstr "持久化"
-
-#: cpupower_gui/window.ui.in:453
+#: cpupower_gui/window.ui.in:447
 msgid "Apply at boot:"
 msgstr "启动时应用 :"
+
+#: cpupower_gui/window.ui.in:491
+msgid "Adjust the runtime CPU policies"
+msgstr "调整运行时 CPU 策略"
+
+#: cpupower_gui/window.ui.in:513
+msgid "Apply"
+msgstr "应用"
+
+#: cpupower_gui/window.ui.in:518
+msgid "Apply changes"
+msgstr "应用更改"
+
+#~ msgid "Configuration:"
+#~ msgstr "配置："
+
+#~ msgid "Runtime"
+#~ msgstr "运行时"
+
+#~ msgid "Persistent"
+#~ msgstr "持久化"
 
 #~ msgid "Frequency Setter"
 #~ msgstr "频率设定器"
