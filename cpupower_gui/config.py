@@ -6,23 +6,22 @@ from shlex import split
 
 try:
     from xdg import BaseDirectory
-
     XDG_PATH = Path(BaseDirectory.save_config_path("cpupower_gui"))
 except ImportError:
     BaseDirectory = None
     XDG_PATH = None
 
 from cpupower_gui.utils import (
-    read_govs,
-    read_governor,
-    read_freq_lims,
-    read_freqs,
     cpus_available,
+    is_energy_pref_avail,
     is_online,
     parse_core_list,
     read_available_energy_prefs,
     read_energy_pref,
-    is_energy_pref_avail,
+    read_freq_lims,
+    read_freqs,
+    read_governor,
+    read_govs,
 )
 
 
@@ -66,10 +65,19 @@ class CpuPowerConfig:
 
     def _read_profiles(self):
         """Read .profile files from configuration directories"""
-        files = self.user_conf.glob("*.profile")
-        for file in files:
-            prof = Profile(file)
-            self._profiles.update({prof.name: prof})
+        # drop-in configuration
+        if self.etc_confd.exists():
+            profile_files = sorted(self.etc_confd.glob("*.profile"))
+            for file in profile_files:
+                prof = Profile(file)
+                self._profiles.update({prof.name: prof})
+
+        # user configuration
+        if self.user_conf:
+            profile_files = sorted(self.user_conf.glob("*.profile"))
+            for file in profile_files:
+                prof = Profile(file)
+                self._profiles.update({prof.name: prof})
 
     @property
     def default_profile(self):
@@ -309,7 +317,7 @@ class CpuSettings:
     units = {
         "mhz": 1e3,
         "ghz": 1e6,
-        }
+    }
 
     def __init__(self, cpu):
         self.cpu = cpu
