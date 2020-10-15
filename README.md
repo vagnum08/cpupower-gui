@@ -58,6 +58,13 @@ dnf config-manager --add-repo https://download.opensuse.org/repositories/home:er
 dnf install cpupower-gui
 ```
 
+### OpenMandriva
+You can install `cpupower-gui` from the offical repository.
+```bash
+dnf install cpupower-gui
+```
+
+
 # Usage
 ## Graphical
 
