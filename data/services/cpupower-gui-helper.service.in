@@ -6,3 +6,6 @@ Documentation=https://github.com/vagnum08/cpupower-gui
 Type=dbus
 BusName=org.rnd2.cpupower_gui.helper
 ExecStart=@helperdir@/cpupower-gui-helper
+
+[Install]
+Alias=dbus-org.rnd2.cpupower_gui.helper.service
