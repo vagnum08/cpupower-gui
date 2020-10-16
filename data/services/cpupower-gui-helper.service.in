@@ -1,5 +1,6 @@
 [Unit]
 Description=cpupower-gui system helper
+Documentation=https://github.com/vagnum08/cpupower-gui
 
 [Service]
 Type=dbus
