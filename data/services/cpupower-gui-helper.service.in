@@ -4,4 +4,4 @@ Description=cpupower-gui system helper
 [Service]
 Type=dbus
 BusName=org.rnd2.cpupower_gui.helper
-ExecStart=@pkglibdir@/cpupower-gui-helper
+ExecStart=@helperdir@/cpupower-gui-helper

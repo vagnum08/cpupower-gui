@@ -3,8 +3,7 @@ Description=Apply cpupower-gui config at user login
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/cpupower-gui --apply-config
+ExecStart=@bindir@/cpupower-gui --apply-config
 
 [Install]
 WantedBy=graphical-session.target
-

@@ -4,3 +4,5 @@ option('systemddir', type : 'string',
 option('pkla', type : 'boolean',
        description : '''Prefer pkla files over rules for polkit [default 'false']''')
 
+option('use_libexec', type : 'boolean',
+  description : '''Use libexec path to install dbus helper binary, else use libdir [default 'false']''')

@@ -21,7 +21,7 @@ configure_file(
   output: 'cpupower-gui-helper',
   configuration: conf,
   install: true,
-  install_dir: pkglibdir
+  install_dir: helperdir
 )
 
 
