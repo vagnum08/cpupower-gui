@@ -1,0 +1,254 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the cpupower-gui package.
+# ALBANO BATTISTELLA <albano_battistella@hotmail.com>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cpupower-gui\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-15 00:50+0100\n"
+"PO-Revision-Date: 2020-10-21 17:00+0100\n"
+"Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
+"Language-Team: Italian <LL@li.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:4
+msgid "cpupower-gui"
+msgstr "cpupower-gui"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:5
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:6
+msgid "CPU frequency settings"
+msgstr "Impostazioni della frequenza della CPU"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:6
+msgid "Sets the frequency limits of the CPU"
+msgstr "Imposta i limiti di frequenza della CPU"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:8
+msgid "@icon@"
+msgstr "@icona@"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:14
+msgid "frequency;limits;"
+msgstr "frequenza;limiti;"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:18
+msgid "Set all CPU governors to Performance"
+msgstr "Imposta la gestione della CPU su Performance"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:22
+msgid "Set all CPU governors to default"
+msgstr "Imposta tutta la gestione CPU sui valori predefiniti"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:7
+msgid "Adjust the frequency of the CPU"
+msgstr "Regola la frequenza della CPU"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:9
+msgid "A graphical utility for changing the CPU frequencies and governor."
+msgstr "Un'utilità grafica per modificare le frequenze della CPU e la sua gestione."
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:10
+msgid ""
+"This utility can change the operating frequency of the CPU for each core "
+"separately. The program can detect offline cores and only present the "
+"available ones. Furthermore, if a core doesn't support frequency scaling is "
+"not shown. There is also an option to apply the same settings to all cores "
+"simultaneously."
+msgstr ""
+"Questa utility può modificare la frequenza operativa della CPU per ogni core"
+"separatamente. Il programma può rilevare core offline e presentare solo"
+"quelli disponibili. Inoltre, se un core non supporta il ridimensionamento della frequenza non"
+"è mostrato. C'è anche un'opzione per applicare le stesse impostazioni a tutti i core"
+"contemporaneamente."
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:16
+msgid ""
+"To apply the settings, the user must be local and active, as well as in "
+"group sudo. Local and active users not in this group must authenticate "
+"themselves as admin in order to apply the settings."
+msgstr ""
+"Per applicare le impostazioni, l'utente deve essere locale e attivo, nonché nel"
+"gruppo sudo. Gli utenti locali e attivi non in questo gruppo devono autenticare"
+"se stessi come amministratore per applicare le impostazioni."
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:26
+msgid "Main application window"
+msgstr "Finestra principale dell'applicazione"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:30
+msgid "Main window on an Intel system with P-states"
+msgstr "Finestra principale su un sistema Intel con P-states"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:34
+msgid "Changing settings using the sliders"
+msgstr "Modifica delle impostazioni utilizzando i cursori"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:38
+msgid "Applying custom settings using profiles"
+msgstr "Applicazione di impostazioni personalizzate utilizzando i profili"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:42
+msgid "Selecting a custom profile"
+msgstr "Selezione di un profilo personalizzato"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:46
+msgid "Changing CPU parameters"
+msgstr "Modifica dei parametri della CPU"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:50
+msgid "Changing energy performance profiles"
+msgstr "Modifica dei profili di prestazione energetica"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:53
+msgid "Evangelos Rigas"
+msgstr "Evangelos Rigas"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:58
+msgid "Add Dutch translation"
+msgstr "Aggiunta traduzione olandese"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:59
+msgid "Add custom profiles and configuration"
+msgstr "Aggiunto profili e configurazione personalizzati"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:60
+msgid ""
+"Add support for changing the energy performance preferences on Intel systems"
+msgstr ""
+"Aggiunta del supporto per la modifica delle preferenze relative alle prestazioni energetiche sui sistemi Intel"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:61
+msgid "Add systemd services to apply settings at boot or login"
+msgstr "Aggiunto i servizi systemd per applicare le impostazioni all'avvio o all'accesso"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:66
+msgid "Add Chinese translation"
+msgstr "Aggiunta la traduzione cinese"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:67
+msgid "Add desktop actions and D-bus activation"
+msgstr "Aggiunto azioni desktop e attivazione D-bus"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:68
+msgid "Add tray icon support using AppIndicator"
+msgstr "Aggiunto il supporto per l'icona nella barra delle applicazioni utilizzando AppIndicator"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:73
+msgid "Fix meson build properties"
+msgstr "Corretto le proprietà di compilazione del mesone"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:78
+msgid "Fix bug for unknown cpu"
+msgstr "Risolto bug per cpu sconosciuta"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:79
+msgid "Update translations"
+msgstr "Aggiornato le traduzioni"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:84
+msgid "Refactor helper library and fix vulnerabilities"
+msgstr "Refactoring della libreria di supporto e correzione delle vulnerabilità"
+
+#: cpupower_gui/tray.ui:13
+msgid "Swith to performance profile"
+msgstr "Passa al profilo prestazioni"
+
+#: cpupower_gui/tray.ui:21
+msgid "Switch to balanced profile"
+msgstr "Passa al profilo bilanciato"
+
+#: cpupower_gui/tray.ui:35
+msgid "Quit"
+msgstr "Esci"
+
+#: cpupower_gui/window.ui.in:36
+msgid "Copyright (C) 2017-2020 [RnD]²"
+msgstr "Copyright (C) 2017-2020 [RnD]²"
+
+#: cpupower_gui/window.ui.in:37
+msgid "GUI utility to change the CPU frequency and governor"
+msgstr "Utilità GUI per modificare la frequenza della CPU e la sua gestione"
+
+#: cpupower_gui/window.ui.in:39
+msgid ""
+"This program comes with absolutely no warranty.\n"
+"See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
+"Public Licence, version 3 or later</a> for details."
+msgstr ""
+"Questo programma viene fornito senza alcuna garanzia.\n"
+"Vedi il <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\"> GNU General "
+"Licenza pubblica, versione 3 o successiva </a> per i dettagli."
+
+#: cpupower_gui/window.ui.in:98
+msgid "About"
+msgstr "Informazioni"
+
+#: cpupower_gui/window.ui.in:137
+msgid "Set CPU Frequency limits"
+msgstr "Imposta i limiti di frequenza della CPU"
+
+#: cpupower_gui/window.ui.in:154
+msgid "Max freq. (MHz):"
+msgstr "Max freq. (MHz):"
+
+#: cpupower_gui/window.ui.in:184
+msgid "Maximum allowed CPU frequency"
+msgstr "Frequenza CPU massima consentita"
+
+#: cpupower_gui/window.ui.in:203
+msgid "Minimum allowed CPU frequency"
+msgstr "Frequenza CPU minima consentita"
+
+#: cpupower_gui/window.ui.in:239
+msgid "Min freq. (MHz):"
+msgstr "Min freq. (MHz):"
+
+#: cpupower_gui/window.ui.in:251
+msgid "CPU:"
+msgstr "CPU:"
+
+#: cpupower_gui/window.ui.in:275
+msgid "All CPUs:"
+msgstr "Tutte le CPU:"
+
+#: cpupower_gui/window.ui.in:296
+msgid "Online"
+msgstr "Online"
+
+#: cpupower_gui/window.ui.in:319
+msgid "Governor:"
+msgstr "Gestisci:"
+
+#: cpupower_gui/window.ui.in:355
+msgid "Energy profile:"
+msgstr "Profilo energetico:"
+
+#: cpupower_gui/window.ui.in:402
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: cpupower_gui/window.ui.in:419
+msgid "Profile:"
+msgstr "Profilo:"
+
+#: cpupower_gui/window.ui.in:447
+msgid "Apply at boot:"
+msgstr "Applica all'avvio:"
+
+#: cpupower_gui/window.ui.in:491
+msgid "Adjust the runtime CPU policies"
+msgstr "Modifica i criteri runtime della CPU"
+
+#: cpupower_gui/window.ui.in:513
+msgid "Apply"
+msgstr "Applica"
+
+#: cpupower_gui/window.ui.in:518
+msgid "Apply changes"
+msgstr "Applica modifiche"
