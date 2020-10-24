@@ -123,13 +123,16 @@ yjwork-cn</property>
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="margin_end">15</property>
         <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
         <child>
           <object class="GtkGrid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="row_spacing">10</property>
             <property name="column_homogeneous">True</property>
+            <property name="baseline_row">3</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
@@ -179,7 +182,7 @@ yjwork-cn</property>
               <object class="GtkSpinButton" id="spin_max">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="width_chars">7</property>
+                <property name="width_chars">8</property>
                 <property name="caps_lock_warning">False</property>
                 <property name="secondary_icon_tooltip_text" translatable="yes">Maximum allowed CPU frequency</property>
                 <property name="adjustment">adj_max</property>
@@ -198,7 +201,7 @@ yjwork-cn</property>
               <object class="GtkSpinButton" id="spin_min">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="width_chars">7</property>
+                <property name="width_chars">8</property>
                 <property name="caps_lock_warning">False</property>
                 <property name="secondary_icon_tooltip_text" translatable="yes">Minimum allowed CPU frequency</property>
                 <property name="adjustment">adj_min</property>
@@ -220,7 +223,7 @@ yjwork-cn</property>
                 <property name="margin_start">2</property>
                 <property name="margin_end">2</property>
                 <property name="adjustment">adj_min</property>
-                <property name="fill_level">100000</property>
+                <property name="fill_level">100000000</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
                 <property name="draw_value">False</property>
@@ -264,30 +267,6 @@ yjwork-cn</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <property name="label" translatable="yes">All CPUs:</property>
-              </object>
-              <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="toall">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="halign">center</property>
-                <signal name="state-set" handler="on_toall_state_set" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">4</property>
                 <property name="top_attach">1</property>
               </packing>
             </child>
@@ -380,6 +359,46 @@ yjwork-cn</property>
               </packing>
             </child>
             <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="homogeneous">True</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="label" translatable="yes">All CPUs:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="toall">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">center</property>
+                    <signal name="state-set" handler="on_toall_state_set" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">4</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
               <placeholder/>
             </child>
           </object>
@@ -387,7 +406,7 @@ yjwork-cn</property>
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="padding">5</property>
-            <property name="position">1</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -478,7 +497,8 @@ yjwork-cn</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="padding">6</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
