@@ -247,7 +247,7 @@ To install them,
 
 - On Arch and derivatives: `pacman -Sy pkg-config meson`
 - On blackPanther OS and derivatives: (TBD)
-- On Debian and derivatives: `apt update && apt install  meson ninja-build, pkg-config, libglib2.0-bin, libglib2.0-dev`
+- On Debian and derivatives: `apt update && apt install  meson ninja-build pkg-config libglib2.0-bin libglib2.0-dev`
 - On Fedora: `dnf install meson gettext pkg-config glib2-devel`
 - On openSUSE Tumbleweed: `zypper install meson gettext-tools`
 
@@ -286,7 +286,7 @@ When `pkla` is set to `true` a `.pkla` file is installed under `/var/lib/polkit-
 - For Debian and Ubuntu based systems you should use `-Dpkla=true`
 
 ## Install
-To uninstall run `ninja -C build install`
+To install run `ninja -C build install`
 
 ## Uninstall
 
