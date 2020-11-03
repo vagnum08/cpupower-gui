@@ -14,9 +14,9 @@ Keywords=frequency;limits;
 Actions=Performance;Balanced;
 
 [Desktop Action Performance]
-Name=Set all CPU governors to Performance
+Name=Switch to Performance profile
 Exec=gapplication launch org.rnd2.cpupower_gui Performance
 
 [Desktop Action Balanced]
-Name=Set all CPU governors to default
+Name=Switch to Balanced profile
 Exec=gapplication launch org.rnd2.cpupower_gui Balanced

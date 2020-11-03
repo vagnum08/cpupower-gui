@@ -16,15 +16,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from contextlib import contextmanager
+from gettext import gettext as _
 
 import dbus
 import gi
 
 gi.require_version("Handy", "1")
-from gi.repository import Gio, Gtk, Handy, GObject
+
+from gi.repository import Gio, GLib, GObject, Gtk, Handy
 
 from .config import CpuPowerConfig, CpuSettings
-from .utils import read_available_frequencies
+from .utils import read_available_frequencies, read_current_freq
 
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(
@@ -32,6 +34,7 @@ SESSION = BUS.get_object(
 )
 
 HELPER = dbus.Interface(SESSION, "org.rnd2.cpupower_gui.helper")
+
 
 # Abstractions for Gio List store
 class CpuCore(GObject.GObject):
@@ -151,6 +154,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.configure_gui()
         self.upd_sliders()
 
+        GLib.timeout_add(500, self._update_current_freq)
         # Application actions
         action = Gio.SimpleAction.new("Exit", None)
         action.connect("activate", self.quit)
@@ -304,7 +308,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         style = 1 if changed else 0
         if cpu <= len(self.settings):
             if self.tree_store:
-                self.tree_store[cpu][5] = style
+                self.tree_store[cpu][6] = style
 
     def upd_sliders(self):
         """Updates the slider widgets by reading the sys files"""
@@ -456,6 +460,13 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         else:
             self.gov_box.set_sensitive(False)
 
+    def _update_current_freq(self):
+        """Callback to update the tree view with current CPU frequency"""
+        for cpu in self.online_cpus:
+            current_freq = read_current_freq(cpu) / 1e3
+            self.tree_store[cpu][5] = current_freq
+        return True
+
     def on_freq_edited(self, widget, path, value, index):
         """Update the sliders when frequencies change from table"""
         value = float(value)
@@ -489,18 +500,32 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
     def _update_tree_view(self):
         """Updates the governor combobox"""
-        self.tree_store = Gtk.ListStore(int, bool, float, float, str, int)
+        self.tree_store = Gtk.ListStore(int, bool, float, float, str, float, int)
         for cpu, conf in self.settings.items():
             fmin, fmax = conf.freqs
             self.tree_store.append(
-                [cpu, conf.online, fmin, fmax, conf.governor.capitalize(), 0]
+                [cpu, conf.online, fmin, fmax, conf.governor.capitalize(), 0.0, 0]
             )
 
-        for i, column_title in enumerate(["CPU", "Online", "Min", "Max", "Governor"]):
+        for i, column_title in enumerate(
+            [
+                _("CPU"),
+                _("Online"),
+                _("Min"),
+                _("Max"),
+                _("Governor"),
+                _("Current freq."),
+            ]
+        ):
             if column_title == "Online":
                 renderer = Gtk.CellRendererToggle()
                 renderer.connect("toggled", self.on_tree_toggled)
                 column = Gtk.TreeViewColumn(column_title, renderer, active=i)
+
+            elif column_title == "Current freq.":
+                renderer = Gtk.CellRendererSpin(digits=2)
+                column = Gtk.TreeViewColumn(column_title, renderer, text=i, style=6)
+                column.set_cell_data_func(renderer, self.conv_float, 5)
 
             elif column_title in ["Min", "Max"]:
                 index = 2 if column_title == "Min" else 3
@@ -514,11 +539,11 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                 )
                 renderer = Gtk.CellRendererSpin(editable=True, adjustment=adj, digits=2)
                 renderer.connect("edited", self.on_freq_edited, index)
-                column = Gtk.TreeViewColumn(column_title, renderer, text=i, style=5)
+                column = Gtk.TreeViewColumn(column_title, renderer, text=i, style=6)
                 column.set_cell_data_func(renderer, self.conv_float, index)
             else:
                 renderer = Gtk.CellRendererText()
-                column = Gtk.TreeViewColumn(column_title, renderer, text=i, style=5)
+                column = Gtk.TreeViewColumn(column_title, renderer, text=i, style=6)
             self.tree_view.append_column(column)
 
         self.tree_view.set_model(self.tree_store)

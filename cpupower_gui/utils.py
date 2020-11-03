@@ -1,6 +1,7 @@
 from pathlib import Path
 
 SYS_PATH = "/sys/devices/system/cpu/cpu{}/cpufreq"
+CURR_FREQ = "scaling_cur_freq"
 FREQ_MIN = "scaling_min_freq"
 FREQ_MAX = "scaling_max_freq"
 FREQ_MIN_HW = "cpuinfo_min_freq"
@@ -74,6 +75,15 @@ def is_online(cpu):
     online = cpus_online()
     present = cpus_present()
     return (cpu in present) and (cpu in online)
+
+
+def read_current_freq(cpu):
+    """ Reads current frequency from sysfs """
+    sys_path = Path(SYS_PATH.format(int(cpu)))
+
+    freq = int((sys_path / CURR_FREQ).read_text())
+
+    return freq
 
 
 def read_freqs(cpu):
