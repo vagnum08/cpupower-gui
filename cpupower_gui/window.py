@@ -22,8 +22,8 @@ import dbus
 import gi
 
 gi.require_version("Handy", "1")
-
-from gi.repository import Gio, GLib, GObject, Gtk, Handy
+gi.require_version("Dazzle", "1.0")
+from gi.repository import Dazzle, Gdk, Gio, GLib, GObject, Gtk, Handy
 
 from .config import CpuPowerConfig, CpuSettings
 from .utils import read_available_frequencies, read_current_freq
@@ -124,6 +124,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     default_ticks_num = Gtk.Template.Child()
     default_energy_per_cpu = Gtk.Template.Child()
     energy_pref_percpu = Gtk.Template.Child()
+    graphbox = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -241,6 +242,38 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         if self.energy_pref_avail:
             self.energy_pref_box.set_visible(True)
             self.energy_pref_percpu.set_visible(True)
+
+        # graph
+        colours = [
+            "#1f77b4",
+            "#ff7f0e",
+            "#2ca02c",
+            "#d62728",
+            "#9467bd",
+            "#8c564b",
+            "#e377c2",
+            "#7f7f7f",
+            "#bcbd22",
+            "#17becf",
+        ]
+        gv = Dazzle.GraphView()
+        self.graphbox.pack_start(gv, True, True, 4)
+        self.gm = Dazzle.GraphModel()
+        self.gm.set_timespan(60000000)
+        self.gm.set_max_samples(5000)
+        colour = Gdk.RGBA()
+        for cpu in self.online_cpus:
+            gc = Dazzle.GraphColumn.new(str(cpu), GObject.TYPE_DOUBLE)
+            self.gm.add_column(gc)
+            gr = Dazzle.GraphLineRenderer()
+            gr.column = cpu
+            gr.line_width = 1.3
+            colour.parse(colours[cpu % 10])
+            gr.set_stroke_color_rgba(colour)
+            gv.add_renderer(gr)
+
+        gv.set_model(self.gm)
+        gv.show_all()
 
     def quit(self, *args):
         """Quit"""
@@ -462,9 +495,13 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
     def _update_current_freq(self):
         """Callback to update the tree view with current CPU frequency"""
+        fmin, fmax = self.settings[0].hw_lims
+        giter = self.gm.push(GLib.get_monotonic_time())
         for cpu in self.online_cpus:
             current_freq = read_current_freq(cpu) / 1e3
             self.tree_store[cpu][5] = current_freq
+            cur_freq_scaled = 100 * current_freq / fmax
+            self.gm.iter_set(giter, cpu, cur_freq_scaled)
         return True
 
     def on_freq_edited(self, widget, path, value, index):
