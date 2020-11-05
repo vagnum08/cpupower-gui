@@ -9,15 +9,13 @@ This program is designed to allow you to change the frequency limits of your cpu
 [![Github all releases](https://img.shields.io/github/downloads/vagnum08/cpupower-gui/total.svg)](https://GitHub.com/vagnum08/cpupower-gui/releases/)
 
 # Screenshots
-The theme used is [Arc-Darker](https://github.com/horst3180/arc-theme).
-
-If frequency steps are available, hints will be present on the sliders.
-<img src="screenshots/screen_marks_prof.png" alt="Custom Profile" width="844"/>
 
 If Intel P-state driver is used and the energy preferences are available a drop-down will be available.
-<img src="screenshots/screen_energy_prof.png" alt="Energy settings" width="844"/>
+<img src="screenshots/desktop.png" alt="Desktop window" width="500"/>
 
-<img src="https://user-images.githubusercontent.com/16070176/79335201-83c72d80-7f19-11ea-8143-f729d9fa9024.gif" alt="Using the gui" width=""/>
+`cpupower-gui` is also mobile friendly and will adapt the interface based on the window size.
+Below is an example from [pinephone](https://www.pine64.org/pinephone/) with phosh running on [mobian](https://mobian-project.org/).
+<img src="screenshots/mobile.png" alt="mobile view" width="844"/>
 
 
 # Packages
@@ -70,7 +68,7 @@ dnf install cpupower-gui
 
 To change the frequency settings, select the CPU from the drop-down menu, adjust the sliders and click `Apply`.
 Additionally, the cpu governor can be changed by selecting a governor from the drop-down menu.
-Last, to apply the same settings to all CPUs, toggle the `All CPUs` switch.
+Last, to apply the same settings to all CPUs, toggle the `All CPUs` switch (square icon on the top left).
 
 There are two governor profiles available, `Performance` and `Balanced`.
 The performance profile sets the governor for all CPUs to `performance`.
@@ -191,10 +189,21 @@ Alternatively, users can add their configuration in `~/.config/cpupower_gui/`. T
 
 Currently, the only available settings are:
 - `profile` under the `Profile` section,
-- `allcpus_default` under the `GUI` section.
 
-The `profile` option sets the name of the profile to use when using `--apply-config` option (Default: Balanced)
-The `allcpus_default` option controls the default state of the `To All CPUs` toggle of the GUI (Default: False).
+and under the `GUI` section,
+- `allcpus_default`
+- `tick_marks_enabled`
+- `frequency_ticks`
+- `energy_pref_per_cpu`
+
+Specifically,
+
+- `profile` option sets the name of the profile to use when using `--apply-config` option (Default: Balanced).
+ - `allcpus_default` option controls the default state of the `To All CPUs` toggle of the GUI (Default: False).
+- `tick_marks_enabled` option controls if tick marks should be displayed on the sliders (Default: True).
+- `frequency_ticks` option controls if frequency is displayed above the tick marks (Default: True).
+- `energy_pref_per_cpu` option allows you to select different energy profiles per CPU (Default: False).
+
 
 ## User profiles
 
@@ -262,7 +271,7 @@ To install them,
 
 ## Build cpupower-gui
 ```bash
-meson build --prefix /usr -Dsystemddir=<path-to-systemd-dir> -Dpkla=<true|false>
+meson build --prefix /usr -Dsystemddir=<path-to-systemd-dir> -Dpkla=<true|false> -Duse_libexec=<true|false>
 ninja -C build
 ```
 
@@ -285,6 +294,16 @@ When `pkla` is set to `true` a `.pkla` file is installed under `/var/lib/polkit-
 - The default value works Arch/Fedora/NixOS/OpenSUSE and derivatives.
 - For Debian and Ubuntu based systems you should use `-Dpkla=true`
 
+##### `-Duse_libexec`
+Since version **`1.0.0`** an additional option (**`-Duse_libexec`**) has been added.
+This option is set to **`false`** by default.
+
+When `use_libexec` is set to `false` the helper program is installed under `/usr/lib/`.
+When `use_libexec` is set to `true` the helper program is installed under `/usr/libexec/`.
+
+- The default value works Arch/Fedora/NixOS/OpenSUSE and derivatives.
+- For Debian and Ubuntu based systems you should use `-Duse_libexec=true`
+
 ## Install
 To install run `ninja -C build install`
 
@@ -297,13 +316,13 @@ To uninstall run `ninja -C build uninstall`.
 Since version 0.7.1, Python GObject version must be >= 3.30
 
 ## Arch Linux and derivatives
-`python` `gtk3` `hicolor-icon-theme` `polkit` `python-dbus` `python-gobject` `libappindicator-gtk3`
+`python` `gtk3` `hicolor-icon-theme` `polkit` `python-dbus` `python-gobject` `libappindicator-gtk3` `python-pyxdg` `libhandy`
 
 ## blackPanther OS and derivatives
-`python3`, `gtk3`, `hicolor-icon-theme`, `polkit`, `python3-dbus`, `python3-gobject3`
+`python3`, `gtk3`, `hicolor-icon-theme`, `polkit`, `python3-dbus`, `python3-gobject3` `gir1.2-handy-1` `xdg`
 
 ## Debian and derivatives
-`libgtk-3-0` `gir1.2-gtk-3.0` `hicolor-icon-theme` `policykit-1` `python3-dbus` `python3-gi`
+`libgtk-3-0` `gir1.2-gtk-3.0` `hicolor-icon-theme` `policykit-1` `python3-dbus` `python3-gi` `python3-xdg` `gir1.2-handy-1`
 
 Suggested for authentication dialogue: `policykit-1-gnome` or `mate-polkit` or `lxpolkit`
 
@@ -311,13 +330,13 @@ For the tray icon `gir1.2-appindicator3-0.1`.
 
 ## Fedora and openSUSE
 ### Fedora only
-`gtk3` `python3-dbus` `python3-gobject`
+`gtk3` `python3-dbus` `python3-gobject` `libhandy-1`
 
 ### openSUSE only
-`libgtk-3-0` `typelib-1_0-Gtk-3_0` `python3-gobject` `python3-gobject-Gdk` `python3-dbus-python`
+`libgtk-3-0` `typelib-1_0-Gtk-3_0` `python3-gobject` `python3-gobject-Gdk` `python3-dbus-python` `typelib-1_0-Handy-1`
 
 ## Common
- `hicolor-icon-theme`
+ `hicolor-icon-theme` `python3-pyxdg`
 
 A polkit agent such as `mate-polkit`, `polkit-kde-agent-5`, `policykit-1-gnome`, etc.
-Suggested for reading configuration from user's home directory: [`xdg`](https://repology.org/project/python:pyxdg/versions)
+For reading/writing configuration from/to user's home directory: [`xdg`](https://repology.org/project/python:pyxdg/versions)
