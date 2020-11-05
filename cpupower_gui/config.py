@@ -128,6 +128,26 @@ class CpuPowerConfig:
         """
         return self.config["GUI"]
 
+    def set(self, section, option, value):
+        """Set option under specified section
+
+        Args:
+            section: The section to set
+            option: The option to set
+            value: The value of the option
+
+        """
+        self.config[section][option] = str(value)
+
+    def write_settings(self):
+        if self.user_conf:
+            conf_file = self.user_conf / "00-cpg.conf"
+            with conf_file.open("w") as f:
+                self.config.write(f)
+            return True
+        else:
+            return False
+
     def _generate_default_profiles(self):
         """Generate default profiles based on current hardware.
         The two profiles generated are 'Balanced' and 'Performance'.
@@ -355,6 +375,12 @@ class CpuSettings:
     def reset_energy_pref(self):
         # Reset changed values
         self.energy_pref = self._settings["energy_pref"]
+
+    def setting_changed(self, param):
+        ch = False
+        if param in self._settings:
+            ch = self._settings[param] != self._new_settings[param]
+        return ch
 
     def __repr__(self):
         return "Cpu: {}\nFreqs: {}\nGovernor: {}\n".format(

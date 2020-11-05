@@ -35,6 +35,14 @@ SESSION = BUS.get_object(
 
 HELPER = dbus.Interface(SESSION, "org.rnd2.cpupower_gui.helper")
 
+ERRORS = {
+    -11: "Setting governor failed.",
+    -12: "Setting energy preferences failed.",
+    -13: "Setting frequencies failed.",
+    -23: "Setting governor and energy preferences failed.",
+    -24: "Setting governor and frequencies failed.",
+    -25: "Setting frequencies and energy preferences failed.",
+}
 
 # Abstractions for Gio List store
 class CpuCore(GObject.GObject):
@@ -80,11 +88,11 @@ class Profile(GObject.GObject):
 def dialog_response(widget, response_id):
     """ Error message dialog """
     # if the button clicked gives response OK (-5)
-    if response_id == Gtk.ResponseType.OK:
-        print("OK")
+    # if response_id == Gtk.ResponseType.OK:
+    #    print("OK")
     # if the messagedialog is destroyed (by pressing ESC)
-    elif response_id == Gtk.ResponseType.DELETE_EVENT:
-        print("dialog closed or cancelled")
+    # elif response_id == Gtk.ResponseType.DELETE_EVENT:
+    #    print("dialog closed or cancelled")
     widget.destroy()
 
 
@@ -499,7 +507,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             self.cpu_online.set_active(online)
 
     def _update_tree_view(self):
-        """Updates the governor combobox"""
+        """Updates the tree view"""
         self.tree_store = Gtk.ListStore(int, bool, float, float, str, float, int)
         for cpu, conf in self.settings.items():
             fmin, fmax = conf.freqs
@@ -568,18 +576,28 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             self.cpu_box.set_selected_index(model[treeiter][0])
 
     @Gtk.Template.Callback()
-    def on_prefs_changed(self, pref, param):
+    def on_prefs_changed(self, pref, value):
         name = Gtk.Buildable.get_name(pref)
+        value_str = str(value)
         if name == "default_profile_pref":
             mod = pref.get_model()
+            ind = self.default_profile_pref.get_selected_index()
+            self.conf.set("Profile", "profile", mod[ind].name)
+        elif name == "default_allcpus":
+            self.gui_conf["allcpus_default"] = value_str
         elif name == "default_ticks":
-            self.tick_marks_enabled = param
+            self.tick_marks_enabled = value
+            self.gui_conf["tick_marks_enabled"] = value_str
             self._update_frequency_marks(self._get_active_cpu())
         elif name == "default_ticks_num":
-            self.ticks_markup = param
+            self.ticks_markup = value
+            self.gui_conf["frequency_ticks"] = value_str
             self._update_frequency_marks(self._get_active_cpu())
         elif name == "default_energy_per_cpu":
-            self.energy_per_cpu = param
+            self.gui_conf["energy_pref_per_cpu"] = value_str
+            self.energy_per_cpu = value
+
+        self.conf.write_settings()
 
     @Gtk.Template.Callback()
     def on_cpu_changed(self, widget, value):
@@ -592,16 +610,18 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.upd_sliders()
 
     @Gtk.Template.Callback()
-    def on_toall_toggled(self, val):
+    def on_toall_toggled(self, widget):
         """Enable/Disable cpu_box"""
         cpu = self._get_active_cpu()
         settings = self.settings[cpu]
-        for cpu, conf in self.settings.items():
-            conf.freqs = settings.freqs
-            conf.governor = settings.governor
-            conf.online = settings.online
-            conf.energy_pref = settings.energy_pref
-            self.update_tree_view(cpu, conf)
+        if widget.get_active():
+            for cpu, conf in self.settings.items():
+                conf.freqs = settings.freqs
+                conf.governor = settings.governor
+                conf.online = settings.online
+                conf.energy_pref = settings.energy_pref
+                self.update_tree_view(cpu, conf)
+        self.apply_btn.set_sensitive(self.is_conf_changed)
 
     @Gtk.Template.Callback()
     def on_adj_min_value_changed(self, *args):
@@ -720,8 +740,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             return
         mod = self.energy_pref_box.get_model()
         energy_pref = mod[self.energy_pref_box.get_selected_index()]
-        # Update store
-        cpu = self._get_active_cpu()
+        active_cpu = self._get_active_cpu()
 
         # Note that tasks may by migrated from one CPU to another by the scheduler’s
         # load-balancing algorithm and if different energy vs performance hints are
@@ -730,9 +749,34 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         # for all CPUs or to pin every task potentially sensitive to them
         # to a specific CPU.
         # https://www.kernel.org/doc/html/v4.12/admin-guide/pm/intel_pstate.html#energy-vs-performance-hints
-        conf = self.settings.get(cpu)
-        conf.energy_pref = energy_pref.prefid
-        self._update_treeview_style(cpu, conf.changed)
+
+        error = False
+        if self.energy_per_cpu:
+            conf = self.settings.get(active_cpu)
+            if conf.governor == "performance" and energy_pref.name != "Performance":
+                error = True
+                with self.lock():
+                    self.energy_pref_box.set_selected_index(conf.energy_pref_id)
+            else:
+                conf.energy_pref = energy_pref.prefid
+                self._update_treeview_style(active_cpu, conf.changed)
+
+        else:
+            for cpu, conf in self.settings.items():
+                if conf.governor == "performance" and energy_pref.name != "Performance":
+                    error = True
+                    if cpu == active_cpu:
+                        with self.lock():
+                            self.energy_pref_box.set_selected_index(conf.energy_pref_id)
+                    continue
+                conf.energy_pref = energy_pref.prefid
+                self._update_treeview_style(cpu, conf.changed)
+
+        if error:
+            error_message(
+                "Energy profiles other than performance are not allowed when the governor is set to performance.",
+                self,
+            )
         self.apply_btn.set_sensitive(self.is_conf_changed)
 
     @Gtk.Template.Callback()
@@ -771,9 +815,12 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             cpu_online = conf.online
             ret = self.set_cpu_online(cpu)
             if cpu_online:
-                ret += self.set_cpu_frequencies(cpu)
-                ret += self.set_cpu_governor(cpu)
-                ret += self.set_cpu_energy_preferences(cpu)
+                if conf.setting_changed("freqs"):
+                    ret += self.set_cpu_frequencies(cpu)
+                if conf.setting_changed("governor"):
+                    ret += self.set_cpu_governor(cpu)
+                if conf.setting_changed("energy_pref"):
+                    ret += self.set_cpu_energy_preferences(cpu)
 
         for cpu in self.settings.keys():
             self._refresh_cpu_settings(cpu)
@@ -787,7 +834,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         if ret == 0:
             button.set_sensitive(False)
         else:
-            error_message("Error occurred, check if you have permissions.", self)
+            error = ERRORS[ret]
+            error_message(error, self)
 
     @Gtk.Template.Callback()
     def on_about_clicked(self, button):
@@ -927,6 +975,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         ret = HELPER.update_cpu_governor(cpu, gov)
 
+        if ret != 0:
+            return -11
         return ret
 
     def set_cpu_energy_preferences(self, cpu):
@@ -952,6 +1002,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         ret = HELPER.update_cpu_energy_prefs(cpu, pref)
 
+        if ret != 0:
+            return -12
         return ret
 
     def set_cpu_frequencies(self, cpu):
@@ -969,5 +1021,6 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         fmin, fmax = conf.freqs_scaled
         if (fmin is not None) and (fmax is not None):
             ret = HELPER.update_cpu_settings(cpu, fmin, fmax)
-
+        if ret != 0:
+            return -13
         return ret

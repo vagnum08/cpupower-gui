@@ -377,7 +377,7 @@ yjwork-cn</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="halign">start</property>
-                                        <property name="label" translatable="yes">Min freq.</property>
+                                        <property name="label" translatable="yes">Min freq. (MHz)</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -559,14 +559,16 @@ yjwork-cn</property>
                                 <child>
                                   <object class="HdyActionRow" id="energy_pref_percpu">
                                     <property name="can_focus">True</property>
+                                    <property name="activatable">False</property>
                                     <property name="selectable">False</property>
                                     <property name="title" translatable="yes">Energy performance preference per CPU</property>
-                                    <property name="activatable_widget">default_ticks</property>
+                                    <property name="activatable_widget">default_energy_per_cpu</property>
                                     <child>
                                       <object class="GtkSwitch" id="default_energy_per_cpu">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="valign">center</property>
+                                        <signal name="state-set" handler="on_prefs_changed" swapped="no"/>
                                       </object>
                                     </child>
                                   </object>
@@ -593,6 +595,7 @@ yjwork-cn</property>
                                     <property name="activatable">False</property>
                                     <property name="selectable">False</property>
                                     <property name="title" translatable="yes">All CPUs toggle enabled by default</property>
+                                    <property name="activatable_widget">toall</property>
                                     <child>
                                       <object class="GtkSwitch" id="default_allcpus">
                                         <property name="visible">True</property>
