@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-15 00:50+0100\n"
+"POT-Creation-Date: 2020-11-06 10:49+0000\n"
 "PO-Revision-Date: 2020-10-21 17:00+0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: Italian <LL@li.org>\n"
@@ -38,12 +38,14 @@ msgid "frequency;limits;"
 msgstr "frequenza;limiti;"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:18
-msgid "Set all CPU governors to Performance"
-msgstr "Imposta la gestione della CPU su Performance"
+#, fuzzy
+msgid "Switch to Performance profile"
+msgstr "Passa al profilo prestazioni"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:22
-msgid "Set all CPU governors to default"
-msgstr "Imposta tutta la gestione CPU sui valori predefiniti"
+#, fuzzy
+msgid "Switch to Balanced profile"
+msgstr "Passa al profilo bilanciato"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:7
 msgid "Adjust the frequency of the CPU"
@@ -51,7 +53,8 @@ msgstr "Regola la frequenza della CPU"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:9
 msgid "A graphical utility for changing the CPU frequencies and governor."
-msgstr "Un'utilità grafica per modificare le frequenze della CPU e la sua gestione."
+msgstr ""
+"Un'utilità grafica per modificare le frequenze della CPU e la sua gestione."
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:10
 msgid ""
@@ -61,11 +64,11 @@ msgid ""
 "not shown. There is also an option to apply the same settings to all cores "
 "simultaneously."
 msgstr ""
-"Questa utility può modificare la frequenza operativa della CPU per ogni core"
-"separatamente. Il programma può rilevare core offline e presentare solo"
-"quelli disponibili. Inoltre, se un core non supporta il ridimensionamento della frequenza non"
-"è mostrato. C'è anche un'opzione per applicare le stesse impostazioni a tutti i core"
-"contemporaneamente."
+"Questa utility può modificare la frequenza operativa della CPU per ogni "
+"coreseparatamente. Il programma può rilevare core offline e presentare "
+"soloquelli disponibili. Inoltre, se un core non supporta il "
+"ridimensionamento della frequenza nonè mostrato. C'è anche un'opzione per "
+"applicare le stesse impostazioni a tutti i corecontemporaneamente."
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:16
 msgid ""
@@ -73,9 +76,9 @@ msgid ""
 "group sudo. Local and active users not in this group must authenticate "
 "themselves as admin in order to apply the settings."
 msgstr ""
-"Per applicare le impostazioni, l'utente deve essere locale e attivo, nonché nel"
-"gruppo sudo. Gli utenti locali e attivi non in questo gruppo devono autenticare"
-"se stessi come amministratore per applicare le impostazioni."
+"Per applicare le impostazioni, l'utente deve essere locale e attivo, nonché "
+"nelgruppo sudo. Gli utenti locali e attivi non in questo gruppo devono "
+"autenticarese stessi come amministratore per applicare le impostazioni."
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:26
 msgid "Main application window"
@@ -121,11 +124,14 @@ msgstr "Aggiunto profili e configurazione personalizzati"
 msgid ""
 "Add support for changing the energy performance preferences on Intel systems"
 msgstr ""
-"Aggiunta del supporto per la modifica delle preferenze relative alle prestazioni energetiche sui sistemi Intel"
+"Aggiunta del supporto per la modifica delle preferenze relative alle "
+"prestazioni energetiche sui sistemi Intel"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:61
 msgid "Add systemd services to apply settings at boot or login"
-msgstr "Aggiunto i servizi systemd per applicare le impostazioni all'avvio o all'accesso"
+msgstr ""
+"Aggiunto i servizi systemd per applicare le impostazioni all'avvio o "
+"all'accesso"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:66
 msgid "Add Chinese translation"
@@ -137,7 +143,9 @@ msgstr "Aggiunto azioni desktop e attivazione D-bus"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:68
 msgid "Add tray icon support using AppIndicator"
-msgstr "Aggiunto il supporto per l'icona nella barra delle applicazioni utilizzando AppIndicator"
+msgstr ""
+"Aggiunto il supporto per l'icona nella barra delle applicazioni utilizzando "
+"AppIndicator"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:73
 msgid "Fix meson build properties"
@@ -153,7 +161,8 @@ msgstr "Aggiornato le traduzioni"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:84
 msgid "Refactor helper library and fix vulnerabilities"
-msgstr "Refactoring della libreria di supporto e correzione delle vulnerabilità"
+msgstr ""
+"Refactoring della libreria di supporto e correzione delle vulnerabilità"
 
 #: cpupower_gui/tray.ui:13
 msgid "Swith to performance profile"
@@ -167,15 +176,15 @@ msgstr "Passa al profilo bilanciato"
 msgid "Quit"
 msgstr "Esci"
 
-#: cpupower_gui/window.ui.in:36
+#: cpupower_gui/window.ui.in:37
 msgid "Copyright (C) 2017-2020 [RnD]²"
 msgstr "Copyright (C) 2017-2020 [RnD]²"
 
-#: cpupower_gui/window.ui.in:37
+#: cpupower_gui/window.ui.in:38
 msgid "GUI utility to change the CPU frequency and governor"
 msgstr "Utilità GUI per modificare la frequenza della CPU e la sua gestione"
 
-#: cpupower_gui/window.ui.in:39
+#: cpupower_gui/window.ui.in:40
 msgid ""
 "This program comes with absolutely no warranty.\n"
 "See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
@@ -185,70 +194,239 @@ msgstr ""
 "Vedi il <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\"> GNU General "
 "Licenza pubblica, versione 3 o successiva </a> per i dettagli."
 
-#: cpupower_gui/window.ui.in:98
+#: cpupower_gui/window.ui.in:99
 msgid "About"
 msgstr "Informazioni"
 
-#: cpupower_gui/window.ui.in:137
-msgid "Set CPU Frequency limits"
-msgstr "Imposta i limiti di frequenza della CPU"
+#: cpupower_gui/window.ui.in:159
+#, fuzzy
+msgid "CPU settings"
+msgstr "Impostazioni della frequenza della CPU"
 
-#: cpupower_gui/window.ui.in:154
-msgid "Max freq. (MHz):"
-msgstr "Max freq. (MHz):"
-
-#: cpupower_gui/window.ui.in:184
-msgid "Maximum allowed CPU frequency"
-msgstr "Frequenza CPU massima consentita"
-
-#: cpupower_gui/window.ui.in:203
-msgid "Minimum allowed CPU frequency"
-msgstr "Frequenza CPU minima consentita"
-
-#: cpupower_gui/window.ui.in:239
-msgid "Min freq. (MHz):"
-msgstr "Min freq. (MHz):"
-
-#: cpupower_gui/window.ui.in:251
-msgid "CPU:"
-msgstr "CPU:"
-
-#: cpupower_gui/window.ui.in:275
-msgid "All CPUs:"
-msgstr "Tutte le CPU:"
-
-#: cpupower_gui/window.ui.in:296
-msgid "Online"
-msgstr "Online"
-
-#: cpupower_gui/window.ui.in:319
-msgid "Governor:"
-msgstr "Gestisci:"
-
-#: cpupower_gui/window.ui.in:355
-msgid "Energy profile:"
-msgstr "Profilo energetico:"
-
-#: cpupower_gui/window.ui.in:402
-msgid "Settings"
-msgstr "Impostazioni"
-
-#: cpupower_gui/window.ui.in:419
-msgid "Profile:"
-msgstr "Profilo:"
-
-#: cpupower_gui/window.ui.in:447
-msgid "Apply at boot:"
-msgstr "Applica all'avvio:"
-
-#: cpupower_gui/window.ui.in:491
-msgid "Adjust the runtime CPU policies"
-msgstr "Modifica i criteri runtime della CPU"
-
-#: cpupower_gui/window.ui.in:513
+#: cpupower_gui/window.ui.in:171
 msgid "Apply"
 msgstr "Applica"
 
-#: cpupower_gui/window.ui.in:518
+#: cpupower_gui/window.ui.in:176
 msgid "Apply changes"
 msgstr "Applica modifiche"
+
+#: cpupower_gui/window.ui.in:217
+msgid "Refresh"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:231
+#, fuzzy
+msgid "All CPUs"
+msgstr "Tutte le CPU:"
+
+#: cpupower_gui/window.ui.in:289
+#, fuzzy
+msgid "Frequency profiles"
+msgstr "Profilo energetico:"
+
+#: cpupower_gui/window.ui.in:296 cpupower_gui/window.ui.in:546
+#, fuzzy
+msgid "Profile"
+msgstr "Profilo:"
+
+#: cpupower_gui/window.ui.in:345
+#, fuzzy
+msgid "Frequency settings"
+msgstr "Impostazioni della frequenza della CPU"
+
+#: cpupower_gui/window.ui.in:352 cpupower_gui/window.py:600
+#, fuzzy
+msgid "CPU"
+msgstr "CPU:"
+
+#: cpupower_gui/window.ui.in:375
+#, fuzzy
+msgid "Min freq. (MHz)"
+msgstr "Min freq. (MHz):"
+
+#: cpupower_gui/window.ui.in:387 cpupower_gui/window.ui.in:459
+msgid "0.00"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:447
+#, fuzzy
+msgid "Max freq. (MHz)"
+msgstr "Max freq. (MHz):"
+
+#: cpupower_gui/window.ui.in:486 cpupower_gui/window.ui.in:539
+#, fuzzy
+msgid "Power settings"
+msgstr "Impostazioni"
+
+#: cpupower_gui/window.ui.in:492
+#, fuzzy
+msgid "Governor policy"
+msgstr "Gestisci:"
+
+#: cpupower_gui/window.ui.in:503
+#, fuzzy
+msgid "Energy preference"
+msgstr "Profilo energetico:"
+
+#: cpupower_gui/window.ui.in:522
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: cpupower_gui/window.ui.in:547
+msgid "Default profile to apply at boot"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:559
+#, fuzzy
+msgid "Energy performance preference per CPU"
+msgstr "Modifica dei profili di prestazione energetica"
+
+#: cpupower_gui/window.ui.in:585
+#, fuzzy
+msgid "GUI settings"
+msgstr "Impostazioni"
+
+#: cpupower_gui/window.ui.in:592
+msgid "All CPUs toggle enabled by default"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:609
+msgid "Display tick marks"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:626
+msgid "Display frequency at tick marks"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:657
+msgid "Preferences"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:680
+#, fuzzy
+msgid "Profiles"
+msgstr "Profilo:"
+
+#: cpupower_gui/window.py:38
+msgid "Setting governor failed."
+msgstr ""
+
+#: cpupower_gui/window.py:39
+#, fuzzy
+msgid "Setting energy preferences failed."
+msgstr "Modifica dei profili di prestazione energetica"
+
+#: cpupower_gui/window.py:40
+msgid "Setting frequencies failed."
+msgstr ""
+
+#: cpupower_gui/window.py:41
+msgid "Setting governor and energy preferences failed."
+msgstr ""
+
+#: cpupower_gui/window.py:42
+msgid "Setting governor and frequencies failed."
+msgstr ""
+
+#: cpupower_gui/window.py:43
+msgid "Setting frequencies and energy preferences failed."
+msgstr ""
+
+#: cpupower_gui/window.py:94
+msgid " (Built-in)"
+msgstr ""
+
+#. Empty profile name to use for resetting settings
+#. Discard any changes
+#. If no profile selected reset and disable apply_btn
+#: cpupower_gui/window.py:259 cpupower_gui/window.py:450
+#, fuzzy
+msgid "No profile"
+msgstr "Profilo:"
+
+#: cpupower_gui/window.py:279
+#, fuzzy
+msgid "New profile"
+msgstr "Profilo energetico:"
+
+#: cpupower_gui/window.py:280
+#, fuzzy
+msgid "User profiles"
+msgstr "Profilo energetico:"
+
+#: cpupower_gui/window.py:281
+#, fuzzy
+msgid "System profiles"
+msgstr "Profilo energetico:"
+
+#: cpupower_gui/window.py:282
+msgid "Built-in profiles"
+msgstr ""
+
+#. Add entry for current profile
+#: cpupower_gui/window.py:289
+#, fuzzy
+msgid "Profile name"
+msgstr "Profilo:"
+
+#: cpupower_gui/window.py:292
+msgid "Name"
+msgstr ""
+
+#: cpupower_gui/window.py:601 cpupower_gui/window.py:608
+msgid "Online"
+msgstr "Online"
+
+#: cpupower_gui/window.py:602 cpupower_gui/window.py:618
+#: cpupower_gui/window.py:619
+msgid "Min"
+msgstr ""
+
+#: cpupower_gui/window.py:603 cpupower_gui/window.py:618
+msgid "Max"
+msgstr ""
+
+#: cpupower_gui/window.py:604
+#, fuzzy
+msgid "Governor"
+msgstr "Gestisci:"
+
+#: cpupower_gui/window.py:605 cpupower_gui/window.py:613
+msgid "Current freq."
+msgstr ""
+
+#: cpupower_gui/window.py:857
+msgid ""
+"Energy profiles other than performance are not allowed when the governor is "
+"set to performance."
+msgstr ""
+
+#: cpupower_gui/window.py:889
+msgid "You don't have permissions to update cpu settings!"
+msgstr ""
+
+#: cpupower_gui/window.py:942
+msgid "Are you sure sure you want to delete this profile?"
+msgstr ""
+
+#~ msgid "Set all CPU governors to Performance"
+#~ msgstr "Imposta la gestione della CPU su Performance"
+
+#~ msgid "Set all CPU governors to default"
+#~ msgstr "Imposta tutta la gestione CPU sui valori predefiniti"
+
+#~ msgid "Set CPU Frequency limits"
+#~ msgstr "Imposta i limiti di frequenza della CPU"
+
+#~ msgid "Maximum allowed CPU frequency"
+#~ msgstr "Frequenza CPU massima consentita"
+
+#~ msgid "Minimum allowed CPU frequency"
+#~ msgstr "Frequenza CPU minima consentita"
+
+#~ msgid "Apply at boot:"
+#~ msgstr "Applica all'avvio:"
+
+#~ msgid "Adjust the runtime CPU policies"
+#~ msgstr "Modifica i criteri runtime della CPU"

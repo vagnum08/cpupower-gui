@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-15 00:50+0100\n"
+"POT-Creation-Date: 2020-11-06 10:49+0000\n"
 "PO-Revision-Date: 2019-12-10 10:40+0800\n"
 "Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Language-Team: \n"
@@ -40,11 +40,11 @@ msgid "frequency;limits;"
 msgstr "频率;限制;"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:18
-msgid "Set all CPU governors to Performance"
+msgid "Switch to Performance profile"
 msgstr ""
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:22
-msgid "Set all CPU governors to default"
+msgid "Switch to Balanced profile"
 msgstr ""
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:7
@@ -165,16 +165,16 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: cpupower_gui/window.ui.in:36
+#: cpupower_gui/window.ui.in:37
 #, fuzzy
 msgid "Copyright (C) 2017-2020 [RnD]²"
 msgstr "版权所有 (C) 2017-2019 [RnD]²"
 
-#: cpupower_gui/window.ui.in:37
+#: cpupower_gui/window.ui.in:38
 msgid "GUI utility to change the CPU frequency and governor"
 msgstr "可更改 CPU 频率和调节器的 GUI 图形界面实用程序"
 
-#: cpupower_gui/window.ui.in:39
+#: cpupower_gui/window.ui.in:40
 msgid ""
 "This program comes with absolutely no warranty.\n"
 "See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
@@ -184,73 +184,220 @@ msgstr ""
 "有关详细信息，请参见<a href=\"https://www.gnu.org/licenses/gpl-3.0.html\"> "
 "GNU通用公共许可证版本 3 或更高版本</a>。"
 
-#: cpupower_gui/window.ui.in:98
+#: cpupower_gui/window.ui.in:99
 msgid "About"
 msgstr "关于"
 
-#: cpupower_gui/window.ui.in:137
-msgid "Set CPU Frequency limits"
-msgstr "设置 CPU 频率限制"
+#: cpupower_gui/window.ui.in:159
+#, fuzzy
+msgid "CPU settings"
+msgstr "CPU 频率设置"
 
-#: cpupower_gui/window.ui.in:154
-msgid "Max freq. (MHz):"
-msgstr "最大频率 (MHz):"
-
-#: cpupower_gui/window.ui.in:184
-msgid "Maximum allowed CPU frequency"
-msgstr ""
-
-#: cpupower_gui/window.ui.in:203
-msgid "Minimum allowed CPU frequency"
-msgstr ""
-
-#: cpupower_gui/window.ui.in:239
-msgid "Min freq. (MHz):"
-msgstr "最小频率 (MHz):"
-
-#: cpupower_gui/window.ui.in:251
-msgid "CPU:"
-msgstr "CPU:"
-
-#: cpupower_gui/window.ui.in:275
-msgid "All CPUs:"
-msgstr "所有 CPU:"
-
-#: cpupower_gui/window.ui.in:296
-msgid "Online"
-msgstr "线上"
-
-#: cpupower_gui/window.ui.in:319
-msgid "Governor:"
-msgstr "调速器:"
-
-#: cpupower_gui/window.ui.in:355
-msgid "Energy profile:"
-msgstr ""
-
-#: cpupower_gui/window.ui.in:402
-msgid "Settings"
-msgstr "设置"
-
-#: cpupower_gui/window.ui.in:419
-msgid "Profile:"
-msgstr ""
-
-#: cpupower_gui/window.ui.in:447
-msgid "Apply at boot:"
-msgstr "启动时应用 :"
-
-#: cpupower_gui/window.ui.in:491
-msgid "Adjust the runtime CPU policies"
-msgstr "调整运行时 CPU 策略"
-
-#: cpupower_gui/window.ui.in:513
+#: cpupower_gui/window.ui.in:171
 msgid "Apply"
 msgstr "应用"
 
-#: cpupower_gui/window.ui.in:518
+#: cpupower_gui/window.ui.in:176
 msgid "Apply changes"
 msgstr "应用更改"
+
+#: cpupower_gui/window.ui.in:217
+msgid "Refresh"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:231
+#, fuzzy
+msgid "All CPUs"
+msgstr "所有 CPU:"
+
+#: cpupower_gui/window.ui.in:289
+#, fuzzy
+msgid "Frequency profiles"
+msgstr "频率设定器"
+
+#: cpupower_gui/window.ui.in:296 cpupower_gui/window.ui.in:546
+msgid "Profile"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:345
+#, fuzzy
+msgid "Frequency settings"
+msgstr "CPU 频率设置"
+
+#: cpupower_gui/window.ui.in:352 cpupower_gui/window.py:600
+#, fuzzy
+msgid "CPU"
+msgstr "CPU:"
+
+#: cpupower_gui/window.ui.in:375
+#, fuzzy
+msgid "Min freq. (MHz)"
+msgstr "最小频率 (MHz):"
+
+#: cpupower_gui/window.ui.in:387 cpupower_gui/window.ui.in:459
+msgid "0.00"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:447
+#, fuzzy
+msgid "Max freq. (MHz)"
+msgstr "最大频率 (MHz):"
+
+#: cpupower_gui/window.ui.in:486 cpupower_gui/window.ui.in:539
+#, fuzzy
+msgid "Power settings"
+msgstr "设置"
+
+#: cpupower_gui/window.ui.in:492
+#, fuzzy
+msgid "Governor policy"
+msgstr "调速器:"
+
+#: cpupower_gui/window.ui.in:503
+msgid "Energy preference"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:522
+msgid "Settings"
+msgstr "设置"
+
+#: cpupower_gui/window.ui.in:547
+msgid "Default profile to apply at boot"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:559
+msgid "Energy performance preference per CPU"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:585
+#, fuzzy
+msgid "GUI settings"
+msgstr "设置"
+
+#: cpupower_gui/window.ui.in:592
+msgid "All CPUs toggle enabled by default"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:609
+msgid "Display tick marks"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:626
+msgid "Display frequency at tick marks"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:657
+msgid "Preferences"
+msgstr ""
+
+#: cpupower_gui/window.ui.in:680
+msgid "Profiles"
+msgstr ""
+
+#: cpupower_gui/window.py:38
+msgid "Setting governor failed."
+msgstr ""
+
+#: cpupower_gui/window.py:39
+msgid "Setting energy preferences failed."
+msgstr ""
+
+#: cpupower_gui/window.py:40
+msgid "Setting frequencies failed."
+msgstr ""
+
+#: cpupower_gui/window.py:41
+msgid "Setting governor and energy preferences failed."
+msgstr ""
+
+#: cpupower_gui/window.py:42
+msgid "Setting governor and frequencies failed."
+msgstr ""
+
+#: cpupower_gui/window.py:43
+msgid "Setting frequencies and energy preferences failed."
+msgstr ""
+
+#: cpupower_gui/window.py:94
+msgid " (Built-in)"
+msgstr ""
+
+#. Empty profile name to use for resetting settings
+#. Discard any changes
+#. If no profile selected reset and disable apply_btn
+#: cpupower_gui/window.py:259 cpupower_gui/window.py:450
+msgid "No profile"
+msgstr ""
+
+#: cpupower_gui/window.py:279
+msgid "New profile"
+msgstr ""
+
+#: cpupower_gui/window.py:280
+msgid "User profiles"
+msgstr ""
+
+#: cpupower_gui/window.py:281
+msgid "System profiles"
+msgstr ""
+
+#: cpupower_gui/window.py:282
+msgid "Built-in profiles"
+msgstr ""
+
+#. Add entry for current profile
+#: cpupower_gui/window.py:289
+msgid "Profile name"
+msgstr ""
+
+#: cpupower_gui/window.py:292
+msgid "Name"
+msgstr ""
+
+#: cpupower_gui/window.py:601 cpupower_gui/window.py:608
+msgid "Online"
+msgstr "线上"
+
+#: cpupower_gui/window.py:602 cpupower_gui/window.py:618
+#: cpupower_gui/window.py:619
+msgid "Min"
+msgstr ""
+
+#: cpupower_gui/window.py:603 cpupower_gui/window.py:618
+msgid "Max"
+msgstr ""
+
+#: cpupower_gui/window.py:604
+#, fuzzy
+msgid "Governor"
+msgstr "调速器:"
+
+#: cpupower_gui/window.py:605 cpupower_gui/window.py:613
+msgid "Current freq."
+msgstr ""
+
+#: cpupower_gui/window.py:857
+msgid ""
+"Energy profiles other than performance are not allowed when the governor is "
+"set to performance."
+msgstr ""
+
+#: cpupower_gui/window.py:889
+msgid "You don't have permissions to update cpu settings!"
+msgstr ""
+
+#: cpupower_gui/window.py:942
+msgid "Are you sure sure you want to delete this profile?"
+msgstr ""
+
+#~ msgid "Set CPU Frequency limits"
+#~ msgstr "设置 CPU 频率限制"
+
+#~ msgid "Apply at boot:"
+#~ msgstr "启动时应用 :"
+
+#~ msgid "Adjust the runtime CPU policies"
+#~ msgstr "调整运行时 CPU 策略"
 
 #~ msgid "Configuration:"
 #~ msgstr "配置："
@@ -260,6 +407,3 @@ msgstr "应用更改"
 
 #~ msgid "Persistent"
 #~ msgstr "持久化"
-
-#~ msgid "Frequency Setter"
-#~ msgstr "频率设定器"

@@ -16,7 +16,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from contextlib import contextmanager
-from gettext import gettext as _
 
 import dbus
 import gi
@@ -36,12 +35,12 @@ SESSION = BUS.get_object(
 HELPER = dbus.Interface(SESSION, "org.rnd2.cpupower_gui.helper")
 
 ERRORS = {
-    -11: "Setting governor failed.",
-    -12: "Setting energy preferences failed.",
-    -13: "Setting frequencies failed.",
-    -23: "Setting governor and energy preferences failed.",
-    -24: "Setting governor and frequencies failed.",
-    -25: "Setting frequencies and energy preferences failed.",
+    -11: _("Setting governor failed."),
+    -12: _("Setting energy preferences failed."),
+    -13: _("Setting frequencies failed."),
+    -23: _("Setting governor and energy preferences failed."),
+    -24: _("Setting governor and frequencies failed."),
+    -25: _("Setting frequencies and energy preferences failed."),
 }
 
 # Abstractions for Gio List store
@@ -92,7 +91,7 @@ class Profile(GObject.GObject):
         self.name = profile.name
 
         if not profile._custom:
-            self.name += " (Built-in)"
+            self.name += _(" (Built-in)")
 
     @property
     def settings(self):
@@ -448,7 +447,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.load_cpu_settings()  # Discard any changes
 
         # If no profile selected reset and disable apply_btn
-        if profile.name == "No profile":
+        if profile.name == _("No profile"):
             self.toall.set_sensitive(True)
             for cpu, conf in self.settings.items():
                 conf.reset_conf()
@@ -606,18 +605,18 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                 _("Current freq."),
             ]
         ):
-            if column_title == "Online":
+            if column_title == _("Online"):
                 renderer = Gtk.CellRendererToggle()
                 renderer.connect("toggled", self.on_tree_toggled)
                 column = Gtk.TreeViewColumn(column_title, renderer, active=i)
 
-            elif column_title == "Current freq.":
+            elif column_title == _("Current freq."):
                 renderer = Gtk.CellRendererSpin(digits=2)
                 column = Gtk.TreeViewColumn(column_title, renderer, text=i, style=6)
                 column.set_cell_data_func(renderer, self.conv_float, 5)
 
-            elif column_title in ["Min", "Max"]:
-                index = 2 if column_title == "Min" else 3
+            elif column_title in [_("Min"), _("Max")]:
+                index = 2 if column_title == _("Min") else 3
                 adj = Gtk.Adjustment(
                     value=0,
                     lower=fmin,
@@ -855,7 +854,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         if error:
             error_message(
-                "Energy profiles other than performance are not allowed when the governor is set to performance.",
+                _("Energy profiles other than performance are not allowed when the governor is set to performance."),
                 self,
             )
         self.apply_btn.set_sensitive(self.is_conf_changed)
@@ -887,7 +886,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         pref = conf.energy_pref
 
         if not HELPER.isauthorized():
-            error_message("You don't have permissions to update cpu settings!", self)
+            error_message(_("You don't have permissions to update cpu settings!"), self)
 
         # Update only the cpus whose settings were changed
         changed_cpus = [cpu for cpu, conf in self.settings.items() if conf.changed]

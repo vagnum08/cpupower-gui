@@ -112,6 +112,11 @@ yjwork-cn</property>
       </packing>
     </child>
   </object>
+  <object class="GtkImage" id="toall_icon">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">edit-select-all</property>
+  </object>
   <template class="CpupowerGuiWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="hexpand">True</property>
@@ -209,6 +214,7 @@ yjwork-cn</property>
               <object class="GtkImage" id="refresh_img">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Refresh</property>
                 <property name="stock">gtk-refresh</property>
               </object>
             </child>
@@ -219,10 +225,11 @@ yjwork-cn</property>
         </child>
         <child>
           <object class="GtkToggleButton" id="toall">
-            <property name="label" translatable="yes">All CPUs</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">All CPUs</property>
+            <property name="image">toall_icon</property>
             <property name="always_show_image">True</property>
             <signal name="toggled" handler="on_toall_toggled" swapped="no"/>
           </object>
