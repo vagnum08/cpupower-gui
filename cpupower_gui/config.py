@@ -70,7 +70,7 @@ class CpuPowerConfig:
         if self.etc_confd.exists():
             profile_files = sorted(self.etc_confd.glob("*.profile"))
             for file in profile_files:
-                prof = Profile(file)
+                prof = Profile(file, system=True)
                 self._profiles.update({prof.name: prof})
 
         # user configuration
@@ -92,7 +92,7 @@ class CpuPowerConfig:
     @property
     def profiles(self):
         """Return list with profiles"""
-        return list(self._profiles.keys())
+        return sorted(self._profiles.keys())
 
     def get_profile(self, name):
         """Return named profile object
@@ -104,6 +104,51 @@ class CpuPowerConfig:
 
         """
         return self._profiles.get(name)
+
+    def get_profile_index(self, name):
+        """Return the index for named profile
+        Args:
+            name: The name of the profile to find
+        Returns:
+            index: -1 if not found, position from sorted index otherwise
+
+        """
+        if name not in self._profiles:
+            return -1
+
+        return sorted(self._profiles).index(name)
+
+    def delete_profile(self, name):
+        """Delete profile
+
+        Args:
+            name: The profile name
+
+        """
+        prof = self._profiles.get(name)
+        if prof is not None:
+            prof.delete_file()
+            del self._profiles[name]
+
+    def create_profile_from_settings(self, name, settings):
+        """Creates new profile form settings
+
+        Args:
+            name: Name of the profile
+            settings: Profile settings
+
+        """
+        profile = Profile()
+        profile.name = name
+        profile.parse_settings(settings)
+        if self.user_conf.exists():
+            _name = name.replace(" ", "-")
+            _name = "cpg-{}.profile".format(_name)
+            filename = self.user_conf / _name
+
+        profile.file = filename
+        profile.write_file()
+        self._profiles[name] = profile
 
     def get_profile_settings(self, name):
         """Returns profile settings
@@ -173,7 +218,9 @@ class CpuPowerConfig:
 class Profile:
     """Wrapper for .profile files"""
 
-    def __init__(self, filename=None):
+    def __init__(self, filename=None, system=False):
+        self._custom = True
+        self.system = system
         self.settings = {}
         self.name = ""
         self.file = None
@@ -197,6 +244,39 @@ class Profile:
             vals = split(line, comments=True)
             if vals:
                 self.settings.update(self._read_values(*vals))
+
+    def delete_file(self):
+        """Delete profile file"""
+        if self.file is not None:
+            self.file.unlink(missing_ok=True)
+
+    def parse_settings(self, settings):
+        for core, conf in settings.items():
+            config = {
+                "freqs": conf.freqs_scaled,
+                "governor": conf.governor,
+                "online": conf.online,
+            }
+            self.settings[core] = config
+
+    def write_file(self):
+        if self.file:
+            settings = self._format_settings()
+            self.file.write_text(settings)
+
+    def _format_settings(self):
+        body = "# name: {}\n\n".format(self.name)
+        body += "# CPU\tMin\tMax\tGovernor\tOnline\n"
+        for core, conf in self.settings.items():
+            fmin, fmax = conf["freqs"]
+            gov = conf["governor"]
+            online = conf["online"]
+            line = "{}\t{}\t{}\t{}\t{}\n".format(
+                core, int(fmin / 1e3), int(fmax / 1e3), gov, online
+            )
+            body += line
+
+        return body
 
     @staticmethod
     def _read_values(cpus: str, fmin: str, fmax: str, governor: str, online="y"):
@@ -235,6 +315,7 @@ class DefaultProfile(Profile):
 
     def __init__(self, name: str, governor="-", fmin="-", fmax="-"):
         super().__init__()
+        self._custom = False
         self.name = name
         self._generate_profile(fmin, fmax, governor)
 

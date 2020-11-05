@@ -80,9 +80,26 @@ class Profile(GObject.GObject):
 
     name = GObject.Property(type=str)
 
-    def __init__(self, name):
+    def __init__(self, profile):
         GObject.GObject.__init__(self)
-        self.name = name
+
+        if isinstance(profile, str):
+            self._profile = None
+            self.name = profile
+            return
+
+        self._profile = profile
+        self.name = profile.name
+
+        if not profile._custom:
+            self.name += " (Built-in)"
+
+    @property
+    def settings(self):
+        if self._profile:
+            return self._profile.settings
+        else:
+            return []
 
 
 def dialog_response(widget, response_id):
@@ -132,6 +149,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
     default_ticks_num = Gtk.Template.Child()
     default_energy_per_cpu = Gtk.Template.Child()
     energy_pref_percpu = Gtk.Template.Child()
+    profile_overview = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -225,30 +243,93 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.energy_per_cpu = default_energy_percpu
         self.default_energy_per_cpu.set_active(default_energy_percpu)
 
-        # Configure profiles box
-        self.prof_store = Gio.ListStore()
+        self.update_profile_boxes()
 
-        # Empty profile name to use for resetting settings
-        self.prof_store.append(Profile("No profile"))
-
-        # Add the profiles from configuration
-        for prof in self.profiles:
-            self.prof_store.append(Profile(prof))
-
-        self.profile_box.bind_name_model(self.prof_store, lambda x: x.name)
-
-        model = Gio.ListStore()
-
-        # Add the profiles from configuration
-        for prof in self.profiles:
-            model.append(Profile(prof))
-
-        self.default_profile_pref.bind_name_model(model, lambda x: x.name)
+        self.generate_profiles_page()
 
         # Check if intel pstate perfs are available
         if self.energy_pref_avail:
             self.energy_pref_box.set_visible(True)
             self.energy_pref_percpu.set_visible(True)
+
+    def update_profile_boxes(self):
+        # Configure profiles box
+        self.prof_store = Gio.ListStore()
+
+        # Empty profile name to use for resetting settings
+        self.prof_store.append(Profile(_("No profile")))
+
+        # Add the profiles from configuration
+        for prof in self.conf.profiles:
+            profile = self.conf.get_profile(prof)
+            self.prof_store.append(Profile(profile))
+
+        self.profile_box.bind_name_model(self.prof_store, lambda x: x.name)
+
+        # Add the profiles from configuration to prefs
+        model = Gio.ListStore()
+        for prof in self.conf.profiles:
+            model.append(Profile(prof))
+
+        index = self.conf.get_profile_index(self.conf.default_profile)
+        self.default_profile_pref.bind_name_model(model, lambda x: x.name)
+        self.default_profile_pref.set_selected_index(index)
+
+    def generate_profiles_page(self):
+        """Create preference groups for profiles"""
+        new_profile = Handy.PreferencesGroup(title=_("New profile"))
+        self.custom_profiles = Handy.PreferencesGroup(title=_("User profiles"))
+        self.system_profiles = Handy.PreferencesGroup(title=_("System profiles"))
+        self.builtin_profiles = Handy.PreferencesGroup(title=_("Built-in profiles"))
+        self.profile_overview.add(new_profile)
+        self.profile_overview.add(self.custom_profiles)
+        self.profile_overview.add(self.system_profiles)
+        self.profile_overview.add(self.builtin_profiles)
+
+        # Add entry for current profile
+        prof_entry = Handy.ActionRow(title=_("Profile name"))
+        save_me = Gtk.Button.new_from_icon_name("document-save", 1)
+        save_me.set_sensitive(False)
+        self.profile_name_entry = Gtk.Entry(placeholder_text=_("Name"))
+        self.profile_name_entry.connect("changed", self.on_prof_name_changed, save_me)
+        prof_entry.add(self.profile_name_entry)
+        prof_entry.add(save_me)
+        save_me.connect("clicked", self.on_save_profile_clicked)
+        prof_entry.set_activatable_widget(save_me)
+        new_profile.add(prof_entry)
+
+        self._generate_profile_list()
+
+    def update_profiles_page(self):
+        """Update listed profiles"""
+        for child in self.custom_profiles.get_children():
+            child.destroy()
+        for child in self.system_profiles.get_children():
+            child.destroy()
+        for child in self.builtin_profiles.get_children():
+            child.destroy()
+        self._generate_profile_list()
+
+    def _generate_profile_list(self):
+        """Create profile listings using fresh config"""
+        # Add entries for saved profiles
+        for prof in self.conf.profiles:
+            profile = self.conf.get_profile(prof)
+            prof_entry = Handy.ActionRow()
+            prof_entry.set_title(prof)
+            if profile._custom:
+                if not profile.system:
+                    delete_me = Gtk.Button.new_from_icon_name("edit-delete", 1)
+                    prof_entry.add(delete_me)
+                    delete_me.connect("clicked", self.on_delete_profile_clicked, prof)
+                    prof_entry.set_activatable_widget(delete_me)
+                    self.custom_profiles.add(prof_entry)
+                else:
+                    self.system_profiles.add(prof_entry)
+            else:
+                self.builtin_profiles.add(prof_entry)
+
+        self.profile_overview.show_all()
 
     def quit(self, *args):
         """Quit"""
@@ -367,7 +448,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.load_cpu_settings()  # Discard any changes
 
         # If no profile selected reset and disable apply_btn
-        if profile == "No profile":
+        if profile.name == "No profile":
             self.toall.set_sensitive(True)
             for cpu, conf in self.settings.items():
                 conf.reset_conf()
@@ -376,7 +457,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         self.toall.set_active(False)  # Turn off toggle
         self.toall.set_sensitive(False)  # Disable toggle
-        prof_settings = self.conf.get_profile_settings(profile)
+        prof_settings = profile.settings
         for cpu, settings in prof_settings.items():
             conf = self.settings.get(cpu)
             if not conf:
@@ -788,9 +869,9 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         if self.refreshing:
             return
         mod = self.profile_box.get_model()
-        profile = mod[self.profile_box.get_selected_index()].name
+        profile = mod[self.profile_box.get_selected_index()]
         # Update store
-        self.profile = profile
+        self.profile = profile.name
         self._set_profile_settings(profile)
         self.upd_sliders()
         self.apply_btn.set_sensitive(self.is_conf_changed)
@@ -836,6 +917,38 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         else:
             error = ERRORS[ret]
             error_message(error, self)
+
+    def on_prof_name_changed(self, entry, button):
+        """Checks if there is text in entry"""
+        if self.profile_name_entry.get_text() != "":
+            button.set_sensitive(True)
+        else:
+            button.set_sensitive(False)
+
+    def on_save_profile_clicked(self, button):
+        """Callback saving the profile"""
+        name = self.profile_name_entry.get_text().strip()
+        self.conf.create_profile_from_settings(name, self.settings)
+        self.profiles = self.conf.profiles
+        self.update_profile_boxes()
+        self.update_profiles_page()
+        self.profile_name_entry.set_text("")
+
+    def on_delete_profile_clicked(self, button, profile):
+        """Callback for about"""
+        message = Gtk.MessageDialog(
+            transient_for=self,
+            type=Gtk.MessageType.QUESTION,
+            buttons=Gtk.ButtonsType.OK_CANCEL,
+            text=_("Are you sure sure you want to delete this profile?"),
+        )
+        response = message.run()
+        if response == Gtk.ResponseType.OK:
+            self.conf.delete_profile(profile)
+            self.profiles = self.conf.profiles
+            self.update_profile_boxes()
+            self.update_profiles_page()
+        message.destroy()
 
     @Gtk.Template.Callback()
     def on_about_clicked(self, button):
