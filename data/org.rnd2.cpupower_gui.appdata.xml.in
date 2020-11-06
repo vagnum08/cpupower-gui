@@ -22,37 +22,32 @@
     <url type="bugtracker">https://github.com/vagnum08/cpupower-gui/issues</url>
     <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/default_view.png</image>
-      <caption>Main application window</caption>
+      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/v1_settings.png</image>
+      <caption>CPU Settings page</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/default_energy.png</image>
-      <caption>Main window on an Intel system with P-states</caption>
+      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/v1_prefs.png</image>
+      <caption>User preferences page</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/change_settings.png</image>
-      <caption>Changing settings using the sliders</caption>
-    </screenshot>
-    <screenshot type="default">
-      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/apply_profile.png</image>
-      <caption>Applying custom settings using profiles</caption>
-    </screenshot>
-    <screenshot type="default">
-      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/profile_selected.png</image>
-      <caption>Selecting a custom profile</caption>
-    </screenshot>
-    <screenshot type="default">
-      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/changed_cpus.png</image>
-      <caption>Changing CPU parameters</caption>
-    </screenshot>
-    <screenshot type="default">
-      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/change_energy.png</image>
-      <caption>Changing energy performance profiles</caption>
+      <image>https://raw.githubusercontent.com/vagnum08/cpupower-gui/media/screenshots/v1_profiles.png</image>
+      <caption>Profile editing page</caption>
     </screenshot>
     </screenshots>
     <developer_name>Evangelos Rigas</developer_name>
     <content_rating type="oars-1.1"/>
     <releases>
+     <release version="1.0.0" date="2020-11-6">
+      <description>
+        <p>Add Italian translation</p>
+        <p>Redesign application</p>
+	    </description>
+	   </release>
+     <release version="0.9.1" date="2020-10-15">
+      <description>
+        <p>Bug fix release</p>
+	    </description>
+	   </release>
      <release version="0.9.0" date="2020-10-15">
       <description>
         <p>Add Dutch translation</p>
