@@ -85,7 +85,8 @@ class Application(Gtk.Application):
         # Update window if exists
         win = self.props.active_window
         if win:
-            win.upd_sliders()
+            for cpu in win.settings.keys():
+                win._refresh_cpu_settings(cpu)
 
         return 0
 
@@ -95,7 +96,8 @@ class Application(Gtk.Application):
         # Update window if exists
         win = self.props.active_window
         if win:
-            win.upd_sliders()
+            for cpu in win.settings.keys():
+                win._refresh_cpu_settings(cpu)
 
         return 0
 

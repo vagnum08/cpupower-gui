@@ -41,9 +41,11 @@ Author: Evangelos Rigas <erigas@rnd2.org>
 See the &lt;a href="https://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Public Licence, version 3 or later&lt;/a&gt; for details.</property>
     <property name="authors">Evangelos Rigas</property>
     <property name="translator_credits">Evangelos Rigas
+Albano Battistella
 Barcza Károly
 Heimen Stoffels
-yjwork-cn</property>
+yjwork-cn
+</property>
     <property name="logo_icon_name">org.rnd2.cpupower_gui</property>
     <property name="wrap_license">True</property>
     <property name="license_type">gpl-3-0</property>
@@ -138,7 +140,6 @@ yjwork-cn</property>
         <property name="has_subtitle">False</property>
         <property name="spacing">0</property>
         <property name="show_close_button">True</property>
-        <property name="decoration_layout">:close</property>
         <property name="centering_policy">strict</property>
         <child type="title">
           <object class="HdySqueezer" id="squeezer">
