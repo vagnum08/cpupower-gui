@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-06 10:49+0000\n"
+"POT-Creation-Date: 2020-11-06 18:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -355,16 +355,16 @@ msgstr ""
 msgid "Current freq."
 msgstr ""
 
-#: cpupower_gui/window.py:857
+#: cpupower_gui/window.py:858
 msgid ""
 "Energy profiles other than performance are not allowed when the governor is "
 "set to performance."
 msgstr ""
 
-#: cpupower_gui/window.py:889
+#: cpupower_gui/window.py:891
 msgid "You don't have permissions to update cpu settings!"
 msgstr ""
 
-#: cpupower_gui/window.py:942
+#: cpupower_gui/window.py:944
 msgid "Are you sure sure you want to delete this profile?"
 msgstr ""

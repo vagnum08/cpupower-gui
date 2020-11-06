@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpupower-gui 0.7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-06 10:49+0000\n"
-"PO-Revision-Date: 2020-11-06 10:52+0000\n"
+"POT-Creation-Date: 2020-11-06 18:41+0000\n"
+"PO-Revision-Date: 2020-11-06 19:01+0000\n"
 "Last-Translator: Evangelos Rigas <erigas@rnd2.org>\n"
 "Language-Team: \n"
 "Language: el_GR\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:4
 msgid "cpupower-gui"
-msgstr ""
+msgstr "Ρυθμίσεις διεπαφής χρήστη"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:5
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:6
@@ -370,7 +370,7 @@ msgstr "Κυβερνήτης"
 msgid "Current freq."
 msgstr "Τρέχουσα συχν."
 
-#: cpupower_gui/window.py:857
+#: cpupower_gui/window.py:858
 msgid ""
 "Energy profiles other than performance are not allowed when the governor is "
 "set to performance."
@@ -378,13 +378,13 @@ msgstr ""
 "Δεν επιτρέπονται άλλα ενεργειακά προφίλ εκτός του Performance όσο ο "
 "κυβερνήτης είναι ο performance."
 
-#: cpupower_gui/window.py:889
+#: cpupower_gui/window.py:891
 msgid "You don't have permissions to update cpu settings!"
 msgstr ""
 "Δεν έχετε τα απαραίτητα δικαιώματα για την αλλαγή των ρυθμίσεων του "
 "επεξεργαστή!"
 
-#: cpupower_gui/window.py:942
+#: cpupower_gui/window.py:944
 msgid "Are you sure sure you want to delete this profile?"
 msgstr "Είστε σίγουροι πως θέλετε να διαγράψετε αυτό το προφίλ;"
 
