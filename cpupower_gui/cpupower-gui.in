@@ -36,9 +36,16 @@ from cpupower_gui.helper import (
     apply_cpu_profile,
     apply_energy_preference,
     apply_performance,
+    get_cpu_frequencies,
+    set_cpu_max_freq,
+    set_cpu_min_freq,
+    set_cpu_offline,
+    set_cpu_online,
 )
 from cpupower_gui.utils import (
     cpus_available,
+    cpus_offline,
+    cpus_online,
     is_energy_pref_avail,
     parse_core_list,
     read_available_energy_prefs,
@@ -51,6 +58,175 @@ gettext.install("cpupower-gui", localedir)
 CPUS = cpus_available()
 ENERGY_PREF_AVAIL = is_energy_pref_avail(0)
 
+
+def set_config(args):
+    """Set cpupower-gui config
+
+    Args:
+        args: Command line arguments
+
+    """
+    conf = CpuPowerConfig()
+    if args.apply:
+        print("Applying configuration... ")
+        ret = apply_configuration(conf)
+        sys.exit(ret)
+
+
+def set_energy(args):
+    """Set energy performance preferences
+
+    Args:
+        args: Command line arguments
+
+    """
+    if args.pref:
+        pref = args.pref
+        print("Setting energy performance preference to:", pref)
+        apply_energy_preference(pref)
+        sys.exit(0)
+
+    energy_prefs = args.list_energy_preferences
+    if energy_prefs is None:
+        energy_prefs = "{}-{}".format(CPUS[0], CPUS[-1])
+
+    try:
+        cpus = parse_core_list(energy_prefs)
+    except ValueError:
+        print("Could not parse the CPU list")
+        exit(1)
+    print("The available energy performance preferences are:")
+    for cpu in cpus:
+        prefs = read_available_energy_prefs(cpu)
+        current_pref = read_energy_pref(cpu)
+        print("CPU {}:".format(cpu))
+        if prefs:
+            for pref in prefs:
+                if pref == current_pref:
+                    print("\t- {} (Current)".format(pref))
+                else:
+                    print("\t- {}".format(pref))
+        else:
+            print("No prefereneces were found!")
+    sys.exit(0)
+
+
+def set_profile(args):
+    """Set cpupower-gui profile
+
+    Args:
+        args: Command line arguments
+
+    """
+    conf = CpuPowerConfig()
+    if args.list or (args.apply is None):  # List profiles
+        profiles = conf.profiles
+        if profiles:
+            print("The available profiles are:")
+            for prof in profiles:
+                print("\t- {}".format(prof))
+            sys.exit(0)
+
+        print("No profiles were found!")
+        sys.exit(0)
+
+    if args.apply:
+        prof = args.apply
+        if prof in conf.profiles:
+            print("Applying profile: ", prof)
+            apply_cpu_profile(conf.get_profile(prof))
+            sys.exit(0)
+        else:
+            print("Profile not found!")
+            sys.exit(1)
+
+
+def set_offline(args):
+    """Set CPUs offline
+
+    Args:
+        args: Command line arguments
+
+    """
+    conf = CpuPowerConfig()
+    if args.list or (args.apply is None):  # List offline
+        offline = "{}".format(cpus_offline())
+        print("The following CPUs are offline:", offline)
+        sys.exit(0)
+
+    if args.apply:
+        try:
+            cpus = parse_core_list(args.apply)
+        except ValueError:
+            print("Could not parse the CPU list")
+            exit(-1)
+        for core in cpus:
+            print("Setting CPU{} offline...".format(core))
+            set_cpu_offline(core)
+        sys.exit(0)
+
+
+def set_online(args):
+    """Set CPUs online
+
+    Args:
+        args: Command line arguments
+
+    """
+    conf = CpuPowerConfig()
+    if args.list or (args.apply is None):  # List online
+        online = "{}".format(cpus_online())
+        print("The following CPUs are online:", online)
+        sys.exit(0)
+
+    if args.apply:
+        try:
+            cpus = parse_core_list(args.apply)
+        except ValueError:
+            print("Could not parse the CPU list")
+            exit(-1)
+        for core in cpus:
+            print("Setting CPU{} online...".format(core))
+            set_cpu_online(core)
+        sys.exit(0)
+
+
+def _print_cpu_freq(cpu):
+    """Helper function to print frequencies"""
+    msg = "CPU{}:\n\tFreqs (MHz): {}, Limits: {}"
+    freqs, lims = get_cpu_frequencies(cpu)
+    print(msg.format(cpu, freqs, lims))
+
+
+def set_freqs(args):
+    """Set CPUs frequencies
+
+    Args:
+        args: Command line arguments
+
+    """
+    if args.apply is None:
+        for cpu in cpus_available():
+            _print_cpu_freq(cpu)
+        sys.exit(0)
+
+    if (args.apply is not None) and (args.min or args.max):
+        try:
+            cpus = parse_core_list(args.apply)
+        except ValueError:
+            print("Could not parse the CPU list")
+            exit(1)
+        for core in cpus:
+            print("Setting CPU{} frequency...".format(core))
+            if args.min:
+                set_cpu_min_freq(core, args.min)
+            if args.max:
+                set_cpu_max_freq(core, args.max)
+            _print_cpu_freq(core)
+
+        sys.exit(0)
+
+
 # Add argparse options
 parser = argparse.ArgumentParser(
     prog="cpupower-gui",
@@ -62,54 +238,101 @@ parser.add_argument(
     "--version", action="version", version="%(prog)s {}".format(VERSION)
 )
 
-cmd_group = parser.add_mutually_exclusive_group()
-
-cmd_group.add_argument(
-    "-l",
-    "--list-profiles",
-    action="store_true",
-    help="List available cpupower profiles",
+# Add subparsers
+metavar = (
+    "{[co]nfig, [freq]uency, [pr]ofile, [off]line, [on]line}"
+    if not ENERGY_PREF_AVAIL
+    else "{[co]nfig, [freq]uency, [ene]rgy, [pr]ofile, [off]line, [on]line}"
+)
+subparsers = parser.add_subparsers(
+    title="subcommands",
+    description="Configuration commands",
+    help="Change the settings from the command line",
+    metavar=metavar,
 )
 
-cmd_group.add_argument(
-    "--apply-config",
-    action="store_true",
-    help="Apply cpupower configuration",
+# Profile commands
+profile_sub = subparsers.add_parser("profile", aliases=["pr"])
+profile_sub.add_argument(
+    "-l", "--list", action="store_true", help="list available cpupower profiles",
 )
-cmd_group.add_argument(
-    "--apply-profile",
-    type=str,
-    metavar="PROFILE",
-    help="Apply a cpupower profile",
+
+profile_sub.add_argument(
+    "apply", nargs="?", type=str, metavar="PROFILE", help="apply a cpupower profile",
+)
+
+profile_sub.set_defaults(func=set_profile)
+
+# Config commands
+config_sub = subparsers.add_parser("config", aliases=["co"])
+config_sub.add_argument(
+    "apply", action="store_true", help="apply cpupower configuration",
+)
+config_sub.set_defaults(func=set_config)
+
+# Offline commands
+offline_sub = subparsers.add_parser("offline", aliases=["off"])
+offline_sub.add_argument(
+    "-l", "--list", action="store_true", help="list offline CPUs",
+)
+
+offline_sub.add_argument(
+    "apply", nargs="?", type=str, metavar="LIST OF CPUS", help="set CPUs offline",
+)
+
+offline_sub.set_defaults(func=set_offline)
+
+# Online commands
+online_sub = subparsers.add_parser("online", aliases=["on"])
+online_sub.add_argument(
+    "-l", "--list", action="store_true", help="list online CPUs",
+)
+
+online_sub.add_argument(
+    "apply", nargs="?", type=str, metavar="LIST OF CPUS", help="set CPUs online",
+)
+
+online_sub.set_defaults(func=set_online)
+
+# Frequency commands
+freq_sub = subparsers.add_parser("frequency", aliases=["freq"])
+freq_sub.add_argument(
+    "--max", type=int, help="maximum frequency",
+)
+
+freq_sub.add_argument(
+    "--min", type=int, help="minimum frequency",
+)
+freq_sub.add_argument(
+    "apply", nargs="?", type=str, metavar="LIST OF CPUS", help="set CPUs frequency",
+)
+
+freq_sub.set_defaults(func=set_freqs)
+
+
+# Optional arguments
+parser.add_argument(
+    "-b", "--balanced", action="store_true", help="change governor to balanced",
+)
+parser.add_argument(
+    "-p", "--performance", action="store_true", help="change governor to performance",
 )
 
 parser.add_argument(
-    "-b",
-    "--balanced",
-    action="store_true",
-    help="Change governor to balanced",
-)
-parser.add_argument(
-    "-p",
-    "--performance",
-    action="store_true",
-    help="Change governor to performance",
-)
-
-parser.add_argument(
-    "--gapplication-service",
-    action="store_true",
-    help="Start gui from gapplication",
+    "--gapplication-service", action="store_true", help="start gui from gapplication",
 )
 
 
 if ENERGY_PREF_AVAIL:
+    energy_sub = subparsers.add_parser("energy", aliases=["ene"])
+    cmd_group = energy_sub.add_mutually_exclusive_group()
+
     # Enable flags if hardware is compatible
-    parser.add_argument(
-        "--energy-performance-preference",
+    cmd_group.add_argument(
+        "--pref",
         type=str,
         choices=read_available_energy_prefs(0),
-        help="Set a global energy profile",
+        help="set a global energy profile",
     )
     cmd_group.add_argument(
         "--list-energy-preferences",
@@ -117,12 +340,15 @@ if ENERGY_PREF_AVAIL:
         nargs="?",
         metavar="LIST OF CPUS",
         const="{}-{}".format(CPUS[0], CPUS[-1]),
-        help="List available energy performance preferences (Default: all cpus) ",
+        help="list available energy performance preferences (Default: all cpus)",
     )
+    energy_sub.set_defaults(func=set_energy)
+
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    conf = CpuPowerConfig()
+    if "func" in args:
+        args.func(args)
 
     if args.balanced:
         apply_balanced()
@@ -131,56 +357,6 @@ if __name__ == "__main__":
     if args.performance:
         apply_performance()
         sys.exit(0)
-
-    if args.list_profiles:  # List profiles
-        profiles = conf.profiles
-        if profiles:
-            print("The available profiles are:")
-            for prof in profiles:
-                print("\t- {}".format(prof))
-            sys.exit(0)
-
-        print("No profiles were found!")
-        sys.exit(0)
-
-    if args.apply_profile:
-        prof = args.apply_profile
-        if prof in conf.profiles:
-            print("Applying profile: ", prof)
-            apply_cpu_profile(conf.get_profile(prof))
-            sys.exit(0)
-        else:
-            print("Profile not found!")
-            sys.exit(1)
-
-    if args.apply_config:
-        print("Applying configuration... ")
-        ret = apply_configuration(conf)
-        sys.exit(ret)
-
-    if ENERGY_PREF_AVAIL:
-        if args.energy_performance_preference:
-            pref = args.energy_performance_preference
-            print("Setting energy performance preference to: ", pref)
-            apply_energy_preference(pref)
-            sys.exit(0)
-
-        if args.list_energy_preferences is not None:
-            cpus = parse_core_list(args.list_energy_preferences)
-            print("The available energy performance preferences are:")
-            for cpu in cpus:
-                prefs = read_available_energy_prefs(cpu)
-                current_pref = read_energy_pref(cpu)
-                print("CPU {}:".format(cpu))
-                if prefs:
-                    for pref in prefs:
-                        if pref == current_pref:
-                            print("\t- {} (Current)".format(pref))
-                        else:
-                            print("\t- {}".format(pref))
-                else:
-                    print("No prefereneces were found!")
-            sys.exit(0)
 
     import gi
     from gi.repository import Gio

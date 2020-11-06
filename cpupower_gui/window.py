@@ -854,7 +854,9 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
         if error:
             error_message(
-                _("Energy profiles other than performance are not allowed when the governor is set to performance."),
+                _(
+                    "Energy profiles other than performance are not allowed when the governor is set to performance."
+                ),
                 self,
             )
         self.apply_btn.set_sensitive(self.is_conf_changed)

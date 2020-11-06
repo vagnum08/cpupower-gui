@@ -17,6 +17,13 @@ If Intel P-state driver is used and the energy preferences are available a drop-
 Below is an example from [pinephone](https://www.pine64.org/pinephone/) with phosh running on [mobian](https://mobian-project.org/).
 <img src="screenshots/mobile.png" alt="mobile view" width="844"/>
 
+# Table of Contents
+1. [Packages](#packages)
+2. [Usage](#usage)
+    - [Graphical](#graphical)
+    - [Console](#command-Line)
+3. [Configuration](#system-configuration)
+4. [Manual Installation](#manual-installation)
 
 # Packages
 Cpupower-gui is available on the official repositories for a few distributions.
@@ -85,34 +92,31 @@ Note: If this checkbox is greyed-out, it means that this cpu is not allowed to g
 ## Command-line
 
 The governor profiles can be used from the command line.
+The CPU settings can be applied from the command line using the appropriate subcommands.
+These commands are: `config`, `frequency`, `energy` (system dependent), `profile`, `online/offline`.
+Sorter aliases are indicated in square brackets in the help menu.
 
-```
+```bash
 $ cpupower-gui -h
-
-usage: cpupower-gui [-h] [--version] [-l] [--apply-config]
-                    [--apply-profile PROFILE] [-b] [-p]
-                    [--gapplication-service]
-                    [--energy-performance-preference {default,performance,balance_performance,balance_power,power}]
-                    [--list-energy-preferences [LIST OF CPUS]]
+usage: cpupower-gui [-h] [--version] [-b] [-p] [--gapplication-service]
+                    {[co]nfig, [freq]uency, [ene]rgy, [pr]ofile, [off]line,
+                    [on]line} ...
 
 cpupower-gui - Set the scaling frequencies and governor of a CPU
 
 optional arguments:
   -h, --help            show this help message and exit
   --version             show program's version number and exit
-  -l, --list-profiles   List available cpupower profiles
-  --apply-config        Apply cpupower configuration
-  --apply-profile PROFILE
-                        Apply a cpupower profile
   -b, --balanced        Change governor to balanced
   -p, --performance     Change governor to performance
   --gapplication-service
                         Start gui from gapplication
-  --energy-performance-preference {default,performance,balance_performance,balance_power,power}
-                        Set a global energy profile
-  --list-energy-preferences [LIST OF CPUS]
-                        List available energy performance preferences
-                        (Default: all cpus)
+
+subcommands:
+  Configuration commands
+
+  {[co]nfig, [freq]uency, [ene]rgy, [pr]ofile, [off]line, [on]line}
+                        Change the settings from the command line
 
 ```
 
@@ -128,18 +132,173 @@ gapplication action org.rnd2.cpupower_gui Performance
 
 ```
 
+The `config` subcommand apply the default configuration as defined in the configuration files.
+
+```bash
+$ cpupower-gui co -h
+usage: cpupower-gui config [-h]
+
+positional arguments:
+  apply       Apply cpupower configuration
+
+optional arguments:
+  -h, --help  show this help message and exit
+
+$ cpupower-gui config
+
+Applying configuration...
+Setting CPU: 0
+    Minimum Frequency: 400.0 MHz, Maximum Frequency: 2300.0 MHz
+    Governor: Powersave, Online: True
+
+Setting CPU: 1
+    Minimum Frequency: 400.0 MHz, Maximum Frequency: 2300.0 MHz
+    Governor: Powersave, Online: True
+
+Setting CPU: 2
+    Minimum Frequency: 400.0 MHz, Maximum Frequency: 2300.0 MHz
+    Governor: Powersave, Online: True
+
+Setting CPU: 3
+    Minimum Frequency: 400.0 MHz, Maximum Frequency: 2300.0 MHz
+    Governor: Powersave, Online: True
+
+```
+The `frequency` subcommand can be used to query or set the minimum and maximum frequencies of one or more CPUs.
+
+```nix
+$ cpupower-gui freq -h
+
+usage: cpupower-gui frequency [-h] [--max MAX] [--min MIN] [LIST OF CPUS]
+
+positional arguments:
+  LIST OF CPUS  set CPUs frequency
+
+optional arguments:
+  -h, --help    show this help message and exit
+  --max MAX     maximum frequency
+  --min MIN     minimum frequency
+
+$ cpupower-gui freq
+
+CPU0:
+	Freqs (MHz): (400.0, 2300.0), Limits: (400.0, 2300.0)
+CPU1:
+	Freqs (MHz): (400.0, 2300.0), Limits: (400.0, 2300.0)
+CPU2:
+	Freqs (MHz): (400.0, 2300.0), Limits: (400.0, 2300.0)
+CPU3:
+	Freqs (MHz): (400.0, 2300.0), Limits: (400.0, 2300.0)
+
+$ cpupower-gui freq --min 600 --max 1200 1-3
+
+Setting CPU1 frequency...
+OK
+OK
+CPU1:
+	Freqs (MHz): (600.0, 1200.0), Limits: (400.0, 2300.0)
+Setting CPU2 frequency...
+OK
+OK
+CPU2:
+	Freqs (MHz): (600.0, 1200.0), Limits: (400.0, 2300.0)
+Setting CPU3 frequency...
+OK
+OK
+CPU3:
+	Freqs (MHz): (400.0, 2300.0), Limits: (400.0, 2300.0)
+
+$ cpupower-gui freq --max 12000 1
+
+Setting CPU1 frequency...
+Frequency out of range: 400.0 < freq < 2300.0
+CPU1:
+	Freqs (MHz): (600.0, 1200.0), Limits: (400.0, 2300.0)
+```
+
+The `profile` subcommand applies the configuration based on the user-defined profiles.
+```bash
+$ cpupower-gui pr -h
+
+usage: cpupower-gui profile [-h] [-l] [PROFILE]
+
+positional arguments:
+  PROFILE     Apply a cpupower profile
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -l, --list  List available cpupower profiles
+
+$ cpupower-gui pr # Running profile without arguments is equivalent to `-l`
+
+The available profiles are:
+	- Balanced
+	- Custom
+	- Performance
+
+```
+The `online` and `offline` subcommands set the specified CPUs on or off.
+
+```bash
+$ cpupower-gui on -h
+
+usage: cpupower-gui online [-h] [-l] [LIST OF CPUS]
+
+positional arguments:
+  LIST OF CPUS  Set CPUs online
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -l, --list    List online CPUs
+
+$ cpupower-gui on
+The following CPUs are online: [0, 1, 2, 3]
+
+$ cpupower-gui off 3
+Setting CPU3 offline...
+OK
+
+$ cpupower-gui off
+The following CPUs are online: [3]
+```
+
+The `energy` subcommand is only available on Intel systems and it can be used to query or set the energy performance preferences.
+```bash
+$ cpupower-gui energy -h
+
+usage: cpupower-gui energy [-h]
+                           [--pref {default,performance,balance_performance,balance_power,power} | --list-energy-preferences [LIST OF CPUS]]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --pref {default,performance,balance_performance,balance_power,power}
+                        set a global energy profile
+  --list-energy-preferences [LIST OF CPUS]
+                        list available energy performance preferences
+                        (Default: all cpus)
+```
+Here is an example of setting the preference to `default`.
+```bash
+$ cpupower-gui ene --pref default
+
+Setting energy performance preference to: default
+Set CPU 0 to default
+Set CPU 1 to default
+Set CPU 2 to default
+```
+
 ### Profiles and configuration
 Since version `0.9.0` the command line supports setting the CPUs based on a configuration file and setting user-defined profiles.
 
-To apply the default configuration just run `cpupower-gui --apply-config`.
-To apply a profile run `cpupower-gui --apply-profile Performance`.
-If the name of the profile contains spaces use quotes, e.g. `cpupower-gui --apply-profile "Custom profile"`.
+To apply the default configuration just run `cpupower-gui config`.
+To apply a profile run `cpupower-gui profile Performance`.
+If the name of the profile contains spaces use quotes, e.g. `cpupower-gui profile "Custom profile"`.
 
 ### Intel P-State energy performance preferences
 The last two options (`energy-performance-preference`, `list-energy-preferences`) are only available
 on Intel systems that use the `intel_pstate` driver.
 
-The `energy-performance-preference` option changes the preference to one of the available preferences for all CPUs.
+The `cpupower-gui energy --pref` option changes the preference to one of the available preferences for all CPUs.
 
 
 The `list-energy-preferences` option accepts a list of CPUs writen in the following format.
@@ -150,7 +309,7 @@ If no value is passed it will report the preferences for all available cpus.
 The current preference is indicated inside the parentheses.
 
 ```
-$ cpupower-gui --list-energy-preferences 0-3
+$ cpupower-gui ene --list-energy-preferences 0-3
 The available energy performance preferences are:
 CPU 0:
 	- default

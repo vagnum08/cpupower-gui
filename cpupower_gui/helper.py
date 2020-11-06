@@ -2,7 +2,13 @@
 
 import dbus
 
-from .utils import cpus_available, read_available_energy_prefs, read_govs
+from .utils import (
+    cpus_available,
+    read_available_energy_prefs,
+    read_govs,
+    read_freq_lims,
+    read_freqs,
+)
 
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(
@@ -121,3 +127,80 @@ def apply_energy_preference(pref):
             print("Set CPU {} to {}".format(cpu, pref))
 
     return 0
+
+
+def set_cpu_offline(cpu):
+    """Set cpu to offline"""
+    if not HELPER.isauthorized():
+        print("User is not authorised. No changes applied.")
+        return -1
+
+    try:
+        ret = HELPER.set_cpu_offline(cpu)
+    except dbus.exceptions.DBusException:
+        ret = -1
+
+    if ret == 0:
+        print("OK")
+    else:
+        print("Failed!")
+
+
+def set_cpu_online(cpu):
+    """Set cpu to online"""
+    if not HELPER.isauthorized():
+        print("User is not authorised. No changes applied.")
+        return -1
+
+    ret = HELPER.set_cpu_online(cpu)
+    if ret == 0:
+        print("OK")
+    else:
+        print("Failed!")
+
+
+def set_cpu_min_freq(cpu, freq):
+    """Set minimum frequency for CPU
+
+    Args:
+        cpu: The core number to change
+        freq: The frequency in MHz
+
+    """
+    freq *= 1e3
+    if cpu in cpus_available():
+        fmin, fmax = read_freqs(cpu)
+        hmin, hmax = read_freq_lims(cpu)
+        if hmin <= freq <= hmax:
+            HELPER.update_cpu_settings(cpu, freq, fmax)
+            print("OK")
+        else:
+            print("Frequency out of range: {} < freq < {}".format(hmin, hmax))
+
+
+def set_cpu_max_freq(cpu, freq):
+    """Set maximum frequency for CPU
+
+    Args:
+        cpu: The core number to change
+        freq: The frequency in MHz
+
+    """
+    freq *= 1e3
+    if cpu in cpus_available():
+        fmin, fmax = read_freqs(cpu)
+        hmin, hmax = read_freq_lims(cpu)
+        if hmin <= freq <= hmax:
+            HELPER.update_cpu_settings(cpu, fmin, freq)
+            print("OK")
+        else:
+            print(
+                "Frequency out of range: {} < freq < {}".format(hmin / 1e3, hmax / 1e3)
+            )
+
+
+def get_cpu_frequencies(cpu):
+    """Return frequencies for cpu"""
+    fmin, fmax = read_freqs(cpu)
+    hmin, hmax = read_freq_lims(cpu)
+    return (fmin / 1e3, fmax / 1e3), (hmin / 1e3, hmax / 1e3)
