@@ -20,9 +20,13 @@ from contextlib import contextmanager
 import dbus
 import gi
 
-gi.require_version("Handy", "1")
+try:
+    gi.require_version("Handy", "1")
+    from gi.repository import Handy
+except (ValueError, ImportError):
+    Handy = None
 
-from gi.repository import Gio, GLib, GObject, Gtk, Handy
+from gi.repository import Gio, GLib, GObject, Gtk
 
 from .config import CpuPowerConfig, CpuSettings
 from .utils import read_available_frequencies, read_current_freq
@@ -101,23 +105,20 @@ class Profile(GObject.GObject):
             return []
 
 
-def dialog_response(widget, response_id):
-    """ Error message dialog """
-    # if the button clicked gives response OK (-5)
-    # if response_id == Gtk.ResponseType.OK:
-    #    print("OK")
-    # if the messagedialog is destroyed (by pressing ESC)
-    # elif response_id == Gtk.ResponseType.DELETE_EVENT:
-    #    print("dialog closed or cancelled")
-    widget.destroy()
-
-
-def error_message(msg, transient):
-    message = Gtk.MessageDialog(type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK)
+def error_message(msg, transient=None):
+    message = Gtk.MessageDialog(
+        parent=transient, type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK
+    )
     message.set_markup(msg)
-    message.set_transient_for(transient)
-    message.show()
-    message.connect("response", dialog_response)
+    resp = message.run()
+    message.destroy()
+
+
+if Handy is None:
+    error_message(
+        "Error! Libhandy is not installed.\nPlease install libhandy-1 and its gi bindings."
+    )
+    exit(1)
 
 
 @Gtk.Template(resource_path="/org/rnd2/cpupower_gui/window.ui")

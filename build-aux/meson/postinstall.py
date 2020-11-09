@@ -18,4 +18,6 @@ if not destdir:
     print('Compiling GSettings schemas...')
     call(['glib-compile-schemas', path.join(datadir, 'glib-2.0', 'schemas')])
 
-
+    print('Enabling systemd services...')
+    call(['systemctl', 'enable', 'cpupower-gui-helper.service'])
+    call(['systemctl', 'enable', 'cpupower-gui.service'])
