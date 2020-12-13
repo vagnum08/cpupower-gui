@@ -1,0 +1,387 @@
+# Indonesian translation of cpupower-gui
+# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the cpupower-gui package.
+# Andika Triwidada <andika@gmail.com>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cpupower-gui\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-06 18:41+0000\n"
+"PO-Revision-Date: 2020-12-13 12:30+0700\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"Language: id\n"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:4
+msgid "cpupower-gui"
+msgstr "cpupower-gui"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:5
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:6
+msgid "CPU frequency settings"
+msgstr "Pengaturan frekuensi CPU"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:6
+msgid "Sets the frequency limits of the CPU"
+msgstr "Mengatur batas frekuensi CPU"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:8
+msgid "@icon@"
+msgstr "@icon@"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:14
+msgid "frequency;limits;"
+msgstr "frekuensi;batas;"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:18
+msgid "Switch to Performance profile"
+msgstr "Beralih ke profil Kinerja"
+
+#: data/org.rnd2.cpupower_gui.desktop.in.in:22
+msgid "Switch to Balanced profile"
+msgstr "Beralih ke profil Seimbang"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:7
+msgid "Adjust the frequency of the CPU"
+msgstr "Menyesuaikan frekuensi CPU"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:9
+msgid "A graphical utility for changing the CPU frequencies and governor."
+msgstr "Utilitas grafis untuk mengubah frekuensi dan pengatur CPU."
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:10
+msgid ""
+"This utility can change the operating frequency of the CPU for each core "
+"separately. The program can detect offline cores and only present the "
+"available ones. Furthermore, if a core doesn't support frequency scaling is "
+"not shown. There is also an option to apply the same settings to all cores "
+"simultaneously."
+msgstr ""
+"Utilitas ini dapat mengubah frekuensi pengoperasian CPU untuk setiap core "
+"secara terpisah. Program ini dapat mendeteksi core luring dan hanya "
+"menyajikan core yang tersedia. Selain itu, jika core tidak mendukung "
+"penskalaan frekuensi tidak ditampilkan. Ada juga opsi untuk menerapkan "
+"pengaturan yang sama ke semua core secara bersamaan."
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:16
+msgid ""
+"To apply the settings, the user must be local and active, as well as in "
+"group sudo. Local and active users not in this group must authenticate "
+"themselves as admin in order to apply the settings."
+msgstr ""
+"Untuk menerapkan pengaturan, pengguna harus lokal dan aktif, serta dalam "
+"grup sudo. Pengguna lokal dan aktif yang tidak berada dalam grup ini harus "
+"mengautentikasi diri mereka sebagai admin untuk menerapkan pengaturan."
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:26
+msgid "Main application window"
+msgstr "Jendela aplikasi utama"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:30
+msgid "Main window on an Intel system with P-states"
+msgstr "Jendela utama pada sistem Intel dengan P-state"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:34
+msgid "Changing settings using the sliders"
+msgstr "Mengubah pengaturan menggunakan penggeser"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:38
+msgid "Applying custom settings using profiles"
+msgstr "Menerapkan pengaturan ubahan menggunakan profil"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:42
+msgid "Selecting a custom profile"
+msgstr "Memilih profil ubahan"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:46
+msgid "Changing CPU parameters"
+msgstr "Mengubah parameter CPU"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:50
+msgid "Changing energy performance profiles"
+msgstr "Mengubah profil kinerja energi"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:53
+msgid "Evangelos Rigas"
+msgstr "Evangelos Rigas"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:58
+msgid "Add Dutch translation"
+msgstr "Menambahkan terjemahan Bahasa Belanda"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:59
+msgid "Add custom profiles and configuration"
+msgstr "Menambahkan profil dan konfigurasi ubahan"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:60
+msgid ""
+"Add support for changing the energy performance preferences on Intel systems"
+msgstr ""
+"Menambahkan dukungan untuk mengubah preferensi kinerja energi pada sistem "
+"Intel"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:61
+msgid "Add systemd services to apply settings at boot or login"
+msgstr ""
+"Menambahkan layanan systemd untuk menerapkan pengaturan saat boot atau login"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:66
+msgid "Add Chinese translation"
+msgstr "Menambahkan terjemahan Bahasa Cina"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:67
+msgid "Add desktop actions and D-bus activation"
+msgstr "Menambahkan tindakan desktop dan aktivasi D-bus"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:68
+msgid "Add tray icon support using AppIndicator"
+msgstr "Menambahkan dukungan ikon baki menggunakan AppIndicator"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:73
+msgid "Fix meson build properties"
+msgstr "Memperbaiki properti build meson"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:78
+msgid "Fix bug for unknown cpu"
+msgstr "Memperbaiki bug untuk cpu yang tidak diketahui"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:79
+msgid "Update translations"
+msgstr "Memperbarui terjemahan"
+
+#: data/org.rnd2.cpupower_gui.appdata.xml.in:84
+msgid "Refactor helper library and fix vulnerabilities"
+msgstr "Merefaktor pustaka pembantu dan memperbaiki kerentanan"
+
+#: cpupower_gui/tray.ui:13
+msgid "Swith to performance profile"
+msgstr "Beralih ke profil kinerja"
+
+#: cpupower_gui/tray.ui:21
+msgid "Switch to balanced profile"
+msgstr "Beralih ke profil seimbang"
+
+#: cpupower_gui/tray.ui:35
+msgid "Quit"
+msgstr "Keluar"
+
+#: cpupower_gui/window.ui.in:37
+msgid "Copyright (C) 2017-2020 [RnD]²"
+msgstr "Hak Cipta (C) 2017-2020 [RnD]²"
+
+#: cpupower_gui/window.ui.in:38
+msgid "GUI utility to change the CPU frequency and governor"
+msgstr "Utilitas GUI untuk mengubah frekuensi dan pengatur CPU"
+
+#: cpupower_gui/window.ui.in:40
+msgid ""
+"This program comes with absolutely no warranty.\n"
+"See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
+"Public Licence, version 3 or later</a> for details."
+msgstr ""
+"Program ini sama sekali tidak memiliki garansi.\n"
+"Lihat Lisensi <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">Publik "
+"Umum GNU, versi 3 atau yang lebih baru</a> untuk detailnya."
+
+#: cpupower_gui/window.ui.in:99
+msgid "About"
+msgstr "Tentang"
+
+#: cpupower_gui/window.ui.in:159
+msgid "CPU settings"
+msgstr "Pengaturan CPU"
+
+#: cpupower_gui/window.ui.in:171
+msgid "Apply"
+msgstr "Terapkan"
+
+#: cpupower_gui/window.ui.in:176
+msgid "Apply changes"
+msgstr "Menerapkan perubahan"
+
+#: cpupower_gui/window.ui.in:217
+msgid "Refresh"
+msgstr "Segarkan"
+
+#: cpupower_gui/window.ui.in:231
+msgid "All CPUs"
+msgstr "Semua CPU"
+
+#: cpupower_gui/window.ui.in:289
+msgid "Frequency profiles"
+msgstr "Profil frekuensi"
+
+#: cpupower_gui/window.ui.in:296 cpupower_gui/window.ui.in:546
+msgid "Profile"
+msgstr "Profil"
+
+#: cpupower_gui/window.ui.in:345
+msgid "Frequency settings"
+msgstr "Pengaturan frekuensi"
+
+#: cpupower_gui/window.ui.in:352 cpupower_gui/window.py:600
+msgid "CPU"
+msgstr "CPU"
+
+#: cpupower_gui/window.ui.in:375
+msgid "Min freq. (MHz)"
+msgstr "Freq. min (MHz)"
+
+#: cpupower_gui/window.ui.in:387 cpupower_gui/window.ui.in:459
+msgid "0.00"
+msgstr "0.00"
+
+#: cpupower_gui/window.ui.in:447
+msgid "Max freq. (MHz)"
+msgstr "Freq. maks (MHz)"
+
+#: cpupower_gui/window.ui.in:486 cpupower_gui/window.ui.in:539
+msgid "Power settings"
+msgstr "Pengaturan daya"
+
+#: cpupower_gui/window.ui.in:492
+msgid "Governor policy"
+msgstr "Kebijakan pengatur"
+
+#: cpupower_gui/window.ui.in:503
+msgid "Energy preference"
+msgstr "Preferensi energi"
+
+#: cpupower_gui/window.ui.in:522
+msgid "Settings"
+msgstr "Pengaturan"
+
+#: cpupower_gui/window.ui.in:547
+msgid "Default profile to apply at boot"
+msgstr "Profil baku untuk diterapkan saat boot"
+
+#: cpupower_gui/window.ui.in:559
+msgid "Energy performance preference per CPU"
+msgstr "Preferensi kinerja energi per CPU"
+
+#: cpupower_gui/window.ui.in:585
+msgid "GUI settings"
+msgstr "Pengaturan GUI"
+
+#: cpupower_gui/window.ui.in:592
+msgid "All CPUs toggle enabled by default"
+msgstr "Semua pengalih CPU diaktifkan secara baku"
+
+#: cpupower_gui/window.ui.in:609
+msgid "Display tick marks"
+msgstr "Tampilkan tanda centang"
+
+#: cpupower_gui/window.ui.in:626
+msgid "Display frequency at tick marks"
+msgstr "Tampilkan frekuensi pada tanda centang"
+
+#: cpupower_gui/window.ui.in:657
+msgid "Preferences"
+msgstr "Preferensi"
+
+#: cpupower_gui/window.ui.in:680
+msgid "Profiles"
+msgstr "Profil"
+
+#: cpupower_gui/window.py:38
+msgid "Setting governor failed."
+msgstr "Gagal menata pengatur."
+
+#: cpupower_gui/window.py:39
+msgid "Setting energy preferences failed."
+msgstr "Gagal menata preferensi energi."
+
+#: cpupower_gui/window.py:40
+msgid "Setting frequencies failed."
+msgstr "Gagal menata frekuensi."
+
+#: cpupower_gui/window.py:41
+msgid "Setting governor and energy preferences failed."
+msgstr "Gagal menata preferensi energi dan pengatur."
+
+#: cpupower_gui/window.py:42
+msgid "Setting governor and frequencies failed."
+msgstr "Gagal menata pengatur dan frekuensi."
+
+#: cpupower_gui/window.py:43
+msgid "Setting frequencies and energy preferences failed."
+msgstr "Gagal menata preferensi energi dan frekuensi."
+
+#: cpupower_gui/window.py:94
+msgid " (Built-in)"
+msgstr " (Bawaan)"
+
+#. Empty profile name to use for resetting settings
+#. Discard any changes
+#. If no profile selected reset and disable apply_btn
+#: cpupower_gui/window.py:259 cpupower_gui/window.py:450
+msgid "No profile"
+msgstr "Tidak ada profil"
+
+#: cpupower_gui/window.py:279
+msgid "New profile"
+msgstr "Profil baru"
+
+#: cpupower_gui/window.py:280
+msgid "User profiles"
+msgstr "Profil pengguna"
+
+#: cpupower_gui/window.py:281
+msgid "System profiles"
+msgstr "Profil sistem"
+
+#: cpupower_gui/window.py:282
+msgid "Built-in profiles"
+msgstr "Profil bawaan"
+
+#. Add entry for current profile
+#: cpupower_gui/window.py:289
+msgid "Profile name"
+msgstr "Nama profil"
+
+#: cpupower_gui/window.py:292
+msgid "Name"
+msgstr "Nama"
+
+#: cpupower_gui/window.py:601 cpupower_gui/window.py:608
+msgid "Online"
+msgstr "Daring"
+
+#: cpupower_gui/window.py:602 cpupower_gui/window.py:618
+#: cpupower_gui/window.py:619
+msgid "Min"
+msgstr "Min"
+
+#: cpupower_gui/window.py:603 cpupower_gui/window.py:618
+msgid "Max"
+msgstr "Maks"
+
+#: cpupower_gui/window.py:604
+msgid "Governor"
+msgstr "Pengatur"
+
+#: cpupower_gui/window.py:605 cpupower_gui/window.py:613
+msgid "Current freq."
+msgstr "Freq saat ini."
+
+#: cpupower_gui/window.py:858
+msgid ""
+"Energy profiles other than performance are not allowed when the governor is "
+"set to performance."
+msgstr ""
+"Profil energi selain kinerja tidak diperbolehkan ketika pengatur diatur ke "
+"kinerja."
+
+#: cpupower_gui/window.py:891
+msgid "You don't have permissions to update cpu settings!"
+msgstr "Anda tidak memiliki izin untuk memperbarui pengaturan cpu!"
+
+#: cpupower_gui/window.py:944
+msgid "Are you sure sure you want to delete this profile?"
+msgstr "Yakin ingin menghapus profil ini?"
