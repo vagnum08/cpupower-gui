@@ -1,0 +1,73 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" (C) Copyright 2019 Evangelos Rigas <e.rigas@cranfield.ac.uk>,
+.\"
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH CPUPOWER-GUI 1 "September 20 2019"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+cpupower-gui \- Set the scaling frequencies and governor of a CPU
+.SH SYNOPSIS
+.B cpupower-gui
+
+.SH DESCRIPTION
+This manual page documents briefly the \fBcpupower-gui\fP command.
+.PP
+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
+.\" respectively.
+\fBcpupower-gui\fP is a graphical (GUI) utility to change the CPU frequency.
+.br
+This utility can change the operating frequency of the CPU for each core separately.
+Additionally, the cpu governor can be changed.
+The program can detect offline cores and only present the available ones.
+Furthermore, if a core doesn't support frequency scaling, is not shown.
+There is also an option to apply the same settings to all cores simultaneously.
+.br
+To apply the settings, the user must be \fIlocal\fP and \fIactive\fP, as well as in group \fBsudo\fP.
+Local and active users not in this group must authenticate themselves as admin in order to apply the settings.
+.br
+
+The \fIcpupower-gui\fP program can be configured using the configuration file in \fB/etc/cpupower_gui.conf\fP. Files that are stored in \fB/etc/cpupower_gui.d/\fP take precedence over the main configuration file. The files are read in a lexicographic order and the last files override the first.
+.br
+Apart from the main configuration users can store their customisations under \fB~/.config/cpupower_gui/\fP. Files read from this location will override the system configuration.
+.br
+
+Custom frequency settings are stored in \fI*.profile\fP files and user can use them to quickly apply their preferred settings.
+Theses files are simple text files where the first line contains the name that the profile will be known as and the rest of the file contains CPU settings in a table-like format.An example profile file is located at \fB/etc/cpupower_gui.d/my_profile.profile.ex\fP.
+.br
+
+On some platforms there is the ability to change the energy performance preferences.
+These feature is available on Intel systems that use the \fIintel_pstate\fP driver.
+.br
+
+.SH SEE ALSO
+cpupower(1), cpupower-set(1), cpupower-info(1), cpupower-idle(1), cpupower-frequency-set(1), cpupower-frequency-info(1), cpupower-monitor(1), powertop(1)
+.br
+
+.SH AUTHORS
+Evangelos Rigas <erigas@rnd2.org>
+.br
+Chinese translation written by yjwork-cn
+.br
+Dutch translation written by Heimen Stoffels <vistausss@outlook.com>
+.br
+Hungarian translation written by Barcza Károly <kbarcza@blackpanther.hu>
+.br
+Italian translation written by Albano Battistella
+.br
+Indonesian translation written by Andika Triwidada <atriwidada@src.gnome.org>
+.br
+Brazilian Portuguese translation written by Flávio Costa <guda.flavio@gmail.com>
