@@ -166,7 +166,7 @@ Setting CPU: 3
 ```
 The `frequency` subcommand can be used to query or set the minimum and maximum frequencies of one or more CPUs.
 
-```nix
+```
 $ cpupower-gui freq -h
 
 usage: cpupower-gui frequency [-h] [--max MAX] [--min MIN] [LIST OF CPUS]
