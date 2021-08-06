@@ -205,15 +205,17 @@ class CpuPowerConfig:
             return
 
         # generate balanced profile based on powersave/ondemand governor
-        if "powersave" in govs:
-            self._profiles["Balanced"] = DefaultProfile("Balanced", "powersave")
-        elif "ondemand" in govs:
-            self._profiles["Balanced"] = DefaultProfile("Balanced", "ondemand")
+        #if "powersave" in govs:
+            #self._profiles["Balanced"] = DefaultProfile("Balanced", "powersave")
+        #elif "ondemand" in govs:
+            #self._profiles["Balanced"] = DefaultProfile("Balanced", "ondemand")
 
-        # generate performance profile based on performance governor
-        if "performance" in govs:
-            self._profiles["Performance"] = DefaultProfile("Performance", "performance")
-
+        ## generate performance profile based on performance governor
+        #if "performance" in govs:
+            #self._profiles["Performance"] = DefaultProfile("Performance", "performance")
+        # generate all profiles available in governor
+        for gov in govs:
+            self._profiles[gov] = DefaultProfile(gov, gov)
 
 class Profile:
     """Wrapper for .profile files"""
