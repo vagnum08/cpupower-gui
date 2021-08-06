@@ -213,7 +213,7 @@ class CpuPowerConfig:
                 "Balanced", "ondemand")
 
         for gov in govs:
-            if gov is not "userspace":
+            if gov != "userspace":
                 self._profiles[gov.title()] = DefaultProfile(gov.title(), gov)
 
 
