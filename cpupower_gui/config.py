@@ -203,16 +203,26 @@ class CpuPowerConfig:
         govs = read_govs(0)
         if not govs:
             return
+        
+        # For more details of CPU Performance Scaling, see https://www.kernel.org/doc/html/latest/admin-guide/pm/cpufreq.html.
+        # For the Sandy Bridge and later generations of Intel processors, the intel_pstate is used by default. Jump to see
+        # https://www.kernel.org/doc/html/latest/admin-guide/pm/intel_pstate.html. To disable intel_pstate, add kernel command
+        # line option 'intel_pstate=disable', this can be helpful if your processor(s) not working properly using this driver.
 
-        # generate balanced profile based on powersave/ondemand governor
-        if "powersave" in govs:
-            self._profiles["Balanced"] = DefaultProfile("Balanced", "powersave")
+        # generate balanced profile based on schedutil/ondemand/powersave governor
+        if "schedutil" in govs:
+            self._profiles["Balanced"] = DefaultProfile("Balanced", "schedutil")
         elif "ondemand" in govs:
             self._profiles["Balanced"] = DefaultProfile("Balanced", "ondemand")
-
-        # generate performance profile based on performance governor
-        if "performance" in govs:
-            self._profiles["Performance"] = DefaultProfile("Performance", "performance")
+        elif "powersave" in govs:
+            self._profiles["Balanced"] = DefaultProfile("Balanced", "powersave")
+        
+        # The governor 'userspace' does not do anything by itself. Instead, it allows user space to set the CPU
+        # frequency for the policy it is attached to by writing to the scaling_setspeed attribute of that policy.
+        # Notes: intel_pstate will not use generic scaling governors as usual.
+        for gov in govs:
+            if gov != "userspace":
+                self._profiles[gov.title()] = DefaultProfile(gov.title(), gov)
 
 
 class Profile:
