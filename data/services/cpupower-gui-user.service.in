@@ -1,9 +1,10 @@
 [Unit]
 Description=Apply cpupower-gui config at user login
+After=default.target
 
 [Service]
 Type=oneshot
 ExecStart=@bindir@/cpupower-gui config
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=default.target
