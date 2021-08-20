@@ -1,0 +1,66 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" (C) Copyright 2019 Evangelos Rigas <e.rigas@cranfield.ac.uk>,
+.\"
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH CPUPOWER-GUI 1 "September 20 2019"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH 名称
+cpupower-gui \- 设置 CPU 的调速器和频率调节范围
+.SH 概述
+.B cpupower-gui
+
+.SH 描述
+本手册用于简要说明 \fBcpupower-gui\fP 命令.
+.PP
+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
+.\" respectively.
+\fBcpupower-gui\fP 是一个用来改变 CPU 频率的图形化工具。
+.br
+该实用程序可以分别设置 CPU 每个核心的工作频率。 除此之外， 也可以更改 CPU 的调速器。 该程序可以检测到脱机核心并且仅显示可用的核心。 此外， 不支持频率调节的核心将不会被显示。 此程序还提供一个可以同时对所有核心应用相同设置的选项。
+.br
+要应用设置， 用户必须是 \fI本地用户\fP 并且处于 \fI活动状态\fP， 同时要在 \fBsudo\fP 组中。 不在此组中的本地活动用户必须以管理员身份进行身份验证才能应用设置。
+.br
+
+\fIcpupower-gui\fP 程序可以使用 \fB/etc/cpupower_gui.conf\fP 中的配置文件进行配置。 储存在 \fB/etc/cpupower_gui.d/\fP 中的配置文件优先于主配置文件。 程序按照字典顺序读取文件， 后读取的配置文件覆盖先读取的配置文件。
+.br
+除了主要配置外， 用户还可以将自定义配置文件保存在 \fB~/.config/cpupower_gui/\fP 下。 从这个位置读取的配置文件将覆盖原有系统配置文件。
+.br
+
+自定义频率设置将保存到 \fI*.profile\fP 后缀的文件中， 以让用户可以使用它们快速应用自己的偏好设置。 这些配置文件是简单的文本文件， 其中第一行包含配置文件的名字， 文件的其余部分以类表格式包含 CPU 设置。 一个样例在安装时预放在 \fB/etc/cpupower_gui.d/my_profile.profile.ex\fP 中。
+.br
+
+在一些平台上， 此程序可以用来改变能源性能优先级。 这项功能在使用 \fIintel_pstate\fP 这一驱动的 Intel 系统上可用。
+.br
+
+.SH 亦见
+cpupower(1), cpupower-set(1), cpupower-info(1), cpupower-idle(1), cpupower-frequency-set(1), cpupower-frequency-info(1), cpupower-monitor(1), powertop(1)
+.br
+
+.SH 作者
+Evangelos Rigas <erigas@rnd2.org>
+.br
+Chinese translation first written by yjwork-cn and then supdrewin
+.br
+Dutch translation written by Heimen Stoffels <vistausss@outlook.com>
+.br
+Hungarian translation written by Barcza Károly <kbarcza@blackpanther.hu>
+.br
+Italian translation written by Albano Battistella
+.br
+Indonesian translation written by Andika Triwidada <atriwidada@src.gnome.org>
+.br
+Brazilian Portuguese translation written by Flávio Costa <guda.flavio@gmail.com>

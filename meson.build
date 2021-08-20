@@ -1,6 +1,6 @@
 project('cpupower-gui',
   version: '1.0.0',
-  meson_version: '>= 0.50.0',
+  meson_version: '>= 0.58.0',
   default_options: ['warning_level=2',
     'systemddir=/usr/lib/systemd',
     'pkla=false',
