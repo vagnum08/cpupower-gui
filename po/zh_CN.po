@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-06 18:41+0000\n"
-"PO-Revision-Date: 2021-08-07 21:43+0800\n"
+"PO-Revision-Date: 2021-08-20 15:44+0800\n"
 "Last-Translator: supdrewin <supdrewin@outlook.com>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 21.07.90\n"
+"X-Generator: Lokalize 21.08.0\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:4
@@ -64,9 +64,9 @@ msgid ""
 "not shown. There is also an option to apply the same settings to all cores "
 "simultaneously."
 msgstr ""
-"该实用程序可以分别更改每个内核的 CPU 的工作频率。 该程序可以检测到离线核心，"
-"并且仅显示可用的核心。 此外，如果内核不支持频率调节，则不会显示。 还有一个选"
-"项可以将相同的设置同时应用于所有内核。"
+"该实用程序可以分别设置 CPU 每个核心的工作频率。该程序可以检测到脱机核心，"
+"并且仅显示可用的核心。此外，不支持频率调节的核心将不会被显示。此程序还提供"
+"一个可以同时对所有核心应用相同设置的选项。"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:16
 msgid ""
@@ -83,7 +83,7 @@ msgstr "主应用程序窗口"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:30
 msgid "Main window on an Intel system with P-states"
-msgstr "在使用 P-states 的 Intel 平台上的主窗口"
+msgstr "在使用 P-states 的 Intel 平台的主窗口"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:34
 msgid "Changing settings using the sliders"
@@ -124,7 +124,7 @@ msgstr "添加对 Intel 平台的能源性能偏好设置支持"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:61
 msgid "Add systemd services to apply settings at boot or login"
-msgstr "添加系统服务项以在登陆时应用你的设置"
+msgstr "添加系统服务项以在启动或登陆时应用设置"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:66
 msgid "Add Chinese translation"
