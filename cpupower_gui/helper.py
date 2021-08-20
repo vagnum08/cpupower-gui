@@ -88,18 +88,26 @@ def apply_performance():
 
 
 def apply_balanced():
-    """Set CPU governor to powersave or ondemand"""
+    """Set CPU governor to schedutil/ondemand/powersave"""
     if not HELPER.isauthorized():
         print("User is not authorised. No changes applied.")
         return -1
 
     for cpu in cpus_available():
         govs = read_govs(cpu)
-        for governor in govs:
-            if governor != "performance":
-                break
 
-        gov = governor
+        if "schedutil" in govs:
+            gov = "schedutil"
+        elif "ondemand" in govs:
+            gov = "ondemand"
+        elif "powersave" in govs:
+            gov = "powersave"
+        else:
+            for governor in govs:
+                if governor != "performance":
+                    gov = governor
+                    break
+
         if not gov:
             print("Failed to get default governor for CPU {}.".format(cpu))
             continue
