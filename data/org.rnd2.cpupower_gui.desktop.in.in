@@ -15,8 +15,8 @@ Actions=Performance;Balanced;
 
 [Desktop Action Performance]
 Name=Switch to Performance profile
-Exec=gapplication launch org.rnd2.cpupower_gui Performance
+Exec=gapplication action org.rnd2.cpupower_gui Performance
 
 [Desktop Action Balanced]
 Name=Switch to Balanced profile
-Exec=gapplication launch org.rnd2.cpupower_gui Balanced
+Exec=gapplication action org.rnd2.cpupower_gui Balanced
