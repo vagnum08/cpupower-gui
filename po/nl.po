@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: cpupower-gui\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-06 18:41+0000\n"
-"PO-Revision-Date: 2020-11-06 18:58+0000\n"
-"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
+"PO-Revision-Date: 2021-09-19 17:34+0200\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:4
@@ -29,7 +29,7 @@ msgstr "CPU-snelheidsinstellingen"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:6
 msgid "Sets the frequency limits of the CPU"
-msgstr "Stelt de snelheidsbeperkingen van de CPU in"
+msgstr "Stelt de snelheidsbeperkingen van de cpu in"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:8
 msgid "@icon@"
@@ -40,23 +40,21 @@ msgid "frequency;limits;"
 msgstr "snelheid;beperkingen;"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:18
-#, fuzzy
 msgid "Switch to Performance profile"
-msgstr "Overschakelen op 'performance'-profiel"
+msgstr "Overschakelen op ‘prestaties’-profiel"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:22
-#, fuzzy
 msgid "Switch to Balanced profile"
-msgstr "Overschakelen op 'balanced'-profiel"
+msgstr "Overschakelen op ‘gebalanceerd’ profiel"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:7
 msgid "Adjust the frequency of the CPU"
-msgstr "Pas de CPU-snelheid aan"
+msgstr "Pas de cpu-snelheid aan"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:9
 msgid "A graphical utility for changing the CPU frequencies and governor."
 msgstr ""
-"Een grafische toepassing voor het aanpassen van de CPU-snelheden en -"
+"Een grafische toepassing voor het aanpassen van de cpu-snelheden en -"
 "governors."
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:10
@@ -67,7 +65,7 @@ msgid ""
 "not shown. There is also an option to apply the same settings to all cores "
 "simultaneously."
 msgstr ""
-"Met deze toepassing kun je de handelingssnelheid aanpassen van de CPU, evt. "
+"Met deze toepassing kunt u de handelingssnelheid aanpassen van de cpu, evt. "
 "zelfs per kern. De toepassing detecteert automatisch inactieve kernen en "
 "toont alleen de actieve. Als een kern geen ondersteuning heeft voor "
 "snelheidsaanpassingen, wordt deze niet getoond. Er is tevens een optie om de "
@@ -80,7 +78,7 @@ msgid ""
 "themselves as admin in order to apply the settings."
 msgstr ""
 "De instellingen kunnen alleen worden toegepast als het een lokaal account en "
-"actief account betreft, en de gebruiker onderdeel is van de groep 'sudo'. "
+"actief account betreft, en de gebruiker onderdeel is van de groep ‘sudo’. "
 "Als dat niet het geval is, dan moet de gebruiker inloggen als administrator."
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:26
@@ -89,50 +87,50 @@ msgstr "Hoofdvenster"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:30
 msgid "Main window on an Intel system with P-states"
-msgstr ""
+msgstr "Hoofdvenster op een Intel-systeem met P-standen"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:34
 msgid "Changing settings using the sliders"
-msgstr ""
+msgstr "Aanpassen van de instellingen middels schuifknoppen"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:38
 msgid "Applying custom settings using profiles"
-msgstr ""
+msgstr "Toepassen van aangepaste instellingen middels profielen"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:42
 msgid "Selecting a custom profile"
-msgstr ""
+msgstr "Kiezen van een aangepast profiel"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:46
 msgid "Changing CPU parameters"
-msgstr ""
+msgstr "Aanpassen van cpu-opties"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:50
-#, fuzzy
 msgid "Changing energy performance profiles"
-msgstr "Overschakelen op 'performance'-profiel"
+msgstr "Prestatieprofielen aanpassen"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:53
 msgid "Evangelos Rigas"
 msgstr "Evangelos Rigas"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:58
-#, fuzzy
 msgid "Add Dutch translation"
-msgstr "Chinese vertaling toegevoegd"
+msgstr "Nederlandse vertaling toegevoegd"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:59
 msgid "Add custom profiles and configuration"
-msgstr ""
+msgstr "Voeg aangepaste profielen en configuraties toe"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:60
 msgid ""
 "Add support for changing the energy performance preferences on Intel systems"
 msgstr ""
+"Ondersteuning voor het aanpassen van de prestatie-instellingen op Intel-"
+"systemen"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:61
 msgid "Add systemd services to apply settings at boot or login"
-msgstr ""
+msgstr "Voeg systemd-diensten toe om automatisch op te starten"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:66
 msgid "Add Chinese translation"
@@ -152,7 +150,7 @@ msgstr "Meson-bouwseleigenschappen gerepareerd"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:78
 msgid "Fix bug for unknown cpu"
-msgstr "Bug opgelost omtrent onbekende CPU"
+msgstr "Bug opgelost omtrent onbekende cpu's"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:79
 msgid "Update translations"
@@ -164,11 +162,11 @@ msgstr "Hulpbibliotheek opnieuw ontworpen en kwaadaardigheden gerepareerd"
 
 #: cpupower_gui/tray.ui:13
 msgid "Swith to performance profile"
-msgstr "Overschakelen op 'performance'-profiel"
+msgstr "Overschakelen op ‘prestaties’-profiel"
 
 #: cpupower_gui/tray.ui:21
 msgid "Switch to balanced profile"
-msgstr "Overschakelen op 'balanced'-profiel"
+msgstr "Overschakelen op ‘gebalanceerd’ profiel"
 
 #: cpupower_gui/tray.ui:35
 msgid "Quit"
@@ -181,7 +179,7 @@ msgstr "Copyright (C) 2017-2020 [RnD]²"
 #: cpupower_gui/window.ui.in:38
 msgid "GUI utility to change the CPU frequency and governor"
 msgstr ""
-"Grafische toepassing voor het aanpassen van de CPU-snelheden en -governors"
+"Grafische toepassing voor het aanpassen van de cpu-snelheden en -governors"
 
 #: cpupower_gui/window.ui.in:40
 msgid ""
@@ -199,7 +197,7 @@ msgstr "Over"
 
 #: cpupower_gui/window.ui.in:159
 msgid "CPU settings"
-msgstr "CPU instellingen"
+msgstr "CPU-instellingen"
 
 #: cpupower_gui/window.ui.in:171
 msgid "Apply"
@@ -211,24 +209,23 @@ msgstr "Wijzigingen toepassen"
 
 #: cpupower_gui/window.ui.in:217
 msgid "Refresh"
-msgstr ""
+msgstr "Verversen"
 
 #: cpupower_gui/window.ui.in:231
 msgid "All CPUs"
-msgstr "Alle CPU's"
+msgstr "Alle cpu's"
 
 #: cpupower_gui/window.ui.in:289
 msgid "Frequency profiles"
-msgstr ""
+msgstr "Frequentieprofielen"
 
 #: cpupower_gui/window.ui.in:296 cpupower_gui/window.ui.in:546
 msgid "Profile"
 msgstr "Profiel"
 
 #: cpupower_gui/window.ui.in:345
-#, fuzzy
 msgid "Frequency settings"
-msgstr "CPU-snelheidsinstellingen"
+msgstr "Frequentie-instellingen"
 
 #: cpupower_gui/window.ui.in:352 cpupower_gui/window.py:600
 msgid "CPU"
@@ -240,7 +237,7 @@ msgstr "Min freq. (MHz)"
 
 #: cpupower_gui/window.ui.in:387 cpupower_gui/window.ui.in:459
 msgid "0.00"
-msgstr ""
+msgstr "0.00"
 
 #: cpupower_gui/window.ui.in:447
 msgid "Max freq. (MHz)"
@@ -248,15 +245,15 @@ msgstr "Max freq. (MHz)"
 
 #: cpupower_gui/window.ui.in:486 cpupower_gui/window.ui.in:539
 msgid "Power settings"
-msgstr ""
+msgstr "Energie-instellingen"
 
 #: cpupower_gui/window.ui.in:492
 msgid "Governor policy"
-msgstr ""
+msgstr "Governorbeleid"
 
 #: cpupower_gui/window.ui.in:503
 msgid "Energy preference"
-msgstr ""
+msgstr "Energie-instelling"
 
 #: cpupower_gui/window.ui.in:522
 msgid "Settings"
@@ -264,64 +261,63 @@ msgstr "Instellingen"
 
 #: cpupower_gui/window.ui.in:547
 msgid "Default profile to apply at boot"
-msgstr ""
+msgstr "Standaard opstartprofiel"
 
 #: cpupower_gui/window.ui.in:559
 msgid "Energy performance preference per CPU"
-msgstr ""
+msgstr "CPU-kernen individueel instellen"
 
 #: cpupower_gui/window.ui.in:585
-#, fuzzy
 msgid "GUI settings"
-msgstr "Instellingen"
+msgstr "Vormgevingsinstellingen"
 
 #: cpupower_gui/window.ui.in:592
 msgid "All CPUs toggle enabled by default"
-msgstr ""
+msgstr "Standaard toepassen op alle cpu's"
 
 #: cpupower_gui/window.ui.in:609
 msgid "Display tick marks"
-msgstr ""
+msgstr "Vinkjes tonen"
 
 #: cpupower_gui/window.ui.in:626
 msgid "Display frequency at tick marks"
-msgstr ""
+msgstr "Frequentie tonen bij vinkjes"
 
 #: cpupower_gui/window.ui.in:657
 msgid "Preferences"
-msgstr ""
+msgstr "Voorkeuren"
 
 #: cpupower_gui/window.ui.in:680
 msgid "Profiles"
-msgstr ""
+msgstr "Profielen"
 
 #: cpupower_gui/window.py:38
 msgid "Setting governor failed."
-msgstr ""
+msgstr "De governor kan niet worden ingesteld."
 
 #: cpupower_gui/window.py:39
 msgid "Setting energy preferences failed."
-msgstr ""
+msgstr "De instellingen kunnen niet worden ingesteld."
 
 #: cpupower_gui/window.py:40
 msgid "Setting frequencies failed."
-msgstr ""
+msgstr "De frequenties kunnen niet worden ingesteld."
 
 #: cpupower_gui/window.py:41
 msgid "Setting governor and energy preferences failed."
-msgstr ""
+msgstr "De instellingen en governor kunnen niet worden ingesteld."
 
 #: cpupower_gui/window.py:42
 msgid "Setting governor and frequencies failed."
-msgstr ""
+msgstr "De frequenties en governor kunnen niet worden ingesteld."
 
 #: cpupower_gui/window.py:43
 msgid "Setting frequencies and energy preferences failed."
-msgstr ""
+msgstr "De frequenties en instellingen kunnen niet worden ingesteld."
 
 #: cpupower_gui/window.py:94
 msgid " (Built-in)"
-msgstr ""
+msgstr " (meegeleverd)"
 
 #. Empty profile name to use for resetting settings
 #. Discard any changes
@@ -336,24 +332,24 @@ msgstr "Nieuw profiel"
 
 #: cpupower_gui/window.py:280
 msgid "User profiles"
-msgstr ""
+msgstr "Gebruikersprofielen"
 
 #: cpupower_gui/window.py:281
 msgid "System profiles"
-msgstr ""
+msgstr "Systeemprofielen"
 
 #: cpupower_gui/window.py:282
 msgid "Built-in profiles"
-msgstr ""
+msgstr "Meegeleverde profielen"
 
 #. Add entry for current profile
 #: cpupower_gui/window.py:289
 msgid "Profile name"
-msgstr ""
+msgstr "Profielnaam"
 
 #: cpupower_gui/window.py:292
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #: cpupower_gui/window.py:601 cpupower_gui/window.py:608
 msgid "Online"
@@ -362,11 +358,11 @@ msgstr "Actief"
 #: cpupower_gui/window.py:602 cpupower_gui/window.py:618
 #: cpupower_gui/window.py:619
 msgid "Min"
-msgstr ""
+msgstr "Min."
 
 #: cpupower_gui/window.py:603 cpupower_gui/window.py:618
 msgid "Max"
-msgstr ""
+msgstr "Max."
 
 #: cpupower_gui/window.py:604
 msgid "Governor"
@@ -374,21 +370,23 @@ msgstr "Governor"
 
 #: cpupower_gui/window.py:605 cpupower_gui/window.py:613
 msgid "Current freq."
-msgstr ""
+msgstr "Huidige freq."
 
 #: cpupower_gui/window.py:858
 msgid ""
 "Energy profiles other than performance are not allowed when the governor is "
 "set to performance."
 msgstr ""
+"Energieprofielen, m.u.v. ‘prestaties’, die niet toegestaan zijn als de "
+"governor is ingesteld op ‘prestaties’."
 
 #: cpupower_gui/window.py:891
 msgid "You don't have permissions to update cpu settings!"
-msgstr ""
+msgstr "U bent niet bevoegd om de cpu-instellingen aan te passen!"
 
 #: cpupower_gui/window.py:944
 msgid "Are you sure sure you want to delete this profile?"
-msgstr ""
+msgstr "Weet u zeker dat u dit profiel wilt verwijderen?"
 
 #~ msgid "Set all CPU governors to Performance"
 #~ msgstr "Alle CPU-governors instellen op 'Performance'"
