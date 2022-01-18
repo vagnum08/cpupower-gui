@@ -12,7 +12,6 @@ desktop_conf = configuration_data()
 desktop_conf.set('icon', application_id)
 
 desktop_file = i18n.merge_file(
-  'desktop',
    input: configure_file(
     input: files('org.rnd2.cpupower_gui.desktop.in.in'),
     output: 'org.rnd2.cpupower_gui.desktop.in',
