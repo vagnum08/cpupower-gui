@@ -34,8 +34,9 @@ try:
 except (ValueError, ImportError):
     AppIndicator = None
 
-from .helper import apply_balanced, apply_performance
+from .helper import apply_balanced, apply_performance, apply_cpu_profile
 from .window import CpupowerGuiWindow
+from .config import CpuPowerConfig
 
 BUS = dbus.SystemBus()
 SESSION = BUS.get_object(
@@ -63,12 +64,49 @@ class Application(Gtk.Application):
                 APP_ID, APP_ID, AppIndicator.IndicatorCategory.APPLICATION_STATUS
             )
             self.indicator.set_status(AppIndicator.IndicatorStatus.ACTIVE)
-            builder = Gtk.Builder()
-            builder.add_from_resource("/org/rnd2/cpupower_gui/tray.ui")
-            builder.get_object("sw_perf").connect("activate", self.on_apply_performance)
-            builder.get_object("sw_balance").connect("activate", self.on_apply_default)
-            builder.get_object("quit").connect("activate", self.do_quit)
-            self.indicator.set_menu(builder.get_object("tray_menu"))
+            self.indicator.set_menu(self.create_menu())
+
+    def create_menu(self):
+        menu = Gtk.Menu()
+        config = CpuPowerConfig()
+        profiles = [config.get_profile(profile) for profile in config.profiles]
+        # Built-in profiles
+        for profile in profiles:
+            if profile._custom:
+                continue
+            item = Gtk.MenuItem(profile.name)
+            item.connect("activate", self.on_apply_profile, profile)
+            menu.append(item)
+
+        separator = Gtk.SeparatorMenuItem()
+        menu.append(separator)
+
+        # System profiles
+        for profile in profiles:
+            if profile.system:
+                item = Gtk.MenuItem(profile.name)
+                item.connect("activate", self.on_apply_profile, profile)
+                menu.append(item)
+
+        separator = Gtk.SeparatorMenuItem()
+        menu.append(separator)
+
+        # User profiles
+        for profile in profiles:
+            if profile._custom and not profile.system:
+                item = Gtk.MenuItem(profile.name)
+                item.connect("activate", self.on_apply_profile, profile)
+                menu.append(item)
+
+        separator = Gtk.SeparatorMenuItem()
+        menu.append(separator)
+
+        exittray = Gtk.MenuItem("Quit")
+        exittray.connect("activate", self.do_quit)
+        menu.append(exittray)
+
+        menu.show_all()
+        return menu
 
     def do_activate(self):
         win = self.props.active_window
@@ -78,6 +116,17 @@ class Application(Gtk.Application):
 
     def do_quit(self, *args):
         exit(0)
+
+    def on_apply_profile(self, params=None, profile=None):
+        apply_cpu_profile(profile)
+
+        # Update window if exists
+        win = self.props.active_window
+        if win:
+            for cpu in win.settings.keys():
+                win._refresh_cpu_settings(cpu)
+
+        return 0
 
     def on_apply_performance(self, params=None, platform_data={}):
         apply_performance()
