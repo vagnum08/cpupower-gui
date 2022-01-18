@@ -485,7 +485,7 @@ Since version 0.7.1, Python GObject version must be >= 3.30
 
 Suggested for authentication dialogue: `policykit-1-gnome` or `mate-polkit` or `lxpolkit`
 
-For the tray icon `gir1.2-appindicator3-0.1`.
+For the tray icon `gir1.2-ayatanaappindicator3-0.1`.
 
 ## Fedora and openSUSE
 ### Fedora only
