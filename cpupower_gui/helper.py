@@ -175,7 +175,7 @@ def set_cpu_min_freq(cpu, freq):
         freq: The frequency in MHz
 
     """
-    freq *= 1e3
+    freq = int(freq * 1e3)
     if cpu in cpus_available():
         fmin, fmax = read_freqs(cpu)
         hmin, hmax = read_freq_lims(cpu)
@@ -194,7 +194,7 @@ def set_cpu_max_freq(cpu, freq):
         freq: The frequency in MHz
 
     """
-    freq *= 1e3
+    freq = int(freq * 1e3)
     if cpu in cpus_available():
         fmin, fmax = read_freqs(cpu)
         hmin, hmax = read_freq_lims(cpu)
