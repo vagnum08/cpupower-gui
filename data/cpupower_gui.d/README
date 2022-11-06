@@ -4,7 +4,7 @@ cpupower-gui first tries to read the configuration from `/etc/cpupower_gui.conf`
 Then it will read any `.conf` file in this directory (`/etc/cpupower_gui.d/`)
 in alphabetical order. The options defined on the last read file take precedence.
 
-For example, if threre are two files, named `10-config.conf` and `20-overrides.conf`, the shared options from the first will be overriden.
+For example, if there are two files, named `10-config.conf` and `20-overrides.conf`, the shared options from the first will be overridden.
 
 Simillarly, files found in `$XDG_CONFIG_HOME/cpupower_gui/`, which usually points to `~/.config/cpupower_gui/`, will take precedence over the system-wide ones.
 
