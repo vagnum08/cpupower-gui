@@ -64,7 +64,7 @@ dnf install cpupower-gui
 ```
 
 ### OpenMandriva
-You can install `cpupower-gui` from the offical repository.
+You can install `cpupower-gui` from the official repository.
 ```bash
 dnf install cpupower-gui
 ```
@@ -301,7 +301,7 @@ on Intel systems that use the `intel_pstate` driver.
 The `cpupower-gui energy --pref` option changes the preference to one of the available preferences for all CPUs.
 
 
-The `list-energy-preferences` option accepts a list of CPUs writen in the following format.
+The `list-energy-preferences` option accepts a list of CPUs written in the following format.
 Comma separated values for listing CPU and hyphen for specifying a range.
 For example `0-3` and `0,2-5,8` become `0,1,2,3` and `0,2,3,4,5,8` respectively.
 
@@ -409,7 +409,7 @@ cd cpupower-gui
 ```
 
 ## Install build dependencies
-The main build depencies are `meson (>=0.50.0)`, `ninja`, `glib2.0`, and `pkg-config`.
+The main build dependencies are `meson (>=0.50.0)`, `ninja`, `glib2.0`, and `pkg-config`.
 
 To install them,
 
