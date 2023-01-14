@@ -6,6 +6,7 @@ from .utils import (
     cpus_available,
     read_available_energy_prefs,
     read_govs,
+    is_online,
     read_governor,
     read_freq_lims,
     read_freqs,
@@ -57,7 +58,7 @@ def apply_cpu_profile(profile):
             if gov:
                 HELPER.update_cpu_governor(cpu, gov)
 
-        gov = read_governor(cpu) # Refetch this to workaround bug
+        gov = read_governor(cpu)  # Refetch this to workaround bug
         print(MSG.format(cpu, fmin / 1e3, fmax / 1e3, gov.capitalize(), online))
 
 
@@ -218,6 +219,11 @@ def set_cpu_max_freq(cpu, freq):
 
 def get_cpu_frequencies(cpu):
     """Return frequencies for cpu"""
-    fmin, fmax = read_freqs(cpu)
-    hmin, hmax = read_freq_lims(cpu)
+    fmin = 0
+    fmax = 0
+    hmin = 0
+    hmax = 0
+    if is_online(cpu):
+        fmin, fmax = read_freqs(cpu)
+        hmin, hmax = read_freq_lims(cpu)
     return (fmin / 1e3, fmax / 1e3), (hmin / 1e3, hmax / 1e3)
