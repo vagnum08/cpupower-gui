@@ -6,6 +6,7 @@ from .utils import (
     cpus_available,
     read_available_energy_prefs,
     read_govs,
+    read_governor,
     read_freq_lims,
     read_freqs,
 )
@@ -36,19 +37,27 @@ def apply_cpu_profile(profile):
         return -1
 
     for cpu in settings.keys():
-        fmin, fmax = settings[cpu].get("freqs")
-        gov = settings[cpu].get("governor")
         online = settings[cpu].get("online")
-        if fmin and fmax:
-            HELPER.update_cpu_settings(cpu, fmin, fmax)
-        if gov:
-            HELPER.update_cpu_governor(cpu, gov)
+        fmin = 0
+        fmax = 0
+        gov = settings[cpu].get("governor")
+
         if online is not None:
             if HELPER.cpu_allowed_offline(cpu):
                 if online:
                     HELPER.set_cpu_online(cpu)
                 else:
                     HELPER.set_cpu_offline(cpu)
+
+        if online:
+            fmin, fmax = settings[cpu].get("freqs")
+            if fmin and fmax:
+                HELPER.update_cpu_settings(cpu, fmin, fmax)
+
+            if gov:
+                HELPER.update_cpu_governor(cpu, gov)
+
+        gov = read_governor(cpu) # Refetch this to workaround bug
         print(MSG.format(cpu, fmin / 1e3, fmax / 1e3, gov.capitalize(), online))
 
 

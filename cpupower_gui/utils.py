@@ -98,14 +98,15 @@ def read_freqs(cpu):
 
 def read_freq_lims(cpu):
     """ Reads frequency limits from sysfs """
-    try:
-        sys_path = Path(SYS_PATH.format(int(cpu)))
-        freq_minhw = int((sys_path / FREQ_MIN_HW).read_text())
-        freq_maxhw = int((sys_path / FREQ_MAX_HW).read_text())
+    if is_online(cpu):
+        try:
+            sys_path = Path(SYS_PATH.format(int(cpu)))
+            freq_minhw = int((sys_path / FREQ_MIN_HW).read_text())
+            freq_maxhw = int((sys_path / FREQ_MAX_HW).read_text())
 
-        return freq_minhw, freq_maxhw
-    except Exception as exc:
-        print("WARNING! Unknown CPU frequency, cause:", exc)
+            return freq_minhw, freq_maxhw
+        except Exception as exc:
+            print("WARNING! Unknown CPU frequency, cause:", exc)
 
     return 0, 0
 
@@ -137,13 +138,16 @@ def read_available_frequencies(cpu):
 def read_governor(cpu):
     """ Reads governor from sysfs """
     sys_path = Path(SYS_PATH.format(int(cpu)))
-    try:
-        sys_file = sys_path / GOVERNOR
-        governor = sys_file.read_text().strip()
-    except OSError:
-        governor = "ERROR"
-    finally:
-        return governor
+    if is_online(cpu):
+        try:
+            sys_file = sys_path / GOVERNOR
+            governor = sys_file.read_text().strip()
+        except OSError:
+            governor = "ERROR"
+        finally:
+            return governor
+    else:
+        return "offline"
 
 
 def read_available_energy_prefs(cpu):
