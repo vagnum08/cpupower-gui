@@ -17,7 +17,7 @@ ONLINE_PATH = "/sys/devices/system/cpu/cpu{}/online"
 
 
 def parse_core_list(string):
-    """Parse string of cores like '0,2,4-10,12' into a list """
+    """Parse string of cores like '0,2,4-10,12' into a list"""
     cores = []
     for elem in string.split(","):
         if "-" in elem:
@@ -29,19 +29,19 @@ def parse_core_list(string):
 
 
 def cpus_present():
-    """Returns a list of present CPUs """
+    """Returns a list of present CPUs"""
     cpus = PRESENT.read_text().strip()
     return parse_core_list(cpus)
 
 
 def cpus_online():
-    """Returns a list of online CPUs """
+    """Returns a list of online CPUs"""
     cpus = ONLINE.read_text().strip()
     return parse_core_list(cpus)
 
 
 def cpus_offline():
-    """Returns a list of offline CPUs """
+    """Returns a list of offline CPUs"""
     online = cpus_online()
     present = cpus_present()
     return [cpu for cpu in present if cpu not in online]
@@ -78,40 +78,48 @@ def is_online(cpu):
 
 
 def read_current_freq(cpu):
-    """ Reads current frequency from sysfs """
-    sys_path = Path(SYS_PATH.format(int(cpu)))
+    """Reads current frequency from sysfs"""
+    freq = 0
+    if is_online(cpu):
+        sys_path = Path(SYS_PATH.format(int(cpu)))
 
-    freq = int((sys_path / CURR_FREQ).read_text())
+        freq = int((sys_path / CURR_FREQ).read_text())
 
     return freq
 
 
 def read_freqs(cpu):
-    """ Reads frequencies from sysfs """
-    sys_path = Path(SYS_PATH.format(int(cpu)))
+    """Reads frequencies from sysfs"""
+    freq_min = 0
+    freq_max = 0
+    if is_online(cpu):
+        sys_path = Path(SYS_PATH.format(int(cpu)))
 
-    freq_min = int((sys_path / FREQ_MIN).read_text())
-    freq_max = int((sys_path / FREQ_MAX).read_text())
+        freq_min = int((sys_path / FREQ_MIN).read_text())
+        freq_max = int((sys_path / FREQ_MAX).read_text())
 
     return freq_min, freq_max
 
 
 def read_freq_lims(cpu):
-    """ Reads frequency limits from sysfs """
-    try:
-        sys_path = Path(SYS_PATH.format(int(cpu)))
-        freq_minhw = int((sys_path / FREQ_MIN_HW).read_text())
-        freq_maxhw = int((sys_path / FREQ_MAX_HW).read_text())
+    """Reads frequency limits from sysfs"""
+    freq_minhw = 0
+    freq_maxhw = 0
+    if is_online(cpu):
+        try:
+            sys_path = Path(SYS_PATH.format(int(cpu)))
 
-        return freq_minhw, freq_maxhw
-    except Exception as exc:
-        print("WARNING! Unknown CPU frequency, cause:", exc)
+            freq_minhw = int((sys_path / FREQ_MIN_HW).read_text())
+            freq_maxhw = int((sys_path / FREQ_MAX_HW).read_text())
 
-    return 0, 0
+        except Exception as exc:
+            print("WARNING! Unknown CPU frequency, cause:", exc)
+
+    return freq_minhw, freq_maxhw
 
 
 def read_govs(cpu):
-    """ Reads governors from sysfs """
+    """Reads governors from sysfs"""
     sys_path = Path(SYS_PATH.format(int(cpu)))
     try:
         sys_file = sys_path / AVAIL_GOV
@@ -123,7 +131,7 @@ def read_govs(cpu):
 
 
 def read_available_frequencies(cpu):
-    """ Reads available frequencies from sysfs """
+    """Reads available frequencies from sysfs"""
     sys_path = Path(SYS_PATH.format(int(cpu)))
     try:
         sys_file = sys_path / AVAIL_FREQS
@@ -135,19 +143,22 @@ def read_available_frequencies(cpu):
 
 
 def read_governor(cpu):
-    """ Reads governor from sysfs """
+    """Reads governor from sysfs"""
     sys_path = Path(SYS_PATH.format(int(cpu)))
-    try:
-        sys_file = sys_path / GOVERNOR
-        governor = sys_file.read_text().strip()
-    except OSError:
-        governor = "ERROR"
-    finally:
-        return governor
+    if is_online(cpu):
+        try:
+            sys_file = sys_path / GOVERNOR
+            governor = sys_file.read_text().strip()
+        except OSError:
+            governor = "ERROR"
+        finally:
+            return governor
+    else:
+        return "offline"
 
 
 def read_available_energy_prefs(cpu):
-    """ Reads energy performance available preferences"""
+    """Reads energy performance available preferences"""
     sys_path = Path(SYS_PATH.format(int(cpu)))
     try:
         sys_file = sys_path / AVAIL_PERF_PREF
@@ -159,7 +170,7 @@ def read_available_energy_prefs(cpu):
 
 
 def read_energy_pref(cpu):
-    """ Reads energy performance available preferences"""
+    """Reads energy performance available preferences"""
     sys_path = Path(SYS_PATH.format(int(cpu)))
     try:
         sys_file = sys_path / PERF_PREF

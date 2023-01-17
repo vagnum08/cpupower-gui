@@ -203,7 +203,7 @@ class CpuPowerConfig:
         govs = read_govs(0)
         if not govs:
             return
-        
+
         # For more details of CPU Performance Scaling, see https://www.kernel.org/doc/html/latest/admin-guide/pm/cpufreq.html.
         # For the Sandy Bridge and later generations of Intel processors, the intel_pstate is used by default. Jump to see
         # https://www.kernel.org/doc/html/latest/admin-guide/pm/intel_pstate.html. To disable intel_pstate, add kernel command
@@ -216,7 +216,7 @@ class CpuPowerConfig:
             self._profiles["Balanced"] = DefaultProfile("Balanced", "ondemand")
         elif "powersave" in govs:
             self._profiles["Balanced"] = DefaultProfile("Balanced", "powersave")
-        
+
         # The governor 'userspace' does not do anything by itself. Instead, it allows user space to set the CPU
         # frequency for the policy it is attached to by writing to the scaling_setspeed attribute of that policy.
         # Notes: intel_pstate will not use generic scaling governors as usual.
