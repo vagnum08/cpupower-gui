@@ -219,11 +219,6 @@ def set_cpu_max_freq(cpu, freq):
 
 def get_cpu_frequencies(cpu):
     """Return frequencies for cpu"""
-    fmin = 0
-    fmax = 0
-    hmin = 0
-    hmax = 0
-    if is_online(cpu):
-        fmin, fmax = read_freqs(cpu)
-        hmin, hmax = read_freq_lims(cpu)
+    fmin, fmax = read_freqs(cpu)
+    hmin, hmax = read_freq_lims(cpu)
     return (fmin / 1e3, fmax / 1e3), (hmin / 1e3, hmax / 1e3)

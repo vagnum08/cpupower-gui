@@ -79,36 +79,43 @@ def is_online(cpu):
 
 def read_current_freq(cpu):
     """Reads current frequency from sysfs"""
-    sys_path = Path(SYS_PATH.format(int(cpu)))
+    freq = 0
+    if is_online(cpu):
+        sys_path = Path(SYS_PATH.format(int(cpu)))
 
-    freq = int((sys_path / CURR_FREQ).read_text())
+        freq = int((sys_path / CURR_FREQ).read_text())
 
     return freq
 
 
 def read_freqs(cpu):
     """Reads frequencies from sysfs"""
-    sys_path = Path(SYS_PATH.format(int(cpu)))
+    freq_min = 0
+    freq_max = 0
+    if is_online(cpu):
+        sys_path = Path(SYS_PATH.format(int(cpu)))
 
-    freq_min = int((sys_path / FREQ_MIN).read_text())
-    freq_max = int((sys_path / FREQ_MAX).read_text())
+        freq_min = int((sys_path / FREQ_MIN).read_text())
+        freq_max = int((sys_path / FREQ_MAX).read_text())
 
     return freq_min, freq_max
 
 
 def read_freq_lims(cpu):
     """Reads frequency limits from sysfs"""
+    freq_minhw = 0
+    freq_maxhw = 0
     if is_online(cpu):
         try:
             sys_path = Path(SYS_PATH.format(int(cpu)))
+
             freq_minhw = int((sys_path / FREQ_MIN_HW).read_text())
             freq_maxhw = int((sys_path / FREQ_MAX_HW).read_text())
 
-            return freq_minhw, freq_maxhw
         except Exception as exc:
             print("WARNING! Unknown CPU frequency, cause:", exc)
 
-    return 0, 0
+    return freq_minhw, freq_maxhw
 
 
 def read_govs(cpu):
