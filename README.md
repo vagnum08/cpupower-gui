@@ -30,7 +30,8 @@ Cpupower-gui is available on the official repositories for a few distributions.
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/cpupower-gui.svg)](https://repology.org/metapackage/cpupower-gui/versions)
 
-Prebuilt binary packages (latest repo version) for Arch, Debian/Rasbian, Fedora, and Ubuntu are available on  [openSUSE Build Service](https://software.opensuse.org/download.html?project=home%3Aerigas%3Acpupower-gui&package=cpupower-gui)
+Prebuilt binary packages (latest repo version) for Arch, Debian/Rasbian, Fedora, and Ubuntu are available on  [openSUSE Build Service](https://software.opensuse.org//download.html?project=home%3Aerigas&package=cpupower-gui)
+
 
 ## Repositories:
 
@@ -45,21 +46,15 @@ You can install `cpupower-gui` from the software manager or from the terminal by
 ```bash
 sudo apt install cpupower-gui
 ```
+However, the version on Debian/Ubuntu repositories is way out of date. 
 
-To get the latest version either grab the debian packages from OpenSUSE build service or add the repository to your system.
-For example, in xUbuntu 20.04 run the following:
-```
-echo 'deb http://download.opensuse.org/repositories/home:/erigas:/cpupower-gui/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:erigas:cpupower-gui.list
-curl -fsSL https://download.opensuse.org/repositories/home:erigas:cpupower-gui/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home:erigas:cpupower-gui.gpg > /dev/null
-sudo apt update
-sudo apt install cpupower-gui
-```
+You can get the debian package of the latest version from the github releases page.
 
 ### Fedora
 You can install `cpupower-gui` by adding the repository from OpenSUSE build service.
-For example, in Fedora 32 run the following as root:
+For example, in Fedora 36 run the following as root:
 ```bash
-dnf config-manager --add-repo https://download.opensuse.org/repositories/home:erigas:cpupower-gui/Fedora_32/home:erigas:cpupower-gui.repo
+dnf config-manager --add-repo https://download.opensuse.org/repositories/home:erigas/Fedora_36/home:erigas.repo
 dnf install cpupower-gui
 ```
 
