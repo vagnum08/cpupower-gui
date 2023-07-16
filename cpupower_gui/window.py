@@ -28,6 +28,12 @@ except (ValueError, ImportError):
 
 from gi.repository import Gio, GLib, GObject, Gtk
 
+try:
+    gi.require_version("AyatanaAppIndicator3", "0.1")
+    HasTray = True
+except ValueError:
+    HasTray = False
+
 from .config import CpuPowerConfig, CpuSettings
 from .utils import read_available_frequencies, read_current_freq
 
@@ -47,9 +53,9 @@ ERRORS = {
     -25: _("Setting frequencies and energy preferences failed."),
 }
 
+
 # Abstractions for Gio List store
 class CpuCore(GObject.GObject):
-
     name = GObject.Property(type=str)
 
     def __init__(self, name):
@@ -58,7 +64,6 @@ class CpuCore(GObject.GObject):
 
 
 class EnergyPref(GObject.GObject):
-
     prefid = GObject.Property(type=int)
     name = GObject.Property(type=str)
 
@@ -69,7 +74,6 @@ class EnergyPref(GObject.GObject):
 
 
 class Governor(GObject.GObject):
-
     govid = GObject.Property(type=int)
     name = GObject.Property(type=str)
 
@@ -80,7 +84,6 @@ class Governor(GObject.GObject):
 
 
 class Profile(GObject.GObject):
-
     name = GObject.Property(type=str)
 
     def __init__(self, profile):
@@ -156,6 +159,8 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         self.squeezer.connect(
             "notify::visible-child", self.on_headerbar_squeezer_notify
         )
+        if HasTray:
+            self.connect("delete-event", self.to_tray)
         # Read configuration
         self.conf = CpuPowerConfig()
         # Get GUI config and profiles
@@ -333,8 +338,13 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
     def quit(self, *args):
         """Quit"""
-        HELPER.quit()
+        print("Quiting...")
+        # HELPER.quit()
         exit(0)
+
+    def to_tray(self, *args):
+        self.hide()
+        return True
 
     def _reset_energy_conf(self, cpu):
         if cpu == -1:
