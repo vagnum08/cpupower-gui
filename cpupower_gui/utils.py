@@ -145,16 +145,17 @@ def read_available_frequencies(cpu):
 def read_governor(cpu):
     """Reads governor from sysfs"""
     sys_path = Path(SYS_PATH.format(int(cpu)))
-    if is_online(cpu):
-        try:
-            sys_file = sys_path / GOVERNOR
-            governor = sys_file.read_text().strip()
-        except OSError:
-            governor = "ERROR"
-        finally:
-            return governor
-    else:
-        return "offline"
+
+    if not is_online(cpu):
+        return "OFFLINE"
+
+    try:
+        sys_file = sys_path / GOVERNOR
+        governor = sys_file.read_text().strip()
+    except OSError:
+        governor = "ERROR"
+    finally:
+        return governor
 
 
 def read_available_energy_prefs(cpu):

@@ -556,7 +556,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             self.gov_box.bind_name_model(gov_store, lambda x: x.name)
             self.gov_box.set_selected_index(governor)
             self.gov_box.set_sensitive(True)
-        else:
+        else:  # CPU OFFLINE
             self.gov_box.set_sensitive(False)
 
     def _update_current_freq(self):
