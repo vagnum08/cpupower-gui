@@ -30,8 +30,6 @@ Cpupower-gui is available on the official repositories for a few distributions.
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/cpupower-gui.svg)](https://repology.org/metapackage/cpupower-gui/versions)
 
-Prebuilt binary packages (latest repo version) for Arch, Debian/Rasbian, Fedora, and Ubuntu are available on  [openSUSE Build Service](https://software.opensuse.org//download.html?project=home%3Aerigas&package=cpupower-gui)
-
 
 ## Repositories:
 
@@ -50,13 +48,21 @@ However, the version on Debian/Ubuntu repositories is way out of date.
 
 You can get the debian package of the latest version from the github releases page.
 
-### Fedora
-You can install `cpupower-gui` by adding the repository from OpenSUSE build service.
-For example, in Fedora 36 run the following as root:
+### Fedora/OpenSUSE
+You can install `cpupower-gui` by adding the repository from [openSUSE Build Service](https://software.opensuse.org//download.html?project=multimedia%3Aproaudio&package=cpupower-gui).
+
+For example, in Fedora 38 run the following as root:
 ```bash
-dnf config-manager --add-repo https://download.opensuse.org/repositories/home:erigas/Fedora_36/home:erigas.repo
+dnf config-manager --add-repo https://download.opensuse.org/repositories/multimedia:proaudio/Fedora_38/multimedia:proaudio.repo
 dnf install cpupower-gui
 ```
+For OpenSUSE Tumbleweed:
+```bash
+zypper addrepo https://download.opensuse.org/repositories/multimedia:proaudio/openSUSE_Tumbleweed/multimedia:proaudio.repo
+zypper refresh
+zypper install cpupower-gui
+```
+Note: The package repository is located at https://build.opensuse.org/package/show/multimedia:proaudio/cpupower-gui and the binaries for Fedora and Suse are built from the latest git revision of `cpupower-gui`.
 
 ### OpenMandriva
 You can install `cpupower-gui` from the official repository.
