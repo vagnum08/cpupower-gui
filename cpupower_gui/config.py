@@ -542,6 +542,8 @@ class CpuSettings:
 
     @property
     def govid(self):
+        if self.governor == "OFFLINE":
+            return None
         return self._governors.index(self.governor)
 
     @property
