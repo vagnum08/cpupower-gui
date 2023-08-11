@@ -163,7 +163,7 @@ msgid "Refactor helper library and fix vulnerabilities"
 msgstr ""
 
 #: cpupower_gui/tray.ui:13
-msgid "Swith to performance profile"
+msgid "Switch to performance profile"
 msgstr "Αλλαγή σε προφίλ επίδοσης"
 
 #: cpupower_gui/tray.ui:21

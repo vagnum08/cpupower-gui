@@ -42,7 +42,7 @@ msgstr "frequency;limits;"
 #: data/org.rnd2.cpupower_gui.desktop.in.in:18
 #, fuzzy
 msgid "Switch to Performance profile"
-msgstr "Swith to performance profile"
+msgstr "Switch to performance profile"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:22
 #, fuzzy
@@ -108,7 +108,7 @@ msgstr ""
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:50
 #, fuzzy
 msgid "Changing energy performance profiles"
-msgstr "Swith to performance profile"
+msgstr "Switch to performance profile"
 
 #: data/org.rnd2.cpupower_gui.appdata.xml.in:53
 msgid "Evangelos Rigas"
@@ -161,8 +161,8 @@ msgid "Refactor helper library and fix vulnerabilities"
 msgstr "Refactor helper library and fix vulnerabilities"
 
 #: cpupower_gui/tray.ui:13
-msgid "Swith to performance profile"
-msgstr "Swith to performance profile"
+msgid "Switch to performance profile"
+msgstr "Switch to performance profile"
 
 #: cpupower_gui/tray.ui:21
 msgid "Switch to balanced profile"
@@ -274,7 +274,7 @@ msgstr ""
 #: cpupower_gui/window.ui.in:559
 #, fuzzy
 msgid "Energy performance preference per CPU"
-msgstr "Swith to performance profile"
+msgstr "Switch to performance profile"
 
 #: cpupower_gui/window.ui.in:585
 #, fuzzy
@@ -308,7 +308,7 @@ msgstr ""
 #: cpupower_gui/window.py:39
 #, fuzzy
 msgid "Setting energy preferences failed."
-msgstr "Swith to performance profile"
+msgstr "Switch to performance profile"
 
 #: cpupower_gui/window.py:40
 msgid "Setting frequencies failed."

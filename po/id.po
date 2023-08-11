@@ -160,7 +160,7 @@ msgid "Refactor helper library and fix vulnerabilities"
 msgstr "Merefaktor pustaka pembantu dan memperbaiki kerentanan"
 
 #: cpupower_gui/tray.ui:13
-msgid "Swith to performance profile"
+msgid "Switch to performance profile"
 msgstr "Beralih ke profil kinerja"
 
 #: cpupower_gui/tray.ui:21

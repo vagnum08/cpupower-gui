@@ -42,7 +42,7 @@ msgstr "frequency;limits;"
 #: data/org.rnd2.cpupower_gui.desktop.in.in:18
 #, fuzzy
 msgid "Switch to Performance profile"
-msgstr "Swith to performance profile"
+msgstr "Switch to performance profile"
 
 #: data/org.rnd2.cpupower_gui.desktop.in.in:22
 #, fuzzy
@@ -159,8 +159,8 @@ msgid "Refactor helper library and fix vulnerabilities"
 msgstr "Refactor helper library and fix vulnerabilities"
 
 #: cpupower_gui/tray.ui:13
-msgid "Swith to performance profile"
-msgstr "Swith to performance profile"
+msgid "Switch to performance profile"
+msgstr "Switch to performance profile"
 
 #: cpupower_gui/tray.ui:21
 msgid "Switch to balanced profile"

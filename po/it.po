@@ -166,7 +166,7 @@ msgstr ""
 "Refactoring della libreria di supporto e correzione delle vulnerabilità"
 
 #: cpupower_gui/tray.ui:13
-msgid "Swith to performance profile"
+msgid "Switch to performance profile"
 msgstr "Passa al profilo prestazioni"
 
 #: cpupower_gui/tray.ui:21

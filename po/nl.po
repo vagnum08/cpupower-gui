@@ -161,7 +161,7 @@ msgid "Refactor helper library and fix vulnerabilities"
 msgstr "Hulpbibliotheek opnieuw ontworpen en kwaadaardigheden gerepareerd"
 
 #: cpupower_gui/tray.ui:13
-msgid "Swith to performance profile"
+msgid "Switch to performance profile"
 msgstr "Overschakelen op ‘prestaties’-profiel"
 
 #: cpupower_gui/tray.ui:21
