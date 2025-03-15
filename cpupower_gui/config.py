@@ -3,7 +3,7 @@
 from configparser import ConfigParser
 from pathlib import Path
 from shlex import split
-
+from os.path import exists, expanduser, abspath
 try:
     from xdg import BaseDirectory
 
@@ -74,12 +74,14 @@ class CpuPowerConfig:
                 self._profiles.update({prof.name: prof})
 
         # user configuration
+        if self.user_conf == None or self.user_conf == "":
+            self.user_conf = Path(abspath(expanduser("~/.cpupower/")))
+            if self.user_conf.exists() == False: self.user_conf.mkdir()
         if self.user_conf:
             profile_files = sorted(self.user_conf.glob("*.profile"))
             for file in profile_files:
                 prof = Profile(file)
                 self._profiles.update({prof.name: prof})
-
     @property
     def default_profile(self):
         """Returns selected profile
