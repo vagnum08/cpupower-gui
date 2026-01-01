@@ -190,6 +190,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         action = Gio.SimpleAction.new("Exit", None)
         action.connect("activate", self.quit)
         self.add_action(action)
+        self._editing_cpu = None
 
     def on_headerbar_squeezer_notify(self, squeezer, event):
         child = squeezer.get_visible_child()
@@ -560,8 +561,13 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
             self.gov_box.set_sensitive(False)
 
     def _update_current_freq(self):
-        """Callback to update the tree view with current CPU frequency"""
+        """Callback to update the tree view with current CPU frequency"""    
+        # path, _ = self.tree_view.get_cursor()
+        # editing_row = int(path.to_string()) if path else None
+    
         for cpu in self.online_cpus:
+            if cpu == self._editing_cpu:
+                continue # Skip over the editing row of the tree 
             current_freq = read_current_freq(cpu) / 1e3
             self.tree_store[cpu][5] = current_freq
         return True
@@ -583,6 +589,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                 conf.freqs = value, fmax
             else:
                 conf.freqs = fmin, value
+        self._editing_cpu = None
 
     def on_tree_toggled(self, widget, path):
         """Update online cpu toggle"""
@@ -637,7 +644,9 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
                     page_size=0,
                 )
                 renderer = Gtk.CellRendererSpin(editable=True, adjustment=adj, digits=2)
+                renderer.connect("editing-started", self.on_freq_editing_started)
                 renderer.connect("edited", self.on_freq_edited, index)
+                renderer.connect("editing-canceled", self.on_freq_editing_canceled)
                 column = Gtk.TreeViewColumn(column_title, renderer, text=i, style=6)
                 column.set_cell_data_func(renderer, self.conv_float, index)
             else:
@@ -1149,3 +1158,9 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
         if ret != 0:
             return -13
         return ret
+
+    def on_freq_editing_started(self, renderer, editable, path):
+        self._editing_cpu = int(path)
+
+    def on_freq_editing_canceled(self, renderer):
+        self._editing_cpu = None
