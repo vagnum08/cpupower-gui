@@ -33,6 +33,9 @@ try:
     HasTray = True
 except ValueError:
     HasTray = False
+    
+import locale
+locale.setlocale(locale.LC_ALL, '')
 
 from .config import CpuPowerConfig, CpuSettings
 from .utils import read_available_frequencies, read_current_freq
@@ -574,7 +577,7 @@ class CpupowerGuiWindow(Gtk.ApplicationWindow):
 
     def on_freq_edited(self, widget, path, value, index):
         """Update the sliders when frequencies change from table"""
-        value = float(value)
+        value = locale.atof(value)
         cpu = int(path)
         conf = self.settings[cpu]
         fmin, fmax = conf.freqs
