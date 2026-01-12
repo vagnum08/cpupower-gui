@@ -266,7 +266,7 @@ profile_sub.set_defaults(func=set_profile)
 # Config commands
 config_sub = subparsers.add_parser("config", aliases=["co"])
 config_sub.add_argument(
-    "apply", action="store_true", help="apply cpupower configuration",
+    "-a", "--apply", action="store_true", help="apply cpupower configuration",
 )
 config_sub.set_defaults(func=set_config)
 

@@ -37,6 +37,11 @@
     <developer_name>Evangelos Rigas</developer_name>
     <content_rating type="oars-1.1"/>
     <releases>
+     <release version="1.0.1" date="2026-01-12">
+      <description>
+        <p>Fix Python 3.14 compatibility issue with argparse</p>
+	    </description>
+	   </release>
      <release version="1.0.0" date="2020-11-6">
       <description>
         <p>Add Italian translation</p>
