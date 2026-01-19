@@ -4,7 +4,7 @@ Documentation=https://github.com/vagnum08/cpupower-gui man:cpupower-gui(1)
 
 [Service]
 Type=oneshot
-ExecStart=@bindir@/cpupower-gui config
+ExecStart=@bindir@/cpupower-gui config -a
 
 [Install]
 WantedBy=multi-user.target
