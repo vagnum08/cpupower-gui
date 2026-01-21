@@ -61,6 +61,20 @@ def apply_cpu_profile(profile):
         gov = read_governor(cpu)  # Refetch this to workaround bug
         print(MSG.format(cpu, fmin / 1e3, fmax / 1e3, gov.capitalize(), online))
 
+def print_cpu_profile(profile):
+    """Display cpu settings for profile
+
+    Args:
+        profile: A cpupower profile
+
+    """
+    settings = profile.settings
+
+    for cpu in settings.keys():
+        fmin, fmax = settings[cpu].get("freqs")
+        gov = settings[cpu].get("governor")
+        online = settings[cpu].get("online")
+        print(MSG.format(cpu, fmin / 1e3, fmax / 1e3, gov.capitalize(), online))
 
 def apply_configuration(config):
     """Set cpu settings base on configuration
