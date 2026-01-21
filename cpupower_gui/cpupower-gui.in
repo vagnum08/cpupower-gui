@@ -34,6 +34,7 @@ from cpupower_gui.helper import (
     apply_balanced,
     apply_configuration,
     apply_cpu_profile,
+    print_cpu_profile,
     apply_energy_preference,
     apply_performance,
     get_cpu_frequencies,
@@ -71,6 +72,16 @@ def set_config(args):
         print("Applying configuration... ")
         ret = apply_configuration(conf)
         sys.exit(ret)
+
+    profile = conf.get_profile(conf.default_profile)
+    if not profile:
+        print("Failed to get default configuration!")
+        sys.exit(-1)
+        
+    print(f"Default configuration: {profile.name}\n")
+    print_cpu_profile(profile)
+    print("\n\nRun `cpupower-gui config --apply` to apply the configuration.")
+    sys.exit(0)
 
 
 def set_energy(args):
