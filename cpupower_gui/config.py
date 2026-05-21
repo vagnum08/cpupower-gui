@@ -246,7 +246,8 @@ class Profile:
         text = self.file.read_text().splitlines()
         # read name
         if "name:" in text[0]:
-            self.name = split(text[0])[-1]
+            name = text[0].split("# name:")[-1]
+            self.name = name.strip().strip('"').strip()
         else:
             self.name = self.file.name
 
