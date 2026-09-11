@@ -1,8 +1,6 @@
 polkit.addRule(function(action, subject) {
     if (action.id == "org.rnd2.cpupower_gui.apply_runtime" &&
-        subject.local &&
-        subject.active &&
-        subject.isInGroup("wheel")) {
+        (subject.isInGroup("wheel") || subject.isInGroup("sudo"))) {
             return polkit.Result.YES;
     }
 });
