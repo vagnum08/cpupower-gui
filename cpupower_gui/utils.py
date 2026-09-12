@@ -123,11 +123,9 @@ def read_govs(cpu):
     sys_path = Path(SYS_PATH.format(int(cpu)))
     try:
         sys_file = sys_path / AVAIL_GOV
-        govs = sys_file.read_text().strip().split(" ")
+        return sys_file.read_text().strip().split(" ")
     except OSError:
-        govs = []
-    finally:
-        return govs
+        return []
 
 
 def read_available_frequencies(cpu):
@@ -135,11 +133,9 @@ def read_available_frequencies(cpu):
     sys_path = Path(SYS_PATH.format(int(cpu)))
     try:
         sys_file = sys_path / AVAIL_FREQS
-        freqs = sys_file.read_text().strip().split(" ")
+        return sys_file.read_text().strip().split(" ")
     except OSError:
-        freqs = []
-    finally:
-        return freqs
+        return []
 
 
 def read_governor(cpu):
@@ -151,11 +147,9 @@ def read_governor(cpu):
 
     try:
         sys_file = sys_path / GOVERNOR
-        governor = sys_file.read_text().strip()
+        return sys_file.read_text().strip()
     except OSError:
-        governor = "ERROR"
-    finally:
-        return governor
+        return "ERROR"
 
 
 def read_available_energy_prefs(cpu):
@@ -163,11 +157,9 @@ def read_available_energy_prefs(cpu):
     sys_path = Path(SYS_PATH.format(int(cpu)))
     try:
         sys_file = sys_path / AVAIL_PERF_PREF
-        prefs = sys_file.read_text().strip().split(" ")
+        return sys_file.read_text().strip().split(" ")
     except OSError:
-        prefs = []
-    finally:
-        return prefs
+        return []
 
 
 def read_energy_pref(cpu):
@@ -175,11 +167,9 @@ def read_energy_pref(cpu):
     sys_path = Path(SYS_PATH.format(int(cpu)))
     try:
         sys_file = sys_path / PERF_PREF
-        pref = sys_file.read_text().strip()
+        return sys_file.read_text().strip()
     except OSError:
-        pref = ""
-    finally:
-        return pref
+        return ""
 
 
 def is_energy_pref_avail(cpu):
