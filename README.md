@@ -44,7 +44,6 @@ You can install `cpupower-gui` from the software manager or from the terminal by
 ```bash
 sudo apt install cpupower-gui
 ```
-However, the version on Debian/Ubuntu repositories is way out of date. 
 
 You can get the debian package of the latest version from the github releases page.
 
@@ -338,6 +337,20 @@ CPU 3:
 	- power
 ```
 
+
+
+### Missing governors on Intel CPUs
+
+Intel p-state by default is set to active, which provides only **performance** and **powersave** governors.
+If someone wants to have the other options like schedutil/userspace/conservative then passive mode must be used.
+
+To do this you will need to write *passive* to `/sys/devices/system/cpu/intel_pstate/status` which will require root access.
+
+```bash
+echo "passive" | sudo tee /sys/devices/system/cpu/intel_pstate/status
+```
+
+For more info on Intel P-States see: <https://www.kernel.org/doc/html/latest/admin-guide/pm/intel_pstate.html>
 
 # System configuration and User profiles
 ## System configuration
