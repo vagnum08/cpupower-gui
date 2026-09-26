@@ -1,11 +1,26 @@
 [Unit]
 Description=cpupower-gui system helper
-Documentation=https://github.com/vagnum08/cpupower-gui
+Documentation=https://github.com/vagnum08/cpupower-gui man:cpupower-gui(1)
+Before=slices.target
+After=dbus.service
+Wants=dbus.socket
+ConditionPathExists=@helperdir@/cpupower-gui-helper
 
 [Service]
 Type=dbus
 BusName=org.rnd2.cpupower_gui.helper
+BusPolicy=user=root send_sysmsg=yes receive_sysmsg=yes
 ExecStart=@helperdir@/cpupower-gui-helper
+ExecReload=/bin/kill -HUP $MAINPID
+TimeoutStartSec=60
+TimeoutStopSec=30
+Restart=no
+AmbientCapabilities=CAP_SYS_NICE CAP_SYS_RESOURCE
+ProtectSystem=full
+ProtectHome=read-only
+PrivateTmp=true
+NoNewPrivileges=true
+NotifyAccess=none
 
 [Install]
-Alias=dbus-org.rnd2.cpupower_gui.helper.service
+WantedBy=multi-user.target

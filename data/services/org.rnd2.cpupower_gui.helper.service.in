@@ -2,4 +2,4 @@
 Name=org.rnd2.cpupower_gui.helper
 Exec=@helperdir@/cpupower-gui-helper
 User=root
-SystemdService=dbus-org.rnd2.cpupower_gui.helper.service
+SystemdService=cpupower-gui-helper.service

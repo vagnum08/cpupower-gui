@@ -1,10 +1,15 @@
 [Unit]
 Description=Apply cpupower-gui config at user login
-After=default.target
+After=default.target graphical-session-pre.target
+Wants=default.target graphical-session-pre.target
 
 [Service]
 Type=oneshot
+RemainAfterExit=yes
 ExecStart=@bindir@/cpupower-gui config
+ExecStartPost=/bin/logger -t cpupower-gui "Applied user CPU power configuration"
+TimeoutSec=30
+Environment=XDG_RUNTIME_DIR=%t
 
 [Install]
 WantedBy=default.target

@@ -1,10 +1,21 @@
 [Unit]
 Description=Apply cpupower-gui config at boot
 Documentation=https://github.com/vagnum08/cpupower-gui man:cpupower-gui(1)
+DefaultDependencies=no
+After=syslog.target local-fs.target multi-user.target
+Before=shutdown.target
+ConditionPathExists=@bindir@/cpupower-gui
 
 [Service]
 Type=oneshot
+RemainAfterExit=yes
 ExecStart=@bindir@/cpupower-gui config -a
+ExecStartPost=/bin/logger -t cpupower-gui "Applied system CPU power configuration"
+TimeoutSec=60
+StandardOutput=journal
+StandardError=journal
+PrivateTmp=true
+NoNewPrivileges=true
 
 [Install]
 WantedBy=multi-user.target
