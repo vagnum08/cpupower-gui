@@ -37,9 +37,18 @@
     <developer_name>Evangelos Rigas</developer_name>
     <content_rating type="oars-1.1"/>
     <releases>
+     <release version="1.0.2" date="2026-11-22">
+      <description>
+        <p>Add Spanish translation</p>
+        <p>Update polkit rules</p>
+        <p>Update services</p>
+        <p>Various other fixes</p>
+	    </description>
+	   </release>
      <release version="1.0.1" date="2026-01-12">
       <description>
         <p>Fix Python 3.14 compatibility issue with argparse</p>
+        <p>Add German translation</p>
 	    </description>
 	   </release>
      <release version="1.0.0" date="2020-11-6">
